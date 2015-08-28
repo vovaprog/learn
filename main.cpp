@@ -5,6 +5,7 @@
 #include "model.h"
 
 #include "learn_signals.h"
+#include "learn_system.h"
 
 using namespace std;
 
@@ -68,7 +69,8 @@ int main()
 	cout <<"main enter"<<endl;
 
 	//learn3();
-	learn_signals();
+	//learn_signals();
+	learn_system();
 
 	cout <<"main exit"<<endl;
 	return 0;
