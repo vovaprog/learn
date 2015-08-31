@@ -6,6 +6,7 @@
 
 #include "learn_signals.h"
 #include "learn_system.h"
+#include "wget.h"
 
 using namespace std;
 
@@ -70,7 +71,8 @@ int main()
 
 	//learn3();
 	//learn_signals();
-	learn_system();
+	//learn_system();
+	wget();
 
 	cout <<"main exit"<<endl;
 	return 0;
