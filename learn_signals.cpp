@@ -1,5 +1,8 @@
 #include <iostream>
+#include <functional>
+
 #include <boost/signals2.hpp>
+
 
 using namespace std;
 using namespace boost::signals2;
@@ -27,7 +30,12 @@ struct SumStruct
 
 void mulFunction(double x, double y)
 {
-    std::cout << "mul="<< x*y << std::endl;    
+    std::cout << x << " * " << y << " = " << x*y << std::endl;    
+}
+
+void divFunction(double x, double y)
+{
+    std::cout << "div="<< x/y << std::endl;    
 }
 
 
@@ -37,7 +45,7 @@ void learn_signals1()
 
   HelloWorld hello;
   sig.connect(hello);
-  sig.connect(testFunction);
+  sig.connect(&testFunction);
 
 
   sig();
@@ -49,15 +57,29 @@ void learn_signals2()
 
   SumStruct ss;
   sig.connect(ss);
-  sig.connect(mulFunction);
-
+  sig.connect(&divFunction);
+  {  
+      scoped_connection scoped_con (sig.connect(&mulFunction));
+      sig(3.0, 4.0);
+  }
+  cout <<"--------------"<<endl;
+  
   sig(3.0, 4.0);
 }
 
+void learn_signals3()
+{ 
+    auto f = bind(mulFunction,5,6);
+    f();
+    
+    auto f2=bind(mulFunction,_2,_1);
+    f2(1,5);
+}
 
 void learn_signals()
 {
-    learn_signals1();
-    learn_signals2();
+    //learn_signals1();
+    //learn_signals2();
+    learn_signals3();
 }
 

@@ -5,6 +5,7 @@
 #include <string.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "wget.h"
 
@@ -30,24 +31,31 @@ int wget()
         return -1;
     }
     
-    struct sockaddr_in serv_addr;
     
-    memset(&serv_addr, 0, sizeof(serv_addr));
     
-    serv_addr.sin_family=AF_INET;
-    serv_addr.sin_port=htons(80);
+    bool connected=false;
     
-    //inet_pton(AF_INET,addressInfo->ai_addr,&serv_addr.sin_addr);
-    
-    if(connect(socket_fd,addressInfo->ai_addr,sizeof(serv_addr))!=0)
-    {
-        printf("connect failed!\r\n");
-        
-        close(socket_fd);
-        return -1;
+    for(struct addrinfo *p = addressInfo; p != NULL; p = p->ai_next) 
+    {        
+        if(connect(socket_fd,p->ai_addr,p->ai_addrlen)==0)
+        {
+            connected=true;
+            break;
+        }
+        else            
+        {
+            printf("connect failed: %s\r\n",strerror(errno));            
+            continue;
+        }
     }
     
-    char *httpRequest="GET / HTTP/1.1\nhost: www.ya.ru\n\n";
+    if(!connected)
+    {
+        close(socket_fd);
+        return -1;        
+    }
+    
+    char *httpRequest="GET / HTTP/1.1\nhost: www.yandex.ru\n\n";
     
     if(write(socket_fd,httpRequest,strlen(httpRequest))!=strlen(httpRequest))
     {
@@ -57,11 +65,12 @@ int wget()
         return -1;
     }
     
-    char responseBuf[10000];
+#define RESPONSE_SIZE 10000    
+    char responseBuf[RESPONSE_SIZE];
     
     while(1)
     {
-        int bytesRead = read(socket_fd,responseBuf,sizeof(responseBuf-1));
+        int bytesRead = read(socket_fd,responseBuf,RESPONSE_SIZE-1);
         
         if(bytesRead < 0)
         {
@@ -77,27 +86,9 @@ int wget()
         
         responseBuf[bytesRead]=0;
         
-        //printf("[[[");
+        printf("[ ");
         printf(responseBuf);
-        
-        
-        int newLineCounter=0;
-        for(int i=bytesRead;i>=0;--i)
-        {
-            if(responseBuf[i]=='\n')
-            {
-                newLineCounter++;    
-            }
-            else if(responseBuf[i]!='\r')
-            {
-                break;    
-            }
-        }
-        
-        if(newLineCounter>=2)
-        {
-            break;    
-        }
+        printf(" ]\n");
     }
 
     close(socket_fd);    
