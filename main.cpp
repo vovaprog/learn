@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <string.h>
 
 #include "body.h"
 #include "model.h"
@@ -7,6 +8,8 @@
 #include "learn_signals.h"
 #include "learn_system.h"
 #include "wget.h"
+#include "smart_pointers.h"
+#include "http_server.h"
 
 using namespace std;
 
@@ -72,7 +75,9 @@ int main()
 	//learn3();
 	//learn_signals();
 	//learn_system();
-	wget();
+	//wget();
+	//test_smart_pointers();
+	http_server();
 
 	cout <<"main exit"<<endl;
 	return 0;
