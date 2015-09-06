@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <signal.h>
+#include <poll.h>
+#include <stdlib.h>
 
 /*
 Вызовы socket на сервере:
@@ -32,6 +34,8 @@ void sig_int_handler(int i)
     {
         close(sockfd);
     }
+    
+    exit(-1);
 }
 
 void getResponse(char *request,char *response)
@@ -330,6 +334,161 @@ bool http_server_select()
                         break;
                     }
                 }
+            }
+        }
+    }
+}
+
+
+bool http_server_poll()
+{
+    signal(SIGINT,sig_int_handler);
+    
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    
+    printf("sockfd: %d\r\n",sockfd);
+    
+    if(sockfd<0)
+    {
+        printf("socket failed\r\n");
+        return false;        
+    }
+    
+    int enable = 1;
+    if( setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0 )
+    {
+        printf("setsockopt failed\r\n");
+        close(sockfd);
+        return false;
+    }    
+    
+    
+    struct sockaddr_in serv_addr;//,cli_addr;
+    //socklen_t clilen;
+    
+    memset(&serv_addr,0,sizeof(struct sockaddr_in));
+    
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = INADDR_ANY;
+    serv_addr.sin_port = htons(8080);  
+    
+    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(struct sockaddr_in)) != 0)
+    {
+        printf("bind failed: %s\r\n",strerror(errno));            
+        close(sockfd);
+        return false;
+    }
+    
+    if(listen(sockfd,1000)!=0)
+    {
+        printf("listen failed!\r\n");
+        close(sockfd);
+        return false;
+    }
+    
+    int bufSize=1000;
+    char buf[bufSize];
+        
+    const int max_poll_fds=1000;
+    struct pollfd poll_fds[max_poll_fds];
+    int poll_fds_size=1;
+    
+    poll_fds[0].fd=sockfd;
+    poll_fds[0].events=POLLIN;
+    
+    
+    while(true)
+    {
+        printf("before poll\r\n");
+        int result = poll(poll_fds,poll_fds_size,5000);
+        
+        if(result<0)
+        {
+            printf("poll failed\r\n");
+            close(sockfd);
+            return false;
+        }
+        if(result>0)
+        {
+            int new_socket=-1;
+            
+            for(int i=0;i<poll_fds_size;i++)
+            {
+                if(poll_fds[i].revents & POLLIN)
+                {
+                    if(poll_fds[i].fd==sockfd)
+                    {
+                        struct sockaddr_in address;
+                        socklen_t addrlen=sizeof(address);
+                        
+                        printf("before accept\r\n");
+                        if ((new_socket = accept(sockfd, (struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
+                        {
+                            printf("accept failed\r\n");
+                            close(sockfd);
+                            return false;
+                        }
+                      
+                        printf("-------accept fd: %d\r\n",new_socket);
+                        
+                        //inform user of socket number - used in send and receive commands
+                        printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));                                                     
+                    }
+                    else
+                    {
+                        int client_socket_fd=poll_fds[i].fd;
+                        
+                        printf("before recv\r\n");
+                        int numBytes = recv(client_socket_fd,buf,bufSize-1,0);
+                        
+                        if(numBytes<0)
+                        {
+                            printf("recv failed\r\n");
+                            return false;
+                        }
+                        
+                        if(numBytes==0)
+                        {
+                            close(client_socket_fd);
+                            poll_fds[i].fd=-1;
+                        }
+                        else
+                        {
+                            buf[numBytes]=0;
+                            
+                            printf("[ %s ]\r\n",buf);
+                            
+                            
+                            char response[bufSize];
+                            
+                            getResponse(buf,response);
+                            
+                            
+                            if(send(client_socket_fd,response,strlen(response),0)!=(ssize_t)strlen(response))
+                            {
+                                printf("send failed\r\n");
+                                return false;
+                            }
+                        }                                                
+                    }
+                }
+            }
+            
+            if(new_socket>0)
+            {
+                for (int i = 0; i < max_poll_fds; i++) 
+                {
+                    if( poll_fds[i].fd < 0)
+                    {
+                        poll_fds[i].fd=new_socket;
+                        poll_fds[i].events=POLLIN;
+                        if(i>poll_fds_size)
+                        {
+                            poll_fds_size=i+1;
+                        }                        
+                        break;
+                    }
+                }                
             }
         }
     }

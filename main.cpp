@@ -78,7 +78,8 @@ int main()
 	//wget();
 	//test_smart_pointers();
 	//http_server();
-	http_server_select();
+	//http_server_select();
+	http_server_poll();
 
 	cout <<"main exit"<<endl;
 	return 0;
