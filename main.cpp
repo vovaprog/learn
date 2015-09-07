@@ -12,6 +12,7 @@
 #include "http_server.h"
 #include "shared_memory.h"
 #include "constructor_exception.h"
+#include "systemv_semaphores.h"
 
 using namespace std;
 
@@ -86,7 +87,8 @@ int main()
 		//sharedMemoryCreate();
 		//sharedMemoryWrite();
 		//sharedMemoryRead();
-		testConstructorException();
+		//testConstructorException();
+		learnProcessSemaphores();
 
 		cout <<"main exit"<<endl;
 		return 0;
