@@ -74,12 +74,12 @@ int main()
 
 	//learn3();
 	//learn_signals();
-	//learn_system();
+	learn_system();
 	//wget();
 	//test_smart_pointers();
 	//http_server();
 	//http_server_select();
-	http_server_poll();
+	//http_server_poll();
 
 	cout <<"main exit"<<endl;
 	return 0;

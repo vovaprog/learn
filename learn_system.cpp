@@ -3,6 +3,10 @@
 #include <iostream>
 #include <unistd.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <linux/limits.h>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -61,7 +65,7 @@ void learn_system1()
             buf[bytesRead]=0;
             if(bytesRead!=0)
             {                
-                printf(buf);
+                printf("%s\n",buf);
                 //fputs(buf,stdout);
                 fflush(stdout);
             }
@@ -87,8 +91,42 @@ void learn_system1()
     }
 }
 
+void learn_named_pipe()
+{
+    printf("pipe buf: %d\n",(int)PIPE_BUF);
+    
+    if(mkfifo("./mypipe1",0700)!=0)
+    {
+        printf("mkfifo failed\n");
+        return;
+    }
+    
+    int fifo_fd=open("./mypipe1",O_WRONLY);
+    
+    if(fifo_fd<0)
+    {
+        printf("open failed\n");
+        return;
+    }
+    
+    char c='!';
+    
+    for(int i=0;i<100000;i++)
+    {
+        fflush(stdout);
+        if(write(fifo_fd,&c,1)!=1)
+        {
+            printf("write failed\n");
+            return;
+        }
+        printf("%d ",i);
+        fflush(stdout);
+    }    
+}
 
 void learn_system()
 {
-    learn_system1();
+    //learn_system1();
+    
+    learn_named_pipe();
 }
