@@ -11,6 +11,7 @@
 #include "smart_pointers.h"
 #include "http_server.h"
 #include "shared_memory.h"
+#include "constructor_exception.h"
 
 using namespace std;
 
@@ -71,21 +72,29 @@ void learn3()
 
 int main()
 {
-	cout <<"main enter"<<endl;
+	try{
+		cout <<"main enter"<<endl;
 
-	//learn3();
-	//learn_signals();
-	//learn_system();
-	//wget();
-	//test_smart_pointers();
-	//http_server();
-	//http_server_select();
-	//http_server_poll();
-	//sharedMemoryCreate();
-	//sharedMemoryWrite();
-	sharedMemoryRead();
+		//learn3();
+		//learn_signals();
+		//learn_system();
+		//wget();
+		//test_smart_pointers();
+		//http_server();
+		//http_server_select();
+		//http_server_poll();
+		//sharedMemoryCreate();
+		//sharedMemoryWrite();
+		//sharedMemoryRead();
+		testConstructorException();
 
-	cout <<"main exit"<<endl;
-	return 0;
+		cout <<"main exit"<<endl;
+		return 0;
+	}catch(string s){
+		fflush(stdout);
+		throw;
+		//cout << "unhandled exception: "<<s<<endl;
+		//return -1;
+	}
 }
 

@@ -52,7 +52,7 @@ void* sharedMemoryCreate()
     
     void *memory=shmat(shm_id,0,0);
     
-    if((int)memory==-1)
+    if(memory==(void*)-1)
     {
         printf("shmat failed: %s\r\n",strerror(errno));
         return NULL;    
