@@ -10,6 +10,7 @@
 #include "wget.h"
 #include "smart_pointers.h"
 #include "http_server.h"
+#include "shared_memory.h"
 
 using namespace std;
 
@@ -74,12 +75,15 @@ int main()
 
 	//learn3();
 	//learn_signals();
-	learn_system();
+	//learn_system();
 	//wget();
 	//test_smart_pointers();
 	//http_server();
 	//http_server_select();
 	//http_server_poll();
+	//sharedMemoryCreate();
+	//sharedMemoryWrite();
+	sharedMemoryRead();
 
 	cout <<"main exit"<<endl;
 	return 0;
