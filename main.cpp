@@ -91,7 +91,8 @@ int main()
 		//testConstructorException();
 		//learnProcessSemaphores();
 		//learnPosixSemaphores();
-		learnMemoryMap();
+		//learnMemoryMap();
+        learnPosixSharedMemory();
 
 		cout <<"main exit"<<endl;
 		return 0;
