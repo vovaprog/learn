@@ -13,7 +13,6 @@
 #include "shared_memory.h"
 #include "constructor_exception.h"
 #include "systemv_semaphores.h"
-#include "posix_semaphores.h"
 #include "learn1.h"
 
 using namespace std;
