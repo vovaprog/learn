@@ -7,3 +7,6 @@ void learnMemoryMap();
 void learnPosixSharedMemory();
 
 void learnMessageQueue();
+
+void learnPriorityQueue();
+

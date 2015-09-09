@@ -15,6 +15,12 @@ public:
 		weight=33.0;
 	}
 
+	Spaceship(const string &name,double weight):Body(name)	
+	{
+        this->weight=weight;        
+		cout <<"Spaceship +constructor "<<name<<endl;		
+	}
+
 	Spaceship(const Spaceship& b)
 	{
 		cout <<"Spaceship copy +constructor"<<endl;
@@ -39,4 +45,11 @@ public:
 	{
 		return "Spaceship "+name+" "+to_string(weight);
 	}
+    
+template<typename charT, typename traits>    
+friend std::basic_ostream<charT,traits> &
+operator<< (std::basic_ostream<charT,traits> &lhs, Spaceship &rhs) {
+    return lhs << rhs.toString();
+} 
+    
 };

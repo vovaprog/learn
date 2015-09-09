@@ -43,10 +43,26 @@ public:
 		return *this;
 	}
 
+    bool operator<(const Body &b) const
+    {
+        return this->name > b.name;
+    }
+
 	virtual string toString()
 	{
 		return "body "+name+" "+to_string(weight);
 	}
+    
+    operator std::string()
+    {
+        return name;
+    }
+    
+template<typename charT, typename traits>    
+friend std::basic_ostream<charT,traits> &
+operator<< (std::basic_ostream<charT,traits> &lhs, Body &rhs) {
+    return lhs << rhs.toString();
+} 
 
 };
 
