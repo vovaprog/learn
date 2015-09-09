@@ -5,3 +5,5 @@ void learnPosixSemaphores();
 void learnMemoryMap();
 
 void learnPosixSharedMemory();
+
+void learnMessageQueue();

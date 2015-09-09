@@ -92,7 +92,8 @@ int main()
 		//learnProcessSemaphores();
 		//learnPosixSemaphores();
 		//learnMemoryMap();
-        learnPosixSharedMemory();
+        //learnPosixSharedMemory();
+        learnMessageQueue();
 
 		cout <<"main exit"<<endl;
 		return 0;
