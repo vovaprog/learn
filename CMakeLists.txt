@@ -7,7 +7,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -O2 -Wall -march=native")
 
 add_executable(learn1 main.cpp learn_signals.cpp learn_system.cpp wget.c smart_pointers.cpp http_server.cpp 
 shared_memory.cpp constructor_exception.cpp systemv_semaphores.cpp posix_semaphores.cpp memory_map.cpp posix_memory_map.cpp message_queue.cpp
-learn_priority_queue.cpp learn_resources.cpp resource_file.o)
+learn_priority_queue.cpp learn_resources.cpp array_container.cpp learn_set.cpp resource_file.o)
 
 add_custom_command(OUTPUT resource_file.o COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} &&  ld -r -b binary -o ./build/resource_file.o resource_file.txt DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/resource_file.txt)
 

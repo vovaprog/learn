@@ -11,3 +11,8 @@ void learnMessageQueue();
 void learnPriorityQueue();
 
 void learnResources();
+
+void learnArrayContainer();
+
+void learnSet();
+
