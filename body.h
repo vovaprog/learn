@@ -6,10 +6,11 @@
 using namespace std;
 
 class Body{
-protected:
+//protected:
+public:
 	double weight;
 	string name;
-public:
+
 	Body()
 	{
 		cout <<"Body +constructor"<<endl;
@@ -45,24 +46,24 @@ public:
 
     bool operator<(const Body &b) const
     {
-        return this->name > b.name;
+        //return this->name > b.name;
+        return this->weight < b.weight;
     }
 
-	virtual string toString()
+	virtual string toString() const
 	{
 		return "body "+name+" "+to_string(weight);
 	}
     
-    operator std::string()
+    /*operator std::string()
     {
         return name;
-    }
+    }*/
     
-template<typename charT, typename traits>    
-friend std::basic_ostream<charT,traits> &
-operator<< (std::basic_ostream<charT,traits> &lhs, Body &rhs) {
-    return lhs << rhs.toString();
-} 
-
+    template<typename charT, typename traits>    
+    friend std::basic_ostream<charT,traits> &
+    operator<< (std::basic_ostream<charT,traits> &lhs, const Body &rhs) {
+        return lhs << rhs.toString();
+    } 
 };
 

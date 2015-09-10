@@ -41,15 +41,14 @@ public:
 		return *this;
 	}
 
-	virtual string toString()
+	virtual string toString() const
 	{
 		return "Spaceship "+name+" "+to_string(weight);
 	}
     
-template<typename charT, typename traits>    
-friend std::basic_ostream<charT,traits> &
-operator<< (std::basic_ostream<charT,traits> &lhs, Spaceship &rhs) {
-    return lhs << rhs.toString();
-} 
-    
+    template<typename charT, typename traits>    
+    friend std::basic_ostream<charT,traits> &
+    operator<< (std::basic_ostream<charT,traits> &lhs, const Spaceship &rhs) {
+        return lhs << rhs.toString();
+    }
 };

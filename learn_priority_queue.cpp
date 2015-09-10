@@ -1,5 +1,6 @@
 #include <queue>
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
@@ -11,15 +12,27 @@ void printQueue(T &q)
     cout <<"---------------------"<<endl;
     while(!q.empty())
     {
-        Spaceship ss=q.top();
-        cout <<"[[["<<ss<<"]]]"<<" ";        
+        cout <<"[[["<<q.top()<<"]]]"<<" ";        
         q.pop();
     }
     cout <<endl;
     cout <<"---------------------"<<endl;
 }
 
-/*void learnPriorityQueue1()
+template<class T>
+void printQueue3(T &q)
+{
+    cout <<"---------------------"<<endl;
+    while(!q.empty())
+    {
+        cout <<"[[["<<*q.top()<<"]]]"<<" ";        
+        q.pop();
+    }
+    cout <<endl;
+    cout <<"---------------------"<<endl;
+}
+
+void learnPriorityQueue1()
 {
     priority_queue<int> q;
     
@@ -41,7 +54,7 @@ void printQueue(T &q)
     }
     
     printQueue(q2);    
-}*/
+}
 
 void learnPriorityQueue2()
 {
@@ -55,8 +68,59 @@ void learnPriorityQueue2()
     printQueue(q);    
 }
 
+template<class T>
+bool compareTemplateFunction(T &s0,T &s1)
+{
+    return (*s0).weight > (*s1).weight;
+}
+
+bool compareFunction(unique_ptr<Spaceship> &s0,unique_ptr<Spaceship> &s1)
+{
+    return (*s0).weight < (*s1).weight;
+}
+
+void learnPriorityQueue3()
+{
+    {
+        //compare lambda
+        auto comp = []( unique_ptr<Spaceship> &s0, unique_ptr<Spaceship> &s1 ) { return (*s0).weight > (*s1).weight; };    
+        priority_queue<unique_ptr<Spaceship>,vector<unique_ptr<Spaceship>>,decltype(comp)> q(comp);
+
+        q.push(unique_ptr<Spaceship>(new Spaceship("mars one",3)));
+        q.push(unique_ptr<Spaceship>(new Spaceship("juno",5)));
+        q.push(unique_ptr<Spaceship>(new Spaceship("cassini",1)));
+        
+        printQueue3(q);
+    }
+
+    {
+        //compare template function
+        priority_queue<unique_ptr<Spaceship>,vector<unique_ptr<Spaceship>>,function<bool(unique_ptr<Spaceship>&,unique_ptr<Spaceship>&)>> q(compareTemplateFunction<unique_ptr<Spaceship>>);
+        
+        q.push(unique_ptr<Spaceship>(new Spaceship("mars one",3)));
+        q.push(unique_ptr<Spaceship>(new Spaceship("juno",5)));
+        q.push(unique_ptr<Spaceship>(new Spaceship("cassini",1)));
+        
+        printQueue3(q);
+    }
+        
+    {
+        //compare function
+        priority_queue<unique_ptr<Spaceship>,vector<unique_ptr<Spaceship>>,function<bool(unique_ptr<Spaceship>&,unique_ptr<Spaceship>&)>> q(compareFunction);
+
+        q.push(unique_ptr<Spaceship>(new Spaceship("mars one",3)));
+        q.push(unique_ptr<Spaceship>(new Spaceship("juno",5)));
+        q.push(unique_ptr<Spaceship>(new Spaceship("cassini",1)));
+        
+        printQueue3(q);
+    }
+}
+
 void learnPriorityQueue()
 {
     //learnPriorityQueue1();
-    learnPriorityQueue2();
+    //learnPriorityQueue2();
+    learnPriorityQueue3();
 }
+
+
