@@ -10,3 +10,4 @@ void learnMessageQueue();
 
 void learnPriorityQueue();
 
+void learnResources();

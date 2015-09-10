@@ -94,7 +94,8 @@ int main()
 		//learnMemoryMap();
         //learnPosixSharedMemory();
         //learnMessageQueue();
-        learnPriorityQueue();
+        //learnPriorityQueue();
+        learnResources();
 
 		cout <<"main exit"<<endl;
 		return 0;
