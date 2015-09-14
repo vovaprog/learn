@@ -97,8 +97,9 @@ int main()
         //learnPriorityQueue();
         //learnResources();
         //learnArrayContainer();
-        learnSet();
-
+        //learnSet();
+        learnPosixThreads();
+        
 		cout <<"main exit"<<endl;
 		return 0;
 	}catch(string s){
