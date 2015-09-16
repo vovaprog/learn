@@ -15,6 +15,10 @@ struct MyThreadResult
     char resultChar;
 };
 
+int thread_flag=0;  
+pthread_cond_t thread_flag_cv;  
+pthread_mutex_t thread_flag_mutex;  
+
 static pthread_key_t thread_key;
 
 void cleanup_function2 (void* p)  
@@ -47,9 +51,26 @@ void *threadEntry(void *threadParams)
     
     delete params;
     
+    
+    
+             
+    
+    
+    cout <<"waiting exit flag"<<endl;
+    
+    pthread_mutex_lock (&thread_flag_mutex);  
+    while (thread_flag==0)
+    {
+        cout <<"!#!#"<<endl;
+        pthread_cond_wait (&thread_flag_cv, &thread_flag_mutex);
+    }
+    pthread_mutex_unlock (&thread_flag_mutex);
+    
+    cout <<"exiting thread"<<endl<<flush;
+    
     return res;
     
-    pthread_cleanup_pop(1);         
+    pthread_cleanup_pop(1);
 }
 
 void cleanup_function (void*  p)  
@@ -57,7 +78,26 @@ void cleanup_function (void*  p)
    cout <<"cleanup function"<<(long long int)p<<endl;  
 }  
 
- 
+void set_cv(int cv_value)
+{
+    pthread_mutex_lock (&thread_flag_mutex);  
+    
+    thread_flag  =  cv_value;  
+    
+    //pthread_cond_signal  (&thread_flag_cv);
+    pthread_cond_broadcast  (&thread_flag_cv);
+    
+    pthread_mutex_unlock  (&thread_flag_mutex);  
+}      
+
+void init_cv ()  
+{   
+   pthread_mutex_init (&thread_flag_mutex, NULL);  
+   pthread_cond_init (&thread_flag_cv, NULL);  
+    
+   thread_flag = 0;  
+}  
+
 
 void learnPosixThreads()
 {
@@ -65,6 +105,8 @@ void learnPosixThreads()
     
     pthread_key_create (&thread_key, cleanup_function);
     
+    
+    init_cv();
     
     
     pthread_mutex_t mutex;    
@@ -90,6 +132,10 @@ void learnPosixThreads()
     
     //pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, NULL); 
     
+    sleep(5);
+    
+    set_cv(1);    
+    
     for (i = 0; i < 5; ++i)  
     {
         MyThreadResult *result;
@@ -97,7 +143,7 @@ void learnPosixThreads()
         cout <<" "<<result->resultChar;
     }
     cout <<endl;
-    
+        
     //pthread_exit(NULL);
 }
 
