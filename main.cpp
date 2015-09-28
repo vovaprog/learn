@@ -72,6 +72,14 @@ void learn3()
 	cout <<">>>>>>>>>>>>>"<<endl;
 }
 
+void learnNew()
+{
+    Body *b = new Body;
+    cout << b->toString()<<endl;
+    
+    Body bs[10];
+}
+
 int main()
 {
 	try{
@@ -98,8 +106,9 @@ int main()
         //learnResources();
         //learnArrayContainer();
         //learnSet();
-        learnPosixThreads();
-        
+        //learnPosixThreads();
+        learnNew();
+                
 		cout <<"main exit"<<endl;
 		return 0;
 	}catch(string s){
