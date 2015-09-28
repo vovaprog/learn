@@ -92,7 +92,7 @@ int main()
 		//test_smart_pointers();
 		//http_server();
 		//http_server_select();
-		//http_server_poll();
+		http_server_poll();
 		//sharedMemoryCreate();
 		//sharedMemoryWrite();
 		//sharedMemoryRead();
@@ -107,7 +107,7 @@ int main()
         //learnArrayContainer();
         //learnSet();
         //learnPosixThreads();
-        learnNew();
+        //learnNew();
                 
 		cout <<"main exit"<<endl;
 		return 0;

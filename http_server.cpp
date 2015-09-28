@@ -11,6 +11,7 @@
 #include <signal.h>
 #include <poll.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 /*
 Вызовы socket на сервере:
@@ -29,6 +30,18 @@ int sockfd=-1;
 void sig_int_handler(int i)
 { 
     printf("sig int handler\r\n");
+    
+    if(sockfd>0)
+    {
+        close(sockfd);
+    }
+    
+    exit(-1);
+}
+
+void sig_term_handler(int i)
+{ 
+    printf("sig term handler\r\n");
     
     if(sockfd>0)
     {
@@ -164,7 +177,7 @@ bool http_server()
 
 bool http_server_select()
 {
-    signal(SIGINT,sig_int_handler);
+    signal(SIGINT,sig_int_handler);    
     
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     
@@ -339,10 +352,27 @@ bool http_server_select()
     }
 }
 
+void createPidFile()
+{
+    int fd;
+    const int BUF_SIZE=1000;
+    char buf[BUF_SIZE];
+     
+    snprintf(buf, BUF_SIZE, "%ld\n", (long) getpid());
+ 
+    fd = open("/var/run/learn1.pid", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);       
+    
+    write(fd,buf,strlen(buf));
+    close(fd);
+}
 
 bool http_server_poll()
 {
     signal(SIGINT,sig_int_handler);
+    signal(SIGTERM,sig_term_handler);
+    
+    createPidFile();
+    
     
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     
