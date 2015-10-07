@@ -1,3 +1,6 @@
+//http://habrahabr.ru/post/261161/
+//https://gist.github.com/pavel-odintsov/15b7435e484134650f20
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
