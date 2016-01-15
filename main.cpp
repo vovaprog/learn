@@ -109,7 +109,7 @@ int main()
         //learnPosixThreads();
         //learnNew();
         //habr_packet_capture_main();
-        learn_classes();
+        learn_classes1();
                 
 		cout <<"main exit"<<endl;
 		return 0;

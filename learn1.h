@@ -20,3 +20,4 @@ void learnPosixThreads();
 
 int habr_packet_capture_main();
 
+void learn_classes1();
