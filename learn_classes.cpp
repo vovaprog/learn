@@ -29,9 +29,29 @@ public:
     }
 };
 
+class TestDest{
+public:
+    TestDest():counterLocal(++counterGlobal)
+    {
+        cout <<"TestDest ctr "<<counterLocal<<endl;
+    }
+    ~TestDest()
+    {
+        cout <<"TestDest ~~~ "<<counterLocal<<endl;        
+    }
+public:    
+    int counterLocal;
+    static int counterGlobal;
+};
+
+int TestDest::counterGlobal = 0;
+
 void learn_classes1()
 {
     //Base b;
-    Child1 b;
-    b.print1();
+    //Child1 b;
+    //b.print1();
+    
+    TestDest *p=new TestDest[5];
+    delete[] p;    
 }
