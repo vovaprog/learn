@@ -191,7 +191,6 @@ protected:
     char *p = nullptr;
 };
 
-
 void learn_classes1()
 {
     //Base b;
