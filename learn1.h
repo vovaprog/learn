@@ -25,3 +25,7 @@ void learn_classes1();
 void learn_casts();
 
 void learn_rtti();
+
+void learn_map();
+
+void learn_unordered_map();

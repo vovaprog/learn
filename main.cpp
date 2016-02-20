@@ -111,7 +111,9 @@ int main()
         //habr_packet_capture_main();
         //learn_classes1();
         //learn_casts();
-        learn_rtti();
+        //learn_rtti();
+        learn_map();
+        learn_unordered_map();
                 
 		cout <<"main exit"<<endl;
 		return 0;
