@@ -1,7 +1,9 @@
-#include <iostream>
+/*#include <iostream>
 #include <functional>
 
-#include <boost/signals2.hpp>
+#include <boost/signals2.hpp>*/
+
+#include <learn_signals_include.h>
 
 
 using namespace std;
