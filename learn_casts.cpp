@@ -22,7 +22,8 @@ public:
 class Bird 
 {
 public:
-    int voice;    
+    int voice;
+    operator char*(){return const_cast<char*>("Birdy");}
 };
 
 
@@ -52,16 +53,58 @@ void learn_casts()
     cout << intValue<<endl;
    
     {
+        Animal a;
         Dog d;
         Cat c;
         Bird b;
            
-        //d=static_cast<Dog>(c);
+        a=static_cast<Animal>(c);
         //d=reinterpret_cast<Dog>(c);
         //b = static_cast<Bird>(d);
         b = d;
         
         cout <<d<<endl;
+    }
+
+    {
+        Animal a;
+        Dog d;
+        Cat c;
+        Bird b;
+
+        Animal *pa = &a;
+        const Animal *pa_const = &a;
+        Dog *pd;
+        //const Dog *pd_const = &d;
+        Cat *pc = &c;
+        Bird *pb;
+
+        pd=static_cast<Dog*>(pa);
+        //pd=static_cast<Dog*>(pc);
+        pd=reinterpret_cast<Dog*>(pc);
+        
+        //intptr_t intVal = static_cast<intptr_t>(pd);
+        //int intVal = reinterpret_cast<int>(pd);
+        intptr_t intVal = (intptr_t)pd;        
+        
+        cout <<"pointer 1: "<<*pd<<endl;
+        
+        pd=const_cast<Dog*>(static_cast<const Dog*>(pa_const));        
+        cout <<"pointer 2: "<<*pd<<endl;
+        
+        long long longlongVal = 33;
+        int iVal = 34;
+        unsigned int uiVal = 45;
+        float floatVal = 33.0;
+        
+        //iVal = reinterpret_cast<int>(longlongVal); //error
+        iVal = static_cast<int>(longlongVal);
+        //longlongVal = reinterpret_cast<long long int>(iVal);
+        //iVal = (int)llVal;
+        //floatVal = reinterpret_cast<float>(iVal);
+        //uiVal = reinterpret_cast<unsigned int>(iVal);
+        
+        cout <<iVal<<endl;
     }
     
     {
@@ -87,6 +130,7 @@ void learn_casts()
         
 
         d = dynamic_cast<Dog*>(a);
+        b = dynamic_cast<Bird*>(a);
         
         if(d!=nullptr)
         {
@@ -97,6 +141,14 @@ void learn_casts()
             cout <<"null\n";    
         }
         
+        if(b!=nullptr)
+        {
+            cout <<*b<<endl;
+        }
+        else
+        {
+            cout <<"bird null\n";    
+        }        
         
         Animal &aref = cat;
         

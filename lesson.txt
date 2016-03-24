@@ -1,5 +1,9 @@
 + Список контейнеров STL
-priority_queue
++ priority_queue
++ Алгоритмическая сложность контейнеров STL
+Преобразования типов
+RTTI
+
 
 //============================================================================
 Список контейнеров STL
@@ -55,3 +59,93 @@ Heap property
     Последний слой заполняется слева направо.
     
     
+//============================================================================    
+Алгоритмическая сложность контейнеров STL    
+//============================================================================
+
+http://www.cs.northwestern.edu/~riesbeck/programming/c++/stl-summary.html    
+
+
+//============================================================================
+Преобразования типов
+//============================================================================
+
+dynamic_cast
+Оператор dynamic_cast может быть применён к указателям или ссылкам.
+Обязательно в классе источнике должна быть virtual функция!!!
+НЕ обязательно источник и target должны быть в одной иерархии наследования.
+В случае если осуществляется преобразование указателя к типу данных, который не является фактическим типом объекта, 
+в результате преобразования будет получен нулевой указатель. 
+При работе со ссылками при невозможности преобразования типа будет сгенерировано исключение std::bad_cast.
+Механизм динамической идентификации типа данных доступен только для полиморфных 
+классов (т.е. классов, содержащих хотя бы одну виртуальную функцию-член)
+
+
+c style cast
+http://en.cppreference.com/w/cpp/language/explicit_cast
+http://stackoverflow.com/questions/13960939/reinterpret-cast-vs-c-style-cast
+
+A C-style cast is equivalent to the first of the following that succeeds:
+    a const_cast
+    a static_cast
+    a static_cast followed by const_cast
+    a reinterpret_cast
+    a reinterpret_cast followed by const_cast
+
+When the C-style cast expression is encountered, the compiler attempts to interpret it as the following cast expressions, in this order:
+a) const_cast<new_type>(expression);
+b) static_cast<new_type>(expression), with extensions: pointer or reference to a derived class is additionally allowed to be cast to pointer or reference to unambiguous base class (and vice versa) even if the base class is inaccessible (that is, this cast ignores the private inheritance specifier). Same applies to casting pointer to member to pointer to member of unambigous non-virtual base;
+c) static_cast (with extensions) followed by const_cast;
+d) reinterpret_cast<new_type>(expression);
+e) reinterpret_cast followed by const_cast.
+The first choice that satisfies the requirements of the respective cast operator is selected, even if it cannot be compiled (see example). 
+If the cast can be interpreted in more than one way as static_cast followed by a const_cast, it cannot be compiled.
+    
+    
+    
+static_cast
+http://en.cppreference.com/w/cpp/language/static_cast
+The type parameter must be a data type for which there is a known method for converting object to, whether this be a builtin or through a casting function.
+All types of conversions that are well-defined and allowed by the compiler are done using static_cast.
+The static_cast operator can be used for operations such as
+
+    Converting a pointer of a base class to a pointer of a derived class,
+    Convert numeric data types such as enums to ints or ints to floats.
+
+However, static_cast conversions are not necessarily safe as no run-time type check is done which can cause casting between incompatible data types, 
+for example pointers. 
+However, this is checked at compile time to prevent casting obvious incompatibles. 
+Also, static_cast between pointer of a virtual base to pointer of derived is not allowed, because of the object layout model.
+Если это встроенные типы, то будут использованы встроенные в C++ правила их приведения. 
+Если это типы, определенные программистом, то будут использованы правила приведения, определенные программистом.
+возможно такое приведение: static_cast<Derived*>(pBase), даже если pBase не указывает на Derived, но после этого поведение программы не определено.
+Обычно static_cast используется, когда требуется преобразовать числовые типы данных, например перечисления в целые числа или целые числа в числа с плавающей запятой, 
+и при полной уверенности в том, какие типы данных используются в преобразовании.
+
+ If new_type is a pointer or reference to some class D and the type of expression is a pointer or reference to its non-virtual base B, 
+ static_cast performs a downcast. Such static_cast makes no runtime checks to ensure that the object's runtime type is actually D
+
+static_cast можно от родителя делать сына. Одного сына преобразовать в другого нельзя. 
+static_cast нельзя pointer превращать в int и наоборот.
+
+int intVal = reinterpret_cast<int>(pointer); error: cast from ‘Dog*’ to ‘int’ loses precision
+int intVal = (int)pd; error: cast from ‘Dog*’ to ‘int’ loses precision
+
+reinterpret_cast НЕ может убрать const.
+
+        //iVal = reinterpret_cast<int>(longlongVal); //error
+        iVal = static_cast<int>(longlongVal);        //Ok
+        //longlongVal = reinterpret_cast<long long int>(iVal); //error
+        //floatVal = reinterpret_cast<float>(iVal); //error
+        //uiVal = reinterpret_cast<unsigned int>(iVal); //error
+
+
+Резюме:
+
+   * static_cast - допустимые приведения времени компиляции. Можно неправильно преобразовать parent в неправильного child.
+   * dynamic_cast - source только указатель или ссылка на тип с virtual функциями. 
+НЕ обязательно источник и target должны быть в одной иерархии наследования.
+Неправильное преобразование указатель - nullptr, ссылка - exception std::bad_cast.
+   * reinterpret_cast - любые преобразования. НЕ может убирать const. Не может loses precision. Не преобразует значения разных базовых типов.
+   * const_cast - убирает const.
+
