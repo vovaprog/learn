@@ -1,5 +1,6 @@
 #include <iostream>    // cout
 #include <typeinfo>    // for 'typeid'
+#include <typeindex>
 
 using namespace std;
 
@@ -9,6 +10,12 @@ public:
 };
 
 class Employee : public Person {
+};
+
+class NoVirt
+{
+public:    
+    int x;
 };
 
 int learn_rtti() 
@@ -34,8 +41,23 @@ int learn_rtti()
        cout <<"catch ..."<<endl;
    }
 
-   Person& pRef = *p; // Undefined behavior: dereferencing null
-   typeid(pRef);      // does not meet requirements to throw std::bad_typeid
+   //Person& pRef = *p; // Undefined behavior: dereferencing null
+   //cout <<typeid(pRef).name()<<endl;      // does not meet requirements to throw std::bad_typeid
                       // because the expression for typeid is not the result
                       // of applying the unary * operator
+                      
+    NoVirt nv;
+    cout <<typeid(nv).name()<<endl;
+    
+    int intVal=33;
+    cout <<typeid(intVal).name()<<endl;
+    
+    float floatVal=33.3;
+    cout <<typeid(floatVal).name()<<endl;
+    
+    
+    std::cout << std::type_index(typeid(employee)).name() <<" "<<std::type_index(typeid(employee)).hash_code()<<" "
+        << typeid(employee).hash_code() <<std::endl;
+    cout <<"size_t: "<<sizeof(size_t)<<endl;
+    
 }

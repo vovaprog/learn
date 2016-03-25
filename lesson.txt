@@ -1,8 +1,10 @@
 + Список контейнеров STL
 + priority_queue
 + Алгоритмическая сложность контейнеров STL
-Преобразования типов
-RTTI
++ Преобразования типов
++ RTTI
++ size_t
+deleted keyword
 
 
 //============================================================================
@@ -148,4 +150,41 @@ reinterpret_cast НЕ может убрать const.
 Неправильное преобразование указатель - nullptr, ссылка - exception std::bad_cast.
    * reinterpret_cast - любые преобразования. НЕ может убирать const. Не может loses precision. Не преобразует значения разных базовых типов.
    * const_cast - убирает const.
+
+   
+//============================================================================
+RTTI
+//============================================================================
+
+typeid()
+The header <typeinfo> must be included before using typeid.
+Можно использовать на любых типах - полиморфных, обычных, базовых.
+Если тип не полиморфный - то возвращается static информация во время компиляции.
+Полиморфный typeid можно использовать на указателях и ссылках.
+
+Возвращает std::type_info
+operator==
+operator!=
+hash_code
+name
+before       (checks whether the referred type precedes referred type of another type_index object in the implementation defined order, i.e. orders the referred types)
+
+std::type_index (C++11)
+The type_index class is a wrapper class around a std::type_info object, that can be used as index in associative and unordered associative containers.
+operator==
+operator!=
+operator<
+operator<=
+operator>
+operator>=
+hash_code
+name
+
+
+//============================================================================
+size_t
+//============================================================================
+It is a type able to represent the size of any object in bytes
+Ubuntu64 g++ sizeof(size_t)==8
+
 
