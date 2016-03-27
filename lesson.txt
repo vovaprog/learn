@@ -4,7 +4,9 @@
 + Преобразования типов
 + RTTI
 + size_t
-deleted keyword
++ default, delete functions
+special member functions
+function call resolution
 
 
 //============================================================================
@@ -186,5 +188,32 @@ size_t
 //============================================================================
 It is a type able to represent the size of any object in bytes
 Ubuntu64 g++ sizeof(size_t)==8
+
+
+//============================================================================
+default, delete functions
+//============================================================================
+
+You can delete special member functions as well as normal member functions and non-member functions to prevent them from being defined or called.
+
+deleted functions still participate in overload resolution. 
+The function call resolves to the more-specific—but deleted—function and causes a compiler error.
+
+Function that can be called only with double argument:
+template < typename T >
+void call_with_true_double_only(T) =delete; //prevent call through type promotion of any T to double from succeeding.
+void call_with_true_double_only(double param) { return; } // also define for const double, double&, etc. as needed.
+
+
+//============================================================================
+special member functions
+//============================================================================
+C++ has six kinds of special member functions:
+*Default constructors
+*Destructors
+*Copy constructors
+*Copy assignment operators
+*Move constructors
+*Move assignment operators
 
 
