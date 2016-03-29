@@ -7,7 +7,7 @@
 + default, delete functions
 special member functions
 function call resolution
-
+move semantics
 
 //============================================================================
 Список контейнеров STL
@@ -208,12 +208,29 @@ void call_with_true_double_only(double param) { return; } // also define for con
 //============================================================================
 special member functions
 //============================================================================
+Special member functions in C++ are functions which the compiler will automatically generate if they are used, but not declared explicitly by the programmer.
+
 C++ has six kinds of special member functions:
-*Default constructors
+*Default constructors   ( if no other constructor is explicitly declared )
 *Destructors
-*Copy constructors
-*Copy assignment operators
-*Move constructors
-*Move assignment operators
+*Copy constructors          (if no move constructor and move assignment operator are explicitly declared. If a destructor is declared generation of a copy constructor is deprecated)
+*Copy assignment operators  (if no move constructor and move assignment operator are explicitly declared. If a destructor is declared generation of a copy assignment operator is deprecated.) 
+*Move constructors          (if no copy constructor, copy assignment operator, move assignment operator and destructor are explicitly declared.)
+*Move assignment operators  (if no copy constructor, copy assignment operator, move constructor and destructor are explicitly declared.)
+
+Signatures:
+Default constructor 	MyClass();
+Copy constructor 	MyClass(const MyClass& other);
+Move constructor 	MyClass(MyClass&& other) noexcept;
+Copy assignment operator 	MyClass& operator=(const MyClass& other);
+Move assignment operator 	MyClass& operator=(MyClass&& other) noexcept;
+Destructor 	~MyClass();
+
+//============================================================================
+move semantics
+//============================================================================
+return value optimization
+return value optimization (RVO) is a compiler optimization that involves eliminating the temporary object created to hold a function's return value.
+https://en.wikipedia.org/wiki/Return_value_optimization
 
 
