@@ -7,9 +7,14 @@
 + default, delete functions
 + special member functions
 + move semantics
-function call resolution
++ function call resolution
 Copy-and-swap
 const pointer and pointer to const
+tcp/ip levels
+multimap/multiset
+posix functions
+socket functions
+unicode
 
 //============================================================================
 Список контейнеров STL
@@ -228,6 +233,7 @@ Copy assignment operator 	MyClass& operator=(const MyClass& other);
 Move assignment operator 	MyClass& operator=(MyClass&& other) noexcept;
 Destructor 	~MyClass();
 
+
 //============================================================================
 move semantics
 //============================================================================
@@ -250,4 +256,28 @@ The other two exceptions concern the copying of objects, and are called copy eli
 move semantics позволяет хранить в stl контейнерах некопируемые объекты.
 https://habrahabr.ru/post/174019/
 
+
+//============================================================================
+function call resolution
+//============================================================================
+
+Argument-dependent lookup
+http://en.cppreference.com/w/cpp/language/adl
+Argument-dependent lookup, also known as ADL, or Koenig lookup, 
+is the set of rules for looking up the unqualified function names in function-call expressions, 
+including implicit function calls to overloaded operators. 
+These function names are looked up in the namespaces of their arguments in addition to the scopes and namespaces 
+considered by the usual unqualified name lookup. 
+Argument-dependent lookup makes it possible to use operators defined in a different namespace.
+
+Template argument deduction
+http://en.cppreference.com/w/cpp/language/template_argument_deduction
+In order to instantiate a function template, every template argument must be known, but not every template argument has to be specified. 
+When possible, the compiler will deduce the missing template arguments from the function arguments.
+
+//============================================================================
+unicode
+//============================================================================
+
+character type sizes - look in small_progs/type_limits.cpp
 
