@@ -8,10 +8,12 @@
 + special member functions
 + move semantics
 + function call resolution
++ traits
++ multimap/multiset
++ priority_queue
 Copy-and-swap
 const pointer and pointer to const
 tcp/ip levels
-multimap/multiset
 posix functions
 socket functions
 unicode
@@ -275,9 +277,95 @@ http://en.cppreference.com/w/cpp/language/template_argument_deduction
 In order to instantiate a function template, every template argument must be known, but not every template argument has to be specified. 
 When possible, the compiler will deduce the missing template arguments from the function arguments.
 
+
 //============================================================================
 unicode
 //============================================================================
 
 character type sizes - look in small_progs/type_limits.cpp
+
+
+//============================================================================
+traits
+//============================================================================
+small_progs/type_limits.cpp
+
+https://erdani.com/publications/traits.html
+
+traits are important because they allow you to make compile-time decisions based on types, 
+much as you would make runtime decisions based on values.
+
+Traits rely on explicit template specialization to pull out type-related variations from code, and to wrap them under a uniform interface.
+
+A traits template is a template class, possibly explicitly specialized, 
+that provides a uniform symbolic interface over a coherent set of design choices that vary from one type to another.
+
+
+//============================================================================
+multimap multiset
+//============================================================================
+
+learn_algorithms/codeforces_archive/659b_multimap.cpp
+learn_algorithms/codeforces_archive/659b_multiset.cpp
+small_progs/learn_multimap_multiset.cpp
+
+multimap<string,string> mm;
+
+//insert
+mm.insert(make_pair("key1","val11"));
+mm.emplace("key1","val12");
+
+//iterate
+for(auto &p : mm)
+{
+	cout <<p.first<<" "<<p.second<<endl;	    	
+}
+cout <<mm.begin()->first<<endl;   
+
+
+//get elements by key (p is pair - first, second)
+auto p = mm.equal_range(key); 
+    
+for(auto it=p.first;it!=p.second;++it)
+{
+	cout <<it->second<<endl;	
+}
+
+//get number of found items:
+cout <<"number of items: "<<distance(p.first,p.second)<<endl;
+
+//erase
+int removedCount = mm.erase(key); //Return value Number of elements removed.
+auto p2 = mm.equal_range(key);
+mm.erase(p2.first,p2.second); //Return value  Iterator following the last removed element.
+auto p2 = mm.equal_range(key);
+mm.erase(p2.first); //Return value  Iterator following the last removed element.
+
+//number of elements with specific key:
+mm.count(key);
+
+//number of elements
+mm.size();
+
+
+//============================================================================
+priority_queue
+//============================================================================
+
+default container - class Container = vector<T>
+
+const_reference top() const;
+void pop();
+void push (const value_type& val);
+template <class... Args> void emplace (Args&&... args);
+
+    //=================== priority queue ==========================    
+    priority_queue<string> q;
+    q.push("hello");
+    q.emplace("world");
+    q.push("program");
+    cout <<q.top()<<" "<<q.top()<<q.size()<<endl;
+    q.pop();
+    cout <<q.top()<<" "<<q.top()<<q.size()<<endl;    
+    //=================== priority queue ==========================
 
