@@ -535,4 +535,18 @@ pthread_attr_destroy (&attr);
 
 Set thread to detached mode after creation: call pthread_detach
 
+A thread may be in one of three states with regard to thread cancellation.
+
+The thread may be asynchronously cancelable
+The thread may be canceled at any point in its execution.
+
+The thread may be synchronously cancelable
+The thread may be canceled, but not at just any point in its execution. Instead, cancellation requests are queued, and
+the thread is canceled only when it reaches specific points in its execution.
+
+A thread may be uncancelable
+Attempts to cancel the thread are quietly ignored.
+
+When initially created, a thread is synchronously cancelable.
+
 
