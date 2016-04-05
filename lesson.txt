@@ -13,12 +13,14 @@
 + priority_queue
 + const pointer and pointer to const
 + posix processes
-posix threads
-Copy-and-swap
++ posix threads
++ posix ipc
+sockets
+c++11 threads
 tcp/ip levels
-posix functions
-socket functions
 unicode
+Copy-and-swap
+
 
 //============================================================================
 Список контейнеров STL
@@ -556,5 +558,220 @@ Attempts to cancel the thread are quietly ignored.
 
 When initially created, a thread is synchronously cancelable.
 
+Функция для установки cancel state:
+pthread_setcancelstate (PTHREAD_CANCEL_DISABLE, NULL);
+
+
+Thread specific data:
+pthread_key_create
+pthread_getspecific
+pthread_setspecific
+
+Thread cleanup handlers - функции, которые вызываются при завершении потока.
+pthread_cleanup_push
+pthread_cleanup_pop
+
+
+Мютексы:
+pthread_mutex_t mutex;
+pthread_mutex_init (&mutex, NULL);
+pthread_mutex_lock (&job_queue_mutex);
+pthread_mutex_unlock (&job_queue_mutex);
+
+A simple type of deadlock may occur when the same thread attempts to lock a mutex twice in a row.
+Есть при типа поведения:
+* Locking a fast mutex (the default kind) will cause a deadlock to occur. 
+* Locking a recursive mutex does not cause a deadlock.
+* GNU/Linux will detect and flag a double lock on an error-checking mutex that
+would otherwise cause a deadlock.The second consecutive call to pthread_mutex_lock returns the failure code EDEADLK.
+
+By default, a GNU/Linux mutex is of the fast kind. Другие получаются так:
+pthread_mutexattr_t attr;
+pthread_mutex_t mutex;
+pthread_mutexattr_init (&attr);
+pthread_mutexattr_setkind_np (&attr, PTHREAD_MUTEX_ERRORCHECK_NP);
+pthread_mutex_init (&mutex, &attr);
+pthread_mutexattr_destroy (&attr);
+
+Nonblocking Mutex Tests:
+pthread_mutex_trylock
+
+
+Semaphores for Threads
+sem_init
+sem_post
+sem_wait
+
+Conditional variable
+1. The loop in thread_function locks the mutex and reads the flag value.
+2.  If the flag is set, it unlocks the mutex and executes the work function.
+3.  If the flag is not set, it atomically unlocks the mutex and waits on the condition variable.
+The critical feature here is in step 3, in which GNU/Linux allows you to unlock the
+mutex and wait on the condition variable atomically, without the possibility of
+another thread intervening.
+
+pthread_cond_init initializes a condition variable.
+pthread_cond_signal signals a condition variable. A single thread that is blocked on the condition variable will be unblocked. 
+pthread_cond_broadcast unblocks all threads that are blocked on the condition variable, instead of just one.
+pthread_cond_wait blocks the calling thread until the condition variable is signaled.
+
+Whenever your program performs an action that may change the sense of the condition you’re protecting with the condition variable, it should perform these steps: 
+1.  Lock the mutex accompanying the condition variable.
+2.  Take the action that may change the sense of the condition (in our example, set the flag).
+3.  Signal or broadcast the condition variable, depending on the desired behavior.
+4.  Unlock the mutex accompanying the condition variable.
+
+Wait for conditional variable:
+pthread_mutex_lock (&thread_flag_mutex);
+while (!thread_flag)
+{
+    pthread_cond_wait (&thread_flag_cv, &thread_flag_mutex);
+}
+pthread_mutex_unlock (&thread_flag_mutex);
+
+The implementation of POSIX threads on GNU/Linux differs from the thread imple-
+mentation on many other UNIX-like systems in an important way: on GNU/Linux,
+threads are implemented as processes.Whenever you call pthread_create to create a
+new thread, Linux creates a new process that runs that thread. However, this process is
+not the same as a process you would create with fork; in particular, it shares the same
+address space and resources as the original process rather than receiving copies.
+
+Within a multithreaded program, it is possible for one thread to send a signal
+specifically to another thread. Use the pthread_kill function to do this. Its first parameter is a thread ID, and its second parameter is a signal number.
+
+
+//============================================================================
+posix ipc
+//============================================================================
+
+//----------------------------------------
+
+* Shared memory 
+permits processes to communicate by simply reading and 
+writing to a specified memory location.
+
+* Process Semaphores System V
+
+* Process Semaphores Posix
+
+* Mapped memory 
+is similar to shared memory, except that it is associated with a
+file in the filesystem. 
+
+* Pipes
+permit sequential communication from one process to a related process.
+
+* FIFO (Named Pipes)
+are similar to pipes, except that unrelated processes can communicate
+because the pipe is given a name in the filesystem.
+
+* Sockets (PF_LOCAL and PF_UNIX)
+support communication between unrelated processes even on different computers.
+
+//----------------------------------------
+
+
+Shared memory
+
+Shared memory is the fastest form of interprocess communication because all
+processes share the same piece of memory. Access to this shared memory is as fast as
+accessing a process’s nonshared memory, and it does not require a system call or entry to the kernel. 
+
+shmget - allocate shared memory.
+int segment_id = shmget (shm_key, getpagesize (),IPC_CREAT |S_IRUSR |S_IWUSER);
+
+shmat - attach shared memory.
+shmdt - detach shared memory.
+shmctl - get and set shared memory params.
+
+ipcs command provides information on interprocess communication facilities
+
+
+//----------------------------------------
+
+Process Semaphores System V
+
+process semaphores or sometimes System V (System Five) semaphores. 
+
+//allocate semaphore
+semget (key, 1, sem_flags);
+
+//deallocate semaphore
+semctl (semid, 1, IPC_RMID, ignored_argument);
+
+To initialize a semaphore, use semctl with zero as the second argument and SETALL as the third argument.
+
+semop - wait and post operations.
+
+//----------------------------------------
+
+Process Semaphores Posix
+
+sem_open
+sem_wait
+sem_post
+sem_getvalue
+sem_close
+sem_unlink
+
+//----------------------------------------
+
+Memory Mapped files
+mmap - map file.
+
+int fd = open (argv[1], O_RDWR |O_CREAT, S_IRUSR |S_IWUSR);
+file_memory = mmap (0, FILE_LENGTH, PROT_WRITE, MAP_SHARED, fd, 0);
+close (fd);
+
+//----------------------------------------
+
+Pipes
+
+int pipe_fds[2];
+int read_fd;
+int write_fd;
+pipe (pipe_fds);
+read_fd = pipe_fds[0];
+write_fd = pipe_fds[1];
+
+//Connect the read end of the pipe to standard input 
+dup2 (fds[0], STDIN_FILENO);
+
+popen / pclose - run child process and create pipe to it
+FILE* stream = popen (“sort”, “w”); //sort - name of unix program.
+fprintf (stream, “This is a test.\n”);
+fprintf (stream, “Hello, world.\n”);
+pclose (stream);
+
+The call to popencreates a child process executing the sortcommand, replacing callsto pipe,fork,dup2, and execlp.
+The second argument, “w”, indicates that this processwants to write to the child process
+
+//----------------------------------------
+
+FIFO (named pipes)
+
+A first-in, first-out (FIFO) file is a pipe that has a name in the filesystem.
+
+To make fifo in bash: mkfifo /tmp/somefifoname 
+
+in program - mkfifo function.
+
+Access a FIFO just like an ordinary file
+
+A FIFO can have multiple readers or multiple writers. Bytes from each writer are
+written atomically up to a maximum size of PIPE_BUF (4KB on Linux). Chunks from
+simultaneous writers can be interleaved. Similar rules apply to simultaneous reads.
+
+//----------------------------------------
+
+Sockets
+Sockets connecting processes on the same computer can use the local namespace represented by the synonyms 
+PF_LOCAL and PF_UNIX.These are called local sockets or UNIX-domain sockets.
+
+PF_LOCAL, PF_UNIX создает файл в файловой системе. После окончания работы нужно вызвать unlink(file_name)
+
+socket_fd = socket (PF_LOCAL, SOCK_STREAM, 0);
+
+socketpair - создать пару сокетов для связанных процессов (только PF_LOCAL).
 
 
