@@ -8,6 +8,7 @@
 + special member functions
 + move semantics
 + function call resolution
++ traits
 Copy-and-swap
 const pointer and pointer to const
 tcp/ip levels
@@ -15,6 +16,7 @@ multimap/multiset
 posix functions
 socket functions
 unicode
+
 
 //============================================================================
 Список контейнеров STL
@@ -275,9 +277,26 @@ http://en.cppreference.com/w/cpp/language/template_argument_deduction
 In order to instantiate a function template, every template argument must be known, but not every template argument has to be specified. 
 When possible, the compiler will deduce the missing template arguments from the function arguments.
 
+
 //============================================================================
 unicode
 //============================================================================
 
 character type sizes - look in small_progs/type_limits.cpp
+
+
+//============================================================================
+traits
+//============================================================================
+https://erdani.com/publications/traits.html
+In short, traits are important because they allow you to make compile-time decisions based on types, 
+much as you would make runtime decisions based on values. 
+Better still, by adding the proverbial "extra level of indirection" that solves many software engineering problems, 
+traits let you take the type decisions out of the immediate context where they are made. 
+This makes the resulting code cleaner, more readable, and easier to maintain. 
+If you apply traits correctly, you get these advantages without paying the cost in performance, safety, or coupling that other solutions might exact. 
+
+sample implementation:
+small_progs/type_limits.cpp
+
 
