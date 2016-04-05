@@ -9,14 +9,16 @@
 + move semantics
 + function call resolution
 + traits
++ multimap/multiset
++ priority_queue
++ const pointer and pointer to const
++ posix processes
+posix threads
 Copy-and-swap
-const pointer and pointer to const
 tcp/ip levels
-multimap/multiset
 posix functions
 socket functions
 unicode
-
 
 //============================================================================
 Список контейнеров STL
@@ -288,6 +290,7 @@ character type sizes - look in small_progs/type_limits.cpp
 //============================================================================
 traits
 //============================================================================
+
 https://erdani.com/publications/traits.html
 In short, traits are important because they allow you to make compile-time decisions based on types, 
 much as you would make runtime decisions based on values. 
@@ -298,5 +301,260 @@ If you apply traits correctly, you get these advantages without paying the cost 
 
 sample implementation:
 small_progs/type_limits.cpp
+
+https://erdani.com/publications/traits.html
+
+traits are important because they allow you to make compile-time decisions based on types, 
+much as you would make runtime decisions based on values.
+
+Traits rely on explicit template specialization to pull out type-related variations from code, and to wrap them under a uniform interface.
+
+A traits template is a template class, possibly explicitly specialized, 
+that provides a uniform symbolic interface over a coherent set of design choices that vary from one type to another.
+
+
+//============================================================================
+multimap multiset
+//============================================================================
+
+learn_algorithms/codeforces_archive/659b_multimap.cpp
+learn_algorithms/codeforces_archive/659b_multiset.cpp
+small_progs/learn_multimap_multiset.cpp
+
+multimap<string,string> mm;
+
+//insert
+mm.insert(make_pair("key1","val11"));
+mm.emplace("key1","val12");
+
+//iterate
+for(auto &p : mm)
+{
+	cout <<p.first<<" "<<p.second<<endl;	    	
+}
+cout <<mm.begin()->first<<endl;   
+
+
+//get elements by key (p is pair - first, second)
+auto p = mm.equal_range(key); 
+    
+for(auto it=p.first;it!=p.second;++it)
+{
+	cout <<it->second<<endl;	
+}
+
+//get number of found items:
+cout <<"number of items: "<<distance(p.first,p.second)<<endl;
+
+//erase
+int removedCount = mm.erase(key); //Return value Number of elements removed.
+auto p2 = mm.equal_range(key);
+mm.erase(p2.first,p2.second); //Return value  Iterator following the last removed element.
+auto p2 = mm.equal_range(key);
+mm.erase(p2.first); //Return value  Iterator following the last removed element.
+
+//number of elements with specific key:
+mm.count(key);
+
+//number of elements
+mm.size();
+
+
+//============================================================================
+priority_queue
+//============================================================================
+
+default container - class Container = vector<T>
+
+const_reference top() const;
+void pop();
+void push (const value_type& val);
+template <class... Args> void emplace (Args&&... args);
+
+    //=================== priority queue ==========================    
+    priority_queue<string> q;
+    q.push("hello");
+    q.emplace("world");
+    q.push("program");
+    cout <<q.top()<<" "<<q.top()<<q.size()<<endl;
+    q.pop();
+    cout <<q.top()<<" "<<q.top()<<q.size()<<endl;    
+    //=================== priority queue ==========================
+
+
+//============================================================================    
+const pointer and pointer to const    
+//============================================================================    
+
+Если слово const перед звездочкой (не важно перед или после int) - то
+это изменяемый указатель на константные данные.
+Сам указатель константный только если const стоит после звездочки.
+
+int const * - pointer to const int
+int * const - const pointer to int
+int const * const - const pointer to const int
+
+Now the first const can be on either side of the type so:
+    const int * == int const *
+    const int * const == int const * const
+
+
+//============================================================================
+posix processes
+//============================================================================
+
+show all processes on system:
+ps -e
+
+send program SIGTERM signal
+kill
+kill (child_pid, SIGTERM);
+
+Получить номера сигналов:
+/bin/kill --table
+ 1 HUP      2 INT      3 QUIT     4 ILL      5 TRAP     6 ABRT     7 BUS
+ 8 FPE      9 KILL    10 USR1    11 SEGV    12 USR2    13 PIPE    14 ALRM
+15 TERM    16 STKFLT  17 CHLD    18 CONT    19 STOP    20 TSTP    21 TTIN
+22 TTOU    23 URG     24 XCPU    25 XFSZ    26 VTALRM  27 PROF    28 WINCH
+29 POLL    30 PWR     31 SYS     
+
+//------------------------------------------------
+
+system creates a subprocess running the standard Bourne shell (/bin/sh)
+and hands the command to that shell for execution
+return_value = system ("ls -l /");
+
+//------------------------------------------------
+
+fork:
+learn_system.cpp
+
+pid_t result=fork();
+if(result==0)
+{
+	cout <<"child"<<endl;
+}
+else if(result>0)
+{
+	cout <<"parent"<<endl;	
+}
+else
+{
+	cout <<"error!"<<endl;    
+}
+
+//------------------------------------------------
+
+exec:
+int result = execlp("echo","echo","hello!","world!",NULL);
+cout <<"exec failed! "<<result<<endl;
+
+//------------------------------------------------
+
+nice - set process priority
+program and function
+больше nice - меньше priority
+Niceness values range from -20 (most favorable to the process) to 19 (least favorable to the process).
+nice()  adds  inc to the nice value for the calling process.  (A higher nice value means a low priority.)  Only the
+superuser may specify a negative increment, or priority increase.
+
+int getpriority(int which, id_t who);
+int setpriority(int which, id_t who, int prio);
+
+//------------------------------------------------
+
+signals:
+you should avoid performing any I/O operations or calling most library
+and system functions from signal handlers. In
+most cases, this consists simply of recording the fact that a signal occurred.The main
+program then checks periodically whether a signal has occurred and reacts accordingly.
+
+The SIGTERM
+signal asks a process to terminate; the process may
+ignore the request by masking or ignoring the signal.
+The SIGKILL signal always kills the process
+immediately because the process may not mask or ignore  SIGKILL
+
+signal(SIGINT,sig_int_handler);
+void sig_int_handler(int i)
+{ 
+    printf("sig int handler\r\n");
+    exit(-1);
+}
+The signals SIGKILL and SIGSTOP cannot be caught or ignored.
+
+sig_atomic_t sigusr1_count = 0;
+void handler (int signal_number)
+{
+	++sigusr1_count;
+}
+struct sigaction sa;
+memset (&sa, 0, sizeof (sa));
+sa.sa_handler = &handler;
+sigaction (SIGUSR1, &sa, NULL);
+printf (“SIGUSR1 was raised %d times\n”, sigusr1_count);
+
+ожидать завершения ребенка:
+int child_status;
+wait (&child_status);
+if (WIFEXITED (child_status))
+	printf (“the child process exited normally, with exit code %d\n”,WEXITSTATUS (child_status));
+else
+	printf (“the child process exited abnormally\n”);
+
+Также waitpid, waitid.
+
+A zombie process is a process that has terminated but has not been cleaned up yet (wait не была вызвана).
+
+When a program exits, its children are inherited by a special process, the init program, which
+always runs with process ID of 1 (it ’s the first process started when Linux boots).The init
+process automatically cleans up any zombie child processes that it inherits.
+
+wait3 or wait4 have parameter not to wait, immediately return if no child events exist.
+When a child process terminates, Linux sends the parent process the SIGCHLD signal.
+an easy way to clean up child processes is by handling SIGCHLD
+
+
+//============================================================================
+posix threads
+//============================================================================
+//нужно добавлять библиотеку:
+g++ -lpthread
+
+pthread_create
+pthread_join(thread_handle,(void**)&thread_result);
+
+The pthread_self function returns the thread ID of the thread in which it is called
+
+A joinable thread, like a process, is not automatically cleaned up by GNU/Linux when it terminates. 
+Instead, the thread’s exit
+state hangs around in the system (kind of like a zombie process) until another thread
+calls pthread_join to obtain its return value. Only then are its resources released.
+
+A detached thread, in contrast, is cleaned up automatically when it terminates. 
+
+Create detached thread:
+pthread_attr_t attr;
+pthread_attr_init (&attr);
+pthread_attr_setdetachstate (&attr, PTHREAD_CREATE_DETACHED);	
+pthread_create (&thread, &attr, &thread_function, NULL);
+pthread_attr_destroy (&attr);
+
+Set thread to detached mode after creation: call pthread_detach
+
+A thread may be in one of three states with regard to thread cancellation.
+
+The thread may be asynchronously cancelable
+The thread may be canceled at any point in its execution.
+
+The thread may be synchronously cancelable
+The thread may be canceled, but not at just any point in its execution. Instead, cancellation requests are queued, and
+the thread is canceled only when it reaches specific points in its execution.
+
+A thread may be uncancelable
+Attempts to cancel the thread are quietly ignored.
+
+When initially created, a thread is synchronously cancelable.
+
 
 
