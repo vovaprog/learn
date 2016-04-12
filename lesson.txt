@@ -15,11 +15,13 @@
 + posix processes
 + posix threads
 + posix ipc
+stl and thread safety
 sockets
 c++11 threads
 tcp/ip levels
 unicode
 Copy-and-swap
+разное
 
 
 //============================================================================
@@ -774,4 +776,32 @@ socket_fd = socket (PF_LOCAL, SOCK_STREAM, 0);
 
 socketpair - создать пару сокетов для связанных процессов (только PF_LOCAL).
 
+
+//============================================================================
+stl and thread safety
+//============================================================================
+
+http://en.cppreference.com/w/cpp/container#Thread_safety
+
+* All container functions can be called concurrently by different threads on different containers. 
+* All const member functions can be called concurrently by different threads on the same container. 
+In addition, the member functions begin(), end(), rbegin(), rend(), front(), back(), data(), find(), lower_bound(), upper_bound(), equal_range(), at(), and, 
+except in associative containers, operator[], behave as const for the purposes of thread safety (that is, they can also be called concurrently by different threads on the same container). 
+More generally, the C++ standard library functions do not modify objects unless those objects are accessible, 
+directly or indirectly, via the function's non-const arguments
+* Different elements in the same container can be modified concurrently by different threads, except for the elements of std::vector<bool> 
+* Iterator operations (e.g. incrementing an iterator) read, but do not modify the underlying container, 
+and may be executed concurrently with operations on other iterators on the same container, 
+with the const member functions, or reads from the elements. 
+Container operations that invalidate any iterators modify the container and cannot be executed concurrently 
+with any operations on existing iterators even if those iterators are not invalidated. 
+* Elements of the same container can be modified concurrently with those member functions that are not specified to access these elements.
+* In any case, container operations (as well as algorithms, or any other C++ standard library functions) 
+may be parallelized internally as long as this does not change the user-visible results. 
+
+
+//============================================================================
+Разное
+//============================================================================
+vector<bool> - специализация, использует один бит для значения. Лучше не использовать.
 
