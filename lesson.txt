@@ -801,7 +801,107 @@ may be parallelized internally as long as this does not change the user-visible 
 
 
 //============================================================================
+C++ 11 threads
+//============================================================================
+
+http://en.cppreference.com/w/cpp/thread
+
+thread
+mutex
+condition_variable
+futures
+
+//-----------------------------------------------------------------
+
+mutex:
+mutex
+timed_mutex
+recursive_mutex
+recursive_timed_mutex
+shared_mutex (c++17)
+shared_timed_mutex (c++14)
+
+mutex methods:
+lock, try_lock, unlock
+
+shared_mutex (shared_mutex has two levels of access:
+    shared - several threads can share ownership of the same mutex. 
+    exclusive - only one thread can own the mutex. (one writer - multiple readers)):
+lock, try_lock, unlock
+lock_shared, try_lock_shared, unlock_shared
+
+
+scope locks:
+lock_guard
+unique_lock
+shared_lock
+
+{
+    std::lock_guard<std::mutex> lock(g_i_mutex);
+}    
+
+lock, try_lock - lock algorithms, avoid deadlocks.
+std::lock(e1.m, e2.m);
+std::lock_guard<std::mutex> lk1(e1.m, std::adopt_lock);
+std::lock_guard<std::mutex> lk2(e2.m, std::adopt_lock);
+
+
+Difference lock_guard - unique_lock:
+The difference is that you can lock and unlock a std::unique_lock. std::lock_guard will be locked only once on construction and unlocked on destruction.
+
+
+call_once - Executes the Callable object f exactly once, even if called from several threads. 
+
+
+//-----------------------------------------------------------------
+
+conditional_variable:
+
+void ThreadPool::runTask(ThreadFunction fun, void *userData)
+{
+    unique_lock<mutex> lock(mutexTasks);
+    
+    tasks.push(ThreadPoolTask(fun,userData));
+
+    cvTasks.notify_one();
+}
+...........................
+
+{
+    unique_lock<mutex> lock(mutexTasks);
+
+    //проверка делается под mutex-ом, так что не может быть такого, что
+    //проверили условие, потом оно изменилось, а мы попали в wait
+    while(tasks.empty())
+    {
+        cvTasks.wait(lock);                
+    }
+}
+
+td::condition_variable works only with std::unique_lock<std::mutex>
+std::condition_variable_any provides a condition variable that works with any BasicLockable object. 
+
+notify_all_at_thread_exit provides a mechanism to notify other threads that a given thread has completely finished:
+void notify_all_at_thread_exit( std::condition_variable& cond,
+                                std::unique_lock<std::mutex> lk );
+                                
+//-----------------------------------------------------------------
+
+
+//============================================================================
 Разное
 //============================================================================
 vector<bool> - специализация, использует один бит для значения. Лучше не использовать.
+
+Boost.Lockfree:
+The C++ exception handling does not give any guarantees about its real-time behavior. We therefore do not encourage the use of exceptions and exception handling in lock-free code. 
+
+Lock free containers: Boost.Lockfree
+boost::lockfree::queue
+boost::lockfree::stack
+boost::lockfree::spsc_queue
+
+
+c++ string formatters:
+http://www.gotw.ca/publications/mill19.htm
 
