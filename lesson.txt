@@ -859,9 +859,11 @@ conditional_variable:
 
 void ThreadPool::runTask(ThreadFunction fun, void *userData)
 {
-    unique_lock<mutex> lock(mutexTasks);
+    {
+        unique_lock<mutex> lock(mutexTasks);
     
-    tasks.push(ThreadPoolTask(fun,userData));
+        tasks.push(ThreadPoolTask(fun,userData));
+    }
 
     cvTasks.notify_one();
 }
@@ -884,6 +886,12 @@ std::condition_variable_any provides a condition variable that works with any Ba
 notify_all_at_thread_exit provides a mechanism to notify other threads that a given thread has completely finished:
 void notify_all_at_thread_exit( std::condition_variable& cond,
                                 std::unique_lock<std::mutex> lk );
+            
+Do I have to aquire lock before calling condition_variable.notify_one()?
+You do not need to be holding a lock when calling condition_variable::notify_one(), 
+but it's not wrong in the sense that it's still well defined behavior and not an error.
+However, it might be a "pessimization" since whatever waiting thread is made runnable (if any) 
+will immediately try to acquire the lock that the notifying thread holds.
                                 
 //-----------------------------------------------------------------
 
