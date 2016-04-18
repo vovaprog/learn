@@ -4,18 +4,13 @@ from Tkinter import *
 from datetime import datetime, timedelta
 import tkMessageBox
 
-main_window = Tk()
-main_window.title("wd")
-main_window.geometry('400x300')
+def center_window(width, height):
+    screen_width = main_window.winfo_screenwidth()
+    screen_height = main_window.winfo_screenheight()
 
-def center(toplevel):
-    toplevel.update_idletasks()
-    w = toplevel.winfo_screenwidth()
-    h = toplevel.winfo_screenheight()
-    size = tuple(int(_) for _ in toplevel.geometry().split('+')[0].split('x'))
-    x = w/2 - size[0]/2
-    y = h/2 - size[1]/2
-    toplevel.geometry("%dx%d+%d+%d" % (size + (x, y)))
+    x = (screen_width/2) - (width/2)
+    y = (screen_height/2) - (height/2)
+    main_window.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
 def show_alarm():
     tkMessageBox.showinfo("!", "!")
@@ -58,7 +53,10 @@ def close():
     main_window.destroy()
     main_window.quit()
 
-center(main_window)
+main_window = Tk()
+main_window.title("wd")
+
+center_window(400, 300)
 
 start_time = None
 
