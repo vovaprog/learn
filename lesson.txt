@@ -15,9 +15,10 @@
 + posix processes
 + posix threads
 + posix ipc
-stl and thread safety
-sockets
++ stl and thread safety
 c++11 threads
+c++11 futures
+sockets
 tcp/ip levels
 unicode
 Copy-and-swap
@@ -895,6 +896,101 @@ will immediately try to acquire the lock that the notifying thread holds.
                                 
 //-----------------------------------------------------------------
 
+
+//============================================================================
+c++11 futures
+//============================================================================
+small_progs/futures.cpp
+
+void work1(int x, int y, int z, promise<int> result)
+{
+    result.set_value(x+y+z);
+}
+
+void test1()
+{
+    promise<int> myPromise1;
+    future<int> myFuture1 = myPromise1.get_future();
+    thread myThread1(work1,1,2,3,move(myPromise1));
+    
+    myFuture1.wait();
+    int result = myFuture1.get();
+    
+    debug2("%d",result);
+    
+    myThread1.join();    
+}
+
+The promise is the "push" end of the promise-future communication channel: 
+the operation that stores a value in the shared state, 
+the successful return from any function that is waiting on the shared state (such as std::future::get).
+
+
+promise-future with exception:
+void work2(int x, int y, int z, promise<int> result)
+{
+    result.set_exception(make_exception_ptr(invalid_argument("works2!")));
+}
+
+void test2()
+{    
+    promise<int> myPromise1;
+    future<int> myFuture1 = myPromise1.get_future();
+    thread myThread1(work2,1,2,3,move(myPromise1));
+    
+    myFuture1.wait();
+
+    try{
+        int result = myFuture1.get();
+        debug2("%d",result);
+    }catch(invalid_argument ex){
+        cout <<"catch in main thread: "<<ex.what()<<endl;
+    }    
+
+    myThread1.join();
+}
+
+promise - объект, который передается в поток для возврата значения.
+future - объект, который используется в главном потоке для получения значения.
+
+//-----------------------------------------------------------------
+
+http://stackoverflow.com/questions/18143661/what-is-the-difference-between-packaged-task-and-async
+
+async and ~future Herb Sutter:
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3451.pdf
+
+std::futures from std::async aren't special!  Scott Meyers
+http://scottmeyers.blogspot.ru/2013/03/stdfutures-from-stdasync-arent-special.html
+
+
+int work3(int x, int y, int z)
+{
+    return x+y+z;
+}
+
+void test_packaged_task1()
+{
+    packaged_task<int()> pack_task(bind(work3,1,2,3));
+    future<int> future1 = pack_task.get_future();
+    pack_task();
+    int result = future1.get();
+    debug2("packaged task: %d",result);   
+}
+
+get_future can be called only once for each packaged_task. 
+
+//-----------------------------------------------------------------
+
+shared_future - можно копировать, все копии связаны с одним результатом. 
+Access to the same shared state from multiple threads is safe if each thread does it through its own copy of a shared_future object. 
+
+//-----------------------------------------------------------------
+
+std::async - template function async runs the function f asynchronously (potentially in a separate thread which may be part of a thread pool) 
+and returns a std::future that will eventually hold the result of that function call. 
+
+Simply spoken a std::packaged_task is a std::function linked to a std::future and std::async wraps and calls a std::packaged_task
 
 //============================================================================
 Разное
