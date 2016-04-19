@@ -20,8 +20,9 @@
 + c++11 futures
 + sockets
 + tcp/ip levels
-raw sockets
-poll/select
++ raw sockets
++ poll/select
+паттерны проектирования
 unicode
 Copy-and-swap
 разное
@@ -1070,6 +1071,75 @@ Application - application, presentation, session
 transport   - transport
 network     - network
 Link layer  - link, physical
+
+
+//============================================================================
+ICMP socket
+//============================================================================
+/mnt/programs/programs/programs2/mylib/icmp_echo.c
+
+ping:
+socket(AF_INET,SOCK_RAW,IPPROTO_ICMP)
+sendto(sock,(void*)&opckt,SOF_OPCKT,0,(struct sockaddr*)&si,sizeof(struct sockaddr_in)
+read(fd,buf,buf_size)
+close(sock);
+
+
+//============================================================================
+poll / select
+//============================================================================
+http_server.cpp
+
+select:
+
+fd_set select_read_fds;
+FD_ZERO(&select_read_fds);
+FD_SET(sockfd, &select_read_fds);
+
+int selectResult = select( max_select_fd + 1 , &select_read_fds , NULL , NULL , NULL);
+
+if(selectResult>0)
+{    
+    if (FD_ISSET(sockfd, &select_read_fds)) 
+    {
+        new_socket = accept(sockfd, (struct sockaddr *)&address, (socklen_t*)&addrlen)        
+    }
+    
+    if(FD_ISSET(client_socket[i],&select_read_fds))
+    {
+        int numBytes = recv(client_socket_fd,buf,bufSize-1,0);
+    }    
+}
+
+
+poll:
+
+    const int max_poll_fds=1000;
+    struct pollfd poll_fds[max_poll_fds];
+    int poll_fds_size=1;
+    
+    poll_fds[0].fd=sockfd;
+    poll_fds[0].events=POLLIN;
+
+    int result = poll(poll_fds,poll_fds_size,5000);
+    
+    if(result>0)
+    {
+            for(int i=0;i<poll_fds_size;i++)
+            {
+                if(poll_fds[i].revents & POLLIN)
+                {
+                        int client_socket_fd=poll_fds[i].fd;                        
+                        int numBytes = recv(client_socket_fd,buf,bufSize-1,0);
+                        
+                        if(numBytes==0)
+                        {
+                            close(client_socket_fd);
+                            poll_fds[i].fd=-1;
+                        }                        
+                }
+            }
+    }
 
 
 //============================================================================
