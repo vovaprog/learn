@@ -16,10 +16,12 @@
 + posix threads
 + posix ipc
 + stl and thread safety
-c++11 threads
-c++11 futures
-sockets
-tcp/ip levels
++ c++11 threads
++ c++11 futures
++ sockets
++ tcp/ip levels
+raw sockets
+poll/select
 unicode
 Copy-and-swap
 разное
@@ -991,6 +993,84 @@ std::async - template function async runs the function f asynchronously (potenti
 and returns a std::future that will eventually hold the result of that function call. 
 
 Simply spoken a std::packaged_task is a std::function linked to a std::future and std::async wraps and calls a std::packaged_task
+
+//============================================================================
+sockets
+//============================================================================
+
+Вызовы клиент:
+socket
+gethostbyname или getaddrinfo
+connect
+send / write
+recv / read
+close
+
+Вызовы сервер:
+socket
+bind //связывает сокет с конкретным адресом. Когда сокет создается при помощи socket(), он ассоциируется с некоторым семейством адресов, но не с конкретным адресом.
+listen
+while
+{
+    client_socket = accept
+    recv
+    send
+    close
+}
+close
+
+
+udp socket client:
+socket
+gethostbyname
+while
+{
+    sendto
+    recvfrom
+}
+close
+
+udp socket server:
+socket
+bind
+while
+{
+    recvfrom //returns client address
+    sendto   //we can send back to client address
+}    
+close
+
+//============================================================================
+tcp/ip levels
+//============================================================================
+
+Application layer (Прикладной)     HTTP, RTSP, FTP, DNS
+Transport layer   (Транспортный)   TCP, UDP
+Internet layer    (Сетевой)        IP, ICMP
+Link layer        (Канальный)      Ethernet, Wifi
+
+
+Сетевая модель OSI (open systems interconnection basic reference model):
+----- Host layers -----
+Прикладной (application)
+Представительский (представления) (presentation)
+Сеансовый (session)
+Транспортный (transport)
+
+----- Media Layers -----
+Сетевой (network)
+Канальный (data link)
+Физический (physical)
+
+
+Tcp/Ip - OSI - соответствие:
+TCP/IP        OSI
+
+Application - application, presentation, session
+transport   - transport
+network     - network
+Link layer  - link, physical
+
 
 //============================================================================
 Разное
