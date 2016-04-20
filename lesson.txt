@@ -1141,6 +1141,101 @@ poll:
             }
     }
 
+//============================================================================
+design pattern
+//============================================================================
+повторимая архитектурная конструкция, представляющая собой решение проблемы проектирования в рамках некоторого часто возникающего контекста.
+
+https://en.wikipedia.org/wiki/Design_Patterns
+
+Creational
+Abstract factory - groups object factories that have a common theme
+interface IButton
+{
+    void Paint();
+}
+interface IGUIFactory
+{
+    IButton CreateButton();
+}
+class WinFactory : IGUIFactory
+{
+    public IButton CreateButton()
+    {
+        return new WinButton();
+    }
+}
+
+class OSXFactory : IGUIFactory
+{
+    public IButton CreateButton()
+    {
+        return new OSXButton();
+    }
+}
+IGUIFactory factory;
+switch (appearance)
+{
+    case Appearance.Win:
+        factory = new WinFactory();
+        break;
+    case Appearance.OSX:
+        factory = new OSXFactory();
+        break;
+    default:
+        throw new System.NotImplementedException();
+}
+var button = factory.CreateButton();
+
+//---------------------------------------------------------
+
+Singleton - restricts object creation for a class to only one instance.
+
+//---------------------------------------------------------
+
+Factory method -  creating objects by calling a factory method—either specified in an interface and implemented by child classes, 
+or implemented in a base class and optionally overridden by derived classes—rather than by calling a constructor.
+public class MagicMazeGame extends MazeGame {
+    @Override
+    protected Room makeRoom() {
+        return new MagicRoom(); 
+    }
+}
+public class OrdinaryMazeGame extends MazeGame {
+    @Override
+    protected Room makeRoom() {
+        return new OrdinaryRoom(); 
+    }
+}
+
+//---------------------------------------------------------
+
+Prototype pattern
+It is used when the type of objects to create is determined by a prototypical instance, which is cloned to produce new objects.
+public abstract class Prototype
+{
+    // normal implementation
+    public abstract Prototype Clone();
+}
+public class ConcretePrototype1 : Prototype
+{
+    public override Prototype Clone()
+    {
+        return (Prototype)this.MemberwiseClone(); // Clones the concrete class.
+    }
+}
+public class ConcretePrototype2 : Prototype
+{
+    public override Prototype Clone()
+    {
+        return (Prototype)this.MemberwiseClone(); // Clones the concrete class.
+    }
+}
+
+//---------------------------------------------------------
+
+
+
 
 //============================================================================
 Разное
