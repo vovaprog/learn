@@ -23,6 +23,12 @@
 + raw sockets
 + poll/select
 паттерны проектирования
+исключения  
+smart pointers
+nothrow new, placement new
+шаблоны
+none type template parameters (int double какие допустимы)
+
 
 //------------
 виртуальный деструктор
