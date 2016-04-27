@@ -28,6 +28,7 @@ smart pointers
 nothrow new, placement new
 шаблоны
 none type template parameters (int double какие допустимы)
+Типы наследования
 
 
 //------------
@@ -1278,6 +1279,73 @@ public class ConcretePrototype2 : Prototype
 //---------------------------------------------------------
 
 
+//============================================================================
+Exceptions
+//============================================================================
+
+The standard practice for exceptions in C++ is
+Throw by value, catch by reference
+
+If the stack unwinds completely without finding a suitable catch block, the standard function terminate is called.
+You can install your own handler that terminates exception processing by calling set_terminate
+
+An exception specification  - They are now deprecated in C++
+An exception specification is a guarantee to the caller of a function that only certain exceptions will be thrown within it.
+void fetch(char *name, char *&data) throw (BadFileName, HandlesGone);
+If the function throws an exception of a type not listed in the exception specification, 
+or of a type not derived from one of the listed types, the standard function std::unexpected is called. 
+The default behavior for this function is to terminate the program.
+You can install your own handler for this by calling set_unexpected
+
+class exception;
+Standard exception class
+Base class for standard exceptions.
+All objects thrown by components of the standard library are derived from this class. 
+Therefore, all standard exceptions can be caught by catching this type by reference.
+virtual const char* what() const throw();
+
+Если ловить по значению, то catch(BaseClass ex) поймает и ChildClass,
+но класс при этом преобразуется в BaseClass.
+Если ловить по ссылке, то можно ловить полиморфно:
+catch(BaseClass &ex) поймает ChildClass и ex будет привязана к объекту ребенка.
+
+Неправильный порядок catch - сначала базовый, потом ребенок.
+g++ выдает сообщение:
+warning: exception of type ‘MyExceptionB’ will be caught by earlier handler for ‘MyExceptionA’,
+но код нормально компилирует.
+catch(...) может быть только последним, иначе ошибка:
+error: ‘...’ handler must be the last handler for its try block
+
+
+//============================================================================
+object slicing
+//============================================================================
+
+"Slicing" is where you assign an object of a derived class to an instance of a base class, 
+thereby losing part of the information - some of it is "sliced" away.
+slicing occurs during method calls
+
+C++ lets you pass an instance of B to A's assignment operator (and also to the copy constructor). 
+This works because an instance of B can be converted to a const A&, 
+which is what assignment operators and copy-constructors expect their arguments to be.
+
+B b1;
+B b2;
+A& a_ref = b2;
+a_ref = b1;
+//b_2 now contains a mixture of b1 and b2!
+
+What happened? Well, C++ by default doesn't treat assignment operators as virtual. 
+Thus, the line a_ref = b1 will call the assignment operator of A, not that of B.
+assignment operator can be made virtual.
+
+slicing during function call:
+void function(A myA)
+{
+}
+
+B derived;
+function(derived);
 
 
 //============================================================================
@@ -1296,4 +1364,10 @@ boost::lockfree::spsc_queue
 
 c++ string formatters:
 http://www.gotw.ca/publications/mill19.htm
+
+
+call function of base class from derived:
+BaseClassName::functionName();
+
+
 
