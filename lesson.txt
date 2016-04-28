@@ -1316,6 +1316,14 @@ warning: exception of type ‘MyExceptionB’ will be caught by earlier handler 
 catch(...) может быть только последним, иначе ошибка:
 error: ‘...’ handler must be the last handler for its try block
 
+//размещение объекта исключения:
+most implementations seem to allocate memory on a local thread storage (heap) 
+but resort to an emergency storage (presumably static) if out of memory. 
+
+https://monoinfinito.wordpress.com/series/exception-handling-in-c/
+http://mentorembedded.github.io/cxx-abi/
+http://www.logix.cz/michal/devel/gas-cfi/
+
 
 //============================================================================
 object slicing
