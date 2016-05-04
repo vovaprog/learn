@@ -23,7 +23,7 @@
 + raw sockets
 + poll/select
 паттерны проектирования
-исключения  
++ исключения  
 smart pointers
 nothrow new, placement new
 шаблоны
@@ -1324,6 +1324,10 @@ https://monoinfinito.wordpress.com/series/exception-handling-in-c/
 http://mentorembedded.github.io/cxx-abi/
 http://www.logix.cz/michal/devel/gas-cfi/
 
+
+throw 1; //базовые типы:
+при catch базовых типов преобразование не производится.
+тип исключения в catch должен точно соответствовать типу бросаемого исключения.
 
 //============================================================================
 object slicing

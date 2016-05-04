@@ -45,9 +45,27 @@ void test_exceptions1()
     }
 }
 
+void test_exceptions2()
+{
+    try{
+        throw 1.33f;
+    }catch(char c){
+        cout <<"catch char"<<endl;
+    }catch(double d){
+        cout <<"catch double"<<endl;
+    }catch(long long ll){
+        cout <<"catch long long"<<endl;
+    }catch(long l){
+        cout <<"catch long"<<endl;           
+    }catch(int i){
+        cout <<"catch int"<<endl;
+    }
+}
+
 int main()
 {
     test_exceptions1();
+    test_exceptions2();
     
     return 0;    
 }
