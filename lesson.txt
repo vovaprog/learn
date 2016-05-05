@@ -22,10 +22,10 @@
 + tcp/ip levels
 + raw sockets
 + poll/select
++ исключения
++ nothrow new, placement new
 паттерны проектирования
-+ исключения  
 smart pointers
-nothrow new, placement new
 шаблоны
 none type template parameters (int double какие допустимы)
 Типы наследования
@@ -1376,6 +1376,41 @@ User *usrs = new (1.23,string("test")) User[5];
 nothrow new :
 
 int *p = new (std::nothrow) int[100000000];
+
+
+//--- placement new ---
+
+new (pointer) ClassName(constructor_params);
+
+void test3()
+{
+    char *p = new char[1000000];
+    
+    Client *pCli1 = new (p) Client();
+    pCli1->~Client();
+    
+    delete[] p;    
+    
+    //---------------------
+    
+    p=new char[sizeof(Client)*5];
+    Client *pCli2 = reinterpret_cast<Client*>(p);
+    
+    for(int i=0;i<5;++i)
+    {
+        new (pCli2+i) Client();    
+    }
+    
+    for(int i=4;i>=0;--i)
+    {
+        pCli2[i].~Client();    
+    }
+    
+    delete[] p;
+}
+
+placement delete нет.
+Нужно руками вызвать деструкторы объектов и освободить память.
 
 
 //============================================================================

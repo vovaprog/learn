@@ -30,6 +30,12 @@ public:
         cout <<"new operator size = "<<size<<"\n";
         return ::operator new(size);    
     }
+    
+    void operator delete(void *ptr)
+    {
+        cout <<"operator delete\n";
+        ::operator delete(ptr);
+    }
 
     void* operator new[](size_t size, double dArg, string sArg)
     {
@@ -44,7 +50,28 @@ public:
         uintptr_t intResult = (uintptr_t)result;
         cout <<"int pointer = "<<intResult<<endl;
         return result;
-    }    
+    }
+    
+    void operator delete[](void *ptr)
+    {
+        cout <<"operator delete[]\n";
+        ::operator delete[](ptr);    
+    }
+};
+
+class Client{
+public:    
+    int id, x;
+    
+    Client()
+    {
+        cout <<"Client ctr\n";
+    }
+    
+    ~Client()
+    {
+        cout <<"~Client\n";
+    }
 };
 
 void test1()
@@ -79,13 +106,44 @@ void test2()
     delete []usrs;
     
     usrs = new (1.23,string("test")) User[5];
+    
+    delete []usrs;
+}
+
+//placement new
+void test3()
+{
+    char *p = new char[1000000];
+    
+    Client *pCli1 = new (p) Client();
+    pCli1->~Client();
+    
+    delete[] p;    
+    
+    //---------------------
+    
+    p=new char[sizeof(Client)*5];
+    Client *pCli2 = reinterpret_cast<Client*>(p);
+    
+    for(int i=0;i<5;++i)
+    {
+        new (pCli2+i) Client();    
+    }
+    
+    for(int i=4;i>=0;--i)
+    {
+        pCli2[i].~Client();    
+    }
+    
+    delete[] p;
 }
 
 int main()
 {
     //test1();
-    test2();
-        
+    //test2();
+    test3();
+    
     return 0;    
 }
 
