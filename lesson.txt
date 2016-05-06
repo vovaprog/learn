@@ -24,6 +24,8 @@
 + poll/select
 + исключения
 + nothrow new, placement new
++ virtual destructor
+undefined/unspecified behavior
 паттерны проектирования
 smart pointers
 шаблоны
@@ -31,7 +33,16 @@ none type template parameters (int double какие допустимы)
 Типы наследования
 
 
+
 //------------
++ nothrow new
++ placement new
++ исключения
++ порядок catch блоков
++ как ловить по значению или по ссылке (по ссылке)
++ где лежит объект исключения
++ внутреннее устройство исключений
+
 виртуальный деструктор
 статический полиморфизм
 undefined/unspecified behavior
@@ -39,15 +50,8 @@ cast
 smart pointers (где лежит указатель на объект в control block или в самом объекте, какие операции потоко безопасны)
 make_shared
 weak_ptr
-nothrow new
-placement new
-исключения
 исключение в деструкторе
-порядок catch блоков
 Майерс исключения
-как ловить по значению или по ссылке (по ссылке)
-где лежит объект исключения
-внутреннее устройство исключений
 вызов виртуальной функции в списке инициализации
 сложность stable_sort
 сложность вставки в vector - вывод формулы
@@ -1411,6 +1415,32 @@ void test3()
 
 placement delete нет.
 Нужно руками вызвать деструкторы объектов и освободить память.
+
+//============================================================================
+virtual destructor
+//============================================================================
+
+Virtual destructors are useful when you can delete an instance of a derived class through a pointer to base class
+if Base's destructor is not virtual and b is a Base* pointing to a Derived object, 
+delete b has undefined behaviour
+
+always make base classes' destructors virtual when they're meant to be manipulated polymorphically.
+If you want to prevent the deletion of an instance through a base class pointer, 
+you can make the base class destuctor protected and nonvirtual; 
+by doing so, the compiler won't let you call delete on a base class pointer.
+
+//============================================================================
+undefined/unspecified behavior
+//============================================================================
+
+undefined behaviour - неправильное использование программы - например,
+обращение за границы массива.
+
+unspecified behaviour - скорее всего все в порядке, но что точно сделает
+программа - не известно. Например:
+f(foo(), bar());
+Неизвестно, что будет вызвано раньше - foo или bar.
+
 
 
 //============================================================================
