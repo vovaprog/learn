@@ -31,8 +31,9 @@ smart pointers
 шаблоны
 none type template parameters (int double какие допустимы)
 Типы наследования
-
-
+Copy-and-swap
+template<typename> vs template<class>
+Почему константы объявляют как enum?
 
 //------------
 + nothrow new
@@ -1441,6 +1442,45 @@ unspecified behaviour - скорее всего все в порядке, но �
 f(foo(), bar());
 Неизвестно, что будет вызвано раньше - foo или bar.
 
+//============================================================================
+размер куска в deque (g++)
+//============================================================================
+
+//stl_deque.h
+
+#ifndef _GLIBCXX_DEQUE_BUF_SIZE
+#define _GLIBCXX_DEQUE_BUF_SIZE 512
+#endif
+
+  inline size_t
+  __deque_buf_size(size_t __size)
+  { return (__size < _GLIBCXX_DEQUE_BUF_SIZE
+	    ? size_t(_GLIBCXX_DEQUE_BUF_SIZE / __size) : size_t(1)); }
+
+Т.е. размер куска в объектах равен количеству объектов, умещающихся в 512 байт,
+если объект >= 512 байт - то в каждом куске один объект.
+
+*  Here's how a deque<Tp> manages memory.  Each deque has 4 members:
+*
+*  - Tp**        _M_map
+*  - size_t      _M_map_size
+*  - iterator    _M_start, _M_finish
+
+*  If Tp
+*  is very large, there will be one Tp element per node (i.e., an
+*  @a array of one).  For non-huge Tp's, node size is inversely
+*  related to Tp size: the larger the Tp, the fewer Tp's will fit
+*  in a node.  The goal here is to keep the total size of a node
+*  relatively small and constant over different Tp's, to improve
+*  allocator efficiency.
+
+*  If
+*  the initial number of elements in the deque is small, the
+*  /middle/ %map pointers will be valid, and the ones at the edges
+*  will be unused.  This same situation will arise as the %map
+*  grows: available %map pointers, if any, will be on the ends.
+*  map_size is at least 8.
+*  enum { _S_initial_map_size = 8 };
 
 
 //============================================================================
@@ -1464,5 +1504,33 @@ http://www.gotw.ca/publications/mill19.htm
 call function of base class from derived:
 BaseClassName::functionName();
 
+
+Массив объектов - не важно new или на стеке или в памяти
+конструкторы вызываются от первого объекта к последнему,
+деструкторы в обратном порядке - от последнего объекта к первому. 
+
+В g++ для стабильной сортировки используется merge sort и insertion_sort:
+
+if (__last - __first < 15)
+{
+  std::__insertion_sort(__first, __last, __comp);
+}
+else
+{
+    merge_sort
+}
+
+Для merge_sort используется временный буфер stl_tempbuf.h
+Если буфер не получилось выделить - делается merge без буфера.
+
+Размер классов:
+learn_other.cpp
+
+sizeof(DataChar) = 1
+sizeof(DataIntChar) = 8
+sizeof(DataCharInt) = 8
+sizeof(DataCharIntChar) = 12
+
+Т.е. размер класса округляется вверх до следующего выравненного значения.
 
 
