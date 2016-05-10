@@ -29,11 +29,11 @@
 + Почему константы объявляют как enum?
 + non type template parameters
 + Copy-and-swap
++ template<typename> vs template<class>
 паттерны проектирования
 smart pointers
 шаблоны
 Типы наследования
-template<typename> vs template<class>
 call convention
 constexpr c++11
 
