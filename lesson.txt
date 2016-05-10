@@ -26,15 +26,16 @@
 + nothrow new, placement new
 + virtual destructor
 + undefined/unspecified behavior
++ Почему константы объявляют как enum?
++ non type template parameters
++ Copy-and-swap
 паттерны проектирования
 smart pointers
 шаблоны
-none type template parameters (int double какие допустимы)
 Типы наследования
-Copy-and-swap
 template<typename> vs template<class>
-Почему константы объявляют как enum?
 call convention
+constexpr c++11
 
 //------------
 + nothrow new
@@ -1500,6 +1501,125 @@ Undefined behavior означает, что стандарт не наклады
 *  map_size is at least 8.
 *  enum { _S_initial_map_size = 8 };
 
+//============================================================================
+Почему константы объявляют как enum?
+//============================================================================
+
+An enumeration implies a set of related constants, so the added information about the relationship must be useful in their model of the problem at hand.
+Enums are distinct types, so you can do type-oriented things like overloading with them.
+
+In older versions of C++, static const was not supported inside classes. 
+This meant that const was useless for constant expressions inside classes. 
+However, people still wanted to do this so a typical solution 
+(usually referred to as the “enum hack”) was to use an untagged enum with no instances. 
+An enumeration must have all its values established at compile time, 
+it’s local to the class, and its values are available for constant expressions.
+
+It's because enum never gets any storage while const variable is still a variable 
+and will get (static) storage if the compiler can't proove it won't need one, 
+which it often can't.
+
+
+//============================================================================
+non type template parameters
+//============================================================================
+
+A non-type template-parameter shall have one of the following (optionally cv-qualified) types:
+    integral or enumeration type,
+    pointer to object or pointer to function,
+    lvalue reference to object or lvalue reference to function,
+    pointer to member,
+    std::nullptr_t.
+
+for the case of pointers to objects (or instance fields), 
+the objects must have static storage duration and linkage (external pre C++11, 
+internal or external in C++11), 
+so that pointers to them can be created at compile time. 
+(т.е. нельзя использовать переменные на стеке или в куче, только глобальные переменные).
+
+http://en.cppreference.com/w/cpp/language/template_parameters
+
+In particular, this implies that string literals, addresses of array elements, 
+and addresses of non-static members cannot be used as template arguments to instantiate templates whose corresponding non-type template parameters are pointers to objects. 
+
+float, double нельзя использовать, т.к. вычисления с плавающей точкой не точные
+в примере не известно - будет использоваться одна и та же функция или будут созданы две разные.
+func<1/3.f> (); 
+func<2/6.f> ();
+template class foo<10./3.>
+template class foo<1./3 * 10.>
+
+Еще вариант:
+In 2003 - yes, 2003 - Vandervoorde and Josuttis wrote this in their book "C++ Templates" (p. 40):
+Not being able to use floating-point literals (and simple constant floating-point expressions) as template arguments 
+has historical reasons. Because there are no serious technical challenges, 
+this may be supported in future versions of C++.
+
+C++ does not currently support the use of string literals (or real literals) as template parameters.
+
+
+//============================================================================
+typename
+//============================================================================
+
+typename можно использовать вместо class при описании шаблона. 
+То есть вместо template<class T> можно написать template<typename T>, разницы никакой нет.
+
+Stroustrup originally used class to specify types in templates to avoid introducing a new keyword. 
+Some in the committee worried that this overloading of the keyword led to confusion. 
+Later, the committee introduced a new keyword typename to resolve syntactic ambiguity, 
+and decided to let it also be used to specify template types to reduce confusion, 
+but for backward compatibility, class kept its overloaded meaning.
+
+typename применяется, чтобы помочь компилятору определить, что выражение является именем типа:
+template<class T> void f() { T::x * p; ... } 
+T::x * p; - либо умножение, либо объявление переменной. 
+Чтобы не было непонятности нужно писать:
+typename T::x * p;
+
+//============================================================================
+Copy and swap
+//============================================================================
+
+The copy-and-swap idiom is the solution, 
+and elegantly assists the assignment operator in achieving two things: 
+avoiding code duplication, and providing a strong exception guarantee.
+
+it works by using the copy-constructor's functionality to create a local copy of the data, 
+then takes the copied data with a swap function, swapping the old data with the new data. 
+The temporary copy then destructs, taking the old data with it. We are left with a copy of the new data.
+
+In order to use the copy-and-swap idiom, we need three things: a working copy-constructor, 
+a working destructor (both are the basis of any wrapper, so should be complete anyway), and a non-throwing swap function.
+
+Нельзя использовать std::swap, т.к. он использует  copy-constructor and copy-assignment operator,
+нужно написать свой swap.
+
+class dumb_array{
+public:
+    friend void swap(dumb_array& first, dumb_array& second) // nothrow
+    {
+        using std::swap;
+        swap(first.mSize, second.mSize);
+        swap(first.mArray, second.mArray);
+    }
+};
+dumb_array& operator=(dumb_array other) // (1)
+{
+    swap(*this, other); // (2)
+
+    return *this;
+}
+
+
+//move constructor (не обязательно, просто пример):
+    dumb_array(dumb_array&& other)
+        : dumb_array() // initialize via default constructor, C++11 only
+    {
+        swap(*this, other);
+    }
+if other is being initialized with an rvalue, it will be move-constructed.     
+
 
 //============================================================================
 Разное
@@ -1550,5 +1670,8 @@ sizeof(DataCharInt) = 8
 sizeof(DataCharIntChar) = 12
 
 Т.е. размер класса округляется вверх до следующего выравненного значения.
+
+
+class should manage one resource only!
 
 
