@@ -32,9 +32,10 @@
 + template<typename> vs template<class>
 + smart pointers
 + точки следования (sequence points)
++ Типы наследования
 паттерны проектирования
 шаблоны
-Типы наследования
+
 
 call convention
 constexpr c++11
@@ -1286,6 +1287,27 @@ public class ConcretePrototype2 : Prototype
 
 //---------------------------------------------------------
 
+*************** Structural *********************
+
+//---------------------------------------------------------------
+Adapter
+adapter pattern is a software design pattern that allows the interface of an existing class to be used as another interface.
+The Adapter design pattern allows otherwise incompatible classes to work together by converting the interface of one class into an interface expected by the clients.
+
+//---------------------------------------------------------------
+Facade
+A facade is an object that provides a simplified interface to a larger body of code, such as a class library.
+
+    make a software library easier to use, understand and test, since the facade has convenient methods for common tasks;
+    make the library more readable, for the same reason;
+    reduce dependencies of outside code on the inner workings of a library, since most code uses the facade, thus allowing more flexibility in developing the system;
+    wrap a poorly designed collection of APIs with a single well-designed API.
+
+//---------------------------------------------------------------
+Decorator
+
+
+
 
 //============================================================================
 Exceptions
@@ -1754,6 +1776,25 @@ class Derived : public Base<Derived>
 {
     // ...
 };
+
+
+//============================================================================
+Типы наследования
+//============================================================================
+
+
+If the inheritance is public, everything that is aware of Base and Child is also aware that Child inherits from Base.
+If the inheritance is protected, only Child, and its children, are aware that they inherit from Base.
+If the inheritance is private, no one other than Child is aware of the inheritance.
+
+When you inherit a base class publicly, all members keep their original access specifications. 
+Private members stay private, protected members stay protected, and public members stay public.
+
+With private inheritance, all members from the base class are inherited as private. 
+This means private members stay private, and protected and public members become private.
+
+Protected inheritance is the last method of inheritance. It is almost never used, except in very particular cases. 
+With protected inheritance, the public and protected members become protected, and private members stay private.
 
 
 //============================================================================
