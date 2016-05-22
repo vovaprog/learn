@@ -33,7 +33,8 @@
 + smart pointers
 + точки следования (sequence points)
 + Типы наследования
-паттерны проектирования
++ паттерны проектирования
++ сложность вставки в vector - вывод формулы
 шаблоны
 
 
@@ -57,13 +58,13 @@ unicode
 + make_shared
 + weak_ptr
 + статический полиморфизм
++ сложность вставки в vector - вывод формулы
 
 cast
 исключение в деструкторе
 Майерс исключения
 вызов виртуальной функции в списке инициализации
 сложность stable_sort
-сложность вставки в vector - вывод формулы
 facebook контейнеры
 типы контейнеров stl
 deque - сложность операций
@@ -1329,6 +1330,10 @@ command pattern is a behavioral design pattern in which an object is used to enc
 at a later time. This information includes the method name, the object that owns the method and values for the method parameters.
 Пример: SqlCommand
 
+Iterator
+
+Template method
+
 
 //============================================================================
 Exceptions
@@ -1819,6 +1824,35 @@ With protected inheritance, the public and protected members become protected, a
 
 
 //============================================================================
+vector.push_back - Амортизированная константная сложность
+//============================================================================
+
+http://cs.stackexchange.com/questions/9380/why-is-push-back-in-c-vectors-constant-amortized
+
+Сумма n членов геометрической прогрессии:
+http://school-collection.edu.ru/catalog/res/6b075d88-01b7-4ca7-aebf-69f152868609/view/
+
+Для grow factor = 2
+чтобы вставить 2^3 + 1 элемент нужно
+2^1 + 2^2 + 2^3 + 2^4 
+перераспределений элементов.
+
+Нужно посчитать сумму n членов геометрической прогрессии:
+Sum = (firstElement * (base ^ n - 1))   /   (base - 1)
+
+Для двойки и firstElement = 1:
+Sum = 2 ^ n - 1
+
+Чтобы заметить эту формулу можно посмотреть:
+1 2 4 8 16 32,
+т.е. сумма всех предыдущих элементов равна следующему - 1 (1 + 2 + 4 + 8 = 15 = 16-1)
+
+Чтобы вставить 2^n + 1 елементов нужно 2^(n+1) перераспределений.
+Таким образом на один элемент приходится:
+2^(n+1) / 2^n + 1 ~ 2, т.е константа.
+
+
+//============================================================================
 Разное
 //============================================================================
 vector<bool> - специализация, использует один бит для значения. Лучше не использовать.
@@ -1872,3 +1906,10 @@ sizeof(DataCharIntChar) = 12
 class should manage one resource only!
 
 
+Deque complexity:
+    Random access - constant O(1)
+    Insertion or removal of elements at the end or beginning - constant O(1)
+    Insertion or removal of elements - linear O(n) 
+    
+    
+       
