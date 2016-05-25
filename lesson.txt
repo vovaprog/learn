@@ -35,8 +35,10 @@
 + Типы наследования
 + паттерны проектирования
 + сложность вставки в vector - вывод формулы
++ Singleton c++ realization
++ характеристики сортировок
 шаблоны
-
+Trie
 
 call convention
 constexpr c++11
@@ -59,6 +61,7 @@ unicode
 + weak_ptr
 + статический полиморфизм
 + сложность вставки в vector - вывод формулы
++ характеристики сортировок
 
 cast
 исключение в деструкторе
@@ -70,7 +73,6 @@ facebook контейнеры
 deque - сложность операций
 типы хеш таблиц
 insert sort
-характеристики сортировок
 когда создается move конструктор
 правила создания стандартных функций класса
 шаблоны
@@ -1853,6 +1855,89 @@ Sum = 2 ^ n - 1
 
 
 //============================================================================
+name hiding, function call resolution
+//============================================================================
+
+The name resolution rules say that name lookup stops in the first scope in which a matching name is found. 
+At that point, the overload resolution rules kick in to find the best match of available functions.
+
+Если имя функции найдено в классе - ребенке, то рассматриваются только перегрузки из этого ребенка,
+функции из родителя не учитываются
+
+This is "By Design". In C++ overload resolution for this type of method works like the following.
+    Starting at the type of the reference and then going to the base type, find the first type which has a method named "gogo"
+    Considering only methods named "gogo" on that type find a matching overload
+
+    
+//============================================================================
+Singleton realization
+//============================================================================
+    
+class S
+{
+    public:
+        static S& getInstance()
+        {
+            static S    instance; // Guaranteed to be destroyed. Instantiated on first use. 
+            return instance;
+        }
+    private:
+        S() {};                   // Constructor? (the {} brackets) are needed here.
+        // C++ 03
+        // ========
+        // Dont forget to declare these two. You want to make sure they
+        // are unacceptable otherwise you may accidentally get copies of
+        // your singleton appearing.
+        S(S const&);              // Don't Implement
+        void operator=(S const&); // Don't implement
+
+        // C++ 11
+        // =======
+        // We can use the better technique of deleting the methods
+        // we don't want.
+    public:
+        S(S const&)               = delete;
+        void operator=(S const&)  = delete;
+
+        // Note: Scott Meyers mentions in his Effective Modern
+        //       C++ book, that deleted functions should generally
+        //       be public as it results in better error messages
+        //       due to the compilers behavior to check accessibility
+        //       before deleted status
+};
+
+То же самое: This implementation is known as Meyers' Singleton. 
+В C++11 thread safe, прежде чем C++11 не thread safe.
+
+class OnlyOne
+{
+public:
+        static const OnlyOne& Instance()
+        {
+                static OnlyOne theSingleInstance;
+                return theSingleInstance;
+        }
+private:        
+        OnlyOne(){}
+        OnlyOne(const OnlyOne& root);
+        OnlyOne& operator=(const OnlyOne&);
+};
+
+//============================================================================
+характеристики сортировок
+//============================================================================
+
+Вычислительная сложность - худшая, средняя и лучшая 
+Устойчивость (англ. stability) — устойчивая сортировка не меняет взаимного расположения элементов с одинаковыми ключами (сортировка слиянием, Сортировка вставками (Insertion sort)).
+Естественность поведения — эффективность метода при обработке уже упорядоченных или частично упорядоченных данных. 
+                           Алгоритм ведёт себя естественно, если учитывает эту характеристику входной последовательности и работает лучше.
+Использование операции сравнения - если только сравнение, то мин. трудоемкость n*log(n), если про данные известно больше, то можно быстрее.
+Внутренняя сортировка - все данные в оперативной памяти, Внешняя сортировка - данные на устройстве с последовательным доступом.  
+Требуется доп. память / не требуется доп. память.
+потребность в знаниях о структуре данных, выходящих за рамки операции сравнения
+
+
+//============================================================================
 Разное
 //============================================================================
 vector<bool> - специализация, использует один бит для значения. Лучше не использовать.
@@ -1911,5 +1996,11 @@ Deque complexity:
     Insertion or removal of elements at the end or beginning - constant O(1)
     Insertion or removal of elements - linear O(n) 
     
-    
-       
+Чтобы ограничить видимость функции или переменной или типа текущим файлом
+вместо static перед функцией (как было в С) нужно использовать анонимные namespace:
+namespace {
+    int cannotAccessOutsideThisFile() { ... }
+}       
+Все объявленное внутри такого namespace доступно только в текущем файле и не будет ошибок линковки если такие имена уже есть в программе.
+
+
