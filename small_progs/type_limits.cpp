@@ -75,6 +75,8 @@ int main ()
 {  
     printLimits<int>();
     printLimits<unsigned int>();
+    printLimits<long int>();
+    printLimits<unsigned long int>();
     
     printLimits<char>();
     printLimits<signed char>();    
