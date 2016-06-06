@@ -1,0 +1,52 @@
+tabs to spaces:
+set expandtab
+
+number of spaces in tab:
+set tabstop=4
+
+To change all the existing tab characters:
+retab
+
+number of space characters inserted for indentation:
+set shiftwidth=4
+
+one line:
+set tabstop=4 shiftwidth=4 expandtab
+
+set c++ indent:
+set autoindent
+set cindent
+
+
+put settings in .vimrc file in home folder:
+set tabstop=4 shiftwidth=4 expandtab
+set autoindent
+set cindent
+set nu
+
+h j k l - move cursor one char or line
+
+may be used as 4h, 5l.
+
+0 - move to line start
+$ - move to line end
+
+line numbers:
+set nu
+
+w - move one word forward
+b - move one word backward
+
+may be used as 4w, 5b.
+
+33G - goto line 33
+
+a - append mode
+
+Change:
+cw To the end of a word
+c2b Back two words
+c$ To the end of line
+c0 To the beginning of line
+
+

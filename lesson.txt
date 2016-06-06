@@ -1833,7 +1833,6 @@ class Derived : public Base<Derived>
 Типы наследования
 //============================================================================
 
-
 If the inheritance is public, everything that is aware of Base and Child is also aware that Child inherits from Base.
 If the inheritance is protected, only Child, and its children, are aware that they inherit from Base.
 If the inheritance is private, no one other than Child is aware of the inheritance.
@@ -1846,6 +1845,15 @@ This means private members stay private, and protected and public members become
 
 Protected inheritance is the last method of inheritance. It is almost never used, except in very particular cases. 
 With protected inheritance, the public and protected members become protected, and private members stay private.
+
+Default inheritance type:
+It's private for class and public for struct.
+the default type of the inheritance depends on the inheriting type (B), not on the one that is being inherited (A). For example:
+class A {};
+struct B: /* public */ A {};
+
+struct A {};
+class B: /* private */ A {};
 
 
 //============================================================================
@@ -1993,8 +2001,22 @@ nullptr
 Полиморфизм
    is the provision of a single interface to entities of different types.
    способность программы обрабатывать данные разных типов
+   
 
+//============================================================================
+Exception safety guarantees   
+//============================================================================
 
+* No-throw guarantee, also known as failure transparency: Operations are guaranteed to succeed and satisfy all requirements even in exceptional situations. 
+  If an exception occurs, it will be handled internally and not observed by clients.
+* Strong exception safety, also known as commit or rollback semantics: Operations can fail, 
+  but failed operations are guaranteed to have no side effects, so all data retain their original values.[4]
+* Basic exception safety, also known as a no-leak guarantee: Partial execution of failed operations can cause side effects, 
+  but all invariants are preserved and there are no resource leaks (including memory leaks). 
+  Any stored data will contain valid values, even if they differ from what they were before the exception.
+* No exception safety: No guarantees are made.
+
+   
 //============================================================================
 Разное
 //============================================================================
