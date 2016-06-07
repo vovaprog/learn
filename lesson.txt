@@ -1,9 +1,9 @@
 + Список контейнеров STL
 + Алгоритмическая сложность контейнеров STL
 + smart pointers
-+ Copy-and-swap
 + special member functions
 + c++11 threads
++ Copy-and-swap
 + sockets
 + tcp/ip levels
 + исключения
@@ -117,6 +117,516 @@ queue
 priority_queue
 
 
+//============================================================================    
+Алгоритмическая сложность контейнеров STL    
+//============================================================================
+
+http://www.cs.northwestern.edu/~riesbeck/programming/c++/stl-summary.html    
+
+
+//============================================================================
++ c++11 new features
+//============================================================================
+
+threads
+unordered assoc container
+lambda
+range based loop
+enum class
+auto
+shared_ptr, unique_ptr
+nullptr
+
+
+//============================================================================
+smart pointers
+//============================================================================
+
+weak_ptr - метод lock() возвращает shared_ptr на указываемый объект.
+Если объект уже удален, то возращается default constructed shared_ptr.
+Есть метод expired() - проверить, что объект удален.
+
+В shared_ptr может исползоваться deleter - функтор объект для удаления указателя.
+
+__shared_ptr{
+      _Tp*	   	   _M_ptr;         // Contained pointer.
+      __shared_count<_Lp>  _M_refcount;    // Reference counter.
+};
+
+__shared_count{
+    _Sp_counted_base<_Lp>*  _M_pi;
+};
+
+_Sp_counted_base{
+      _Atomic_word  _M_use_count;     // #shared
+      _Atomic_word  _M_weak_count;    // #weak + (#shared != 0)
+}
+
+_Sp_counted_deleter:_Sp_counted_base
+{
+      _Ptr             _M_ptr;  // copy constructor must not throw
+      _My_Deleter      _M_del;  // copy constructor must not throw
+};
+
+!!! It is only the control block itself which is thread-safe.
+
+//Реализация reset g++:
+void reset() noexcept
+{ 
+    __shared_ptr().swap(*this); 
+}
+
+template<typename _Tp1>
+void reset(_Tp1* __p) // _Tp1 must be complete.
+{
+  __shared_ptr(__p).swap(*this);
+}
+
+Т.е reset меняет только определенный объект shared_ptr,
+в control_block, на который раньше указывал shared_ptr уменьшается счетчик ссылок.
+Все объекты которые работали с прежним указателем будут работать с ним дальше.
+Т.е. reset нельзя вызывать на одном и том же объекте shared_ptr из разных потоков, но можно вызывать на разных объектах shared_ptr. 
+
+Можно в разных потоках создавать и удалять shared_ptr.
+Нельзя вызывать методы (reset) на одном объекте shared_ptr из разных потоков.
+Нельзя вызывать изменяющие методы на самих данных, с которыми работает shared_ptr.
+
+make_shared:
+
+fun(std::make_shared<Lhs>("foo"), std::make_shared<Rhs>("bar"));
+
+std::make_shared performs one heap-allocation, whereas calling the std::shared_ptr constructor performs two.
+std::make_shared performs a single heap-allocation accounting for the space necessary for both the control block and the data. 
+In the other case, new Obj("foo") invokes a heap-allocation for the managed data and the std::shared_ptr constructor performs another one for the control block.
+
+Disadvantage of make_shared: 
+Since there there's only one allocation, the pointee's memory cannot be deallocated until the control block is no longer in use. A weak_ptr can keep the control block alive indefinitely.
+
+
+//============================================================================
+special member functions
+//============================================================================
+Special member functions in C++ are functions which the compiler will automatically generate if they are used, but not declared explicitly by the programmer.
+
+C++ has six kinds of special member functions:
+*Default constructors   ( if no other constructor is explicitly declared )
+*Destructors
+*Copy constructors          (if no move constructor and move assignment operator are explicitly declared. If a destructor is declared generation of a copy constructor is deprecated)
+*Copy assignment operators  (if no move constructor and move assignment operator are explicitly declared. If a destructor is declared generation of a copy assignment operator is deprecated.) 
+*Move constructors          (if no copy constructor, copy assignment operator, move assignment operator and destructor are explicitly declared.)
+*Move assignment operators  (if no copy constructor, copy assignment operator, move constructor and destructor are explicitly declared.)
+
+Signatures:
+Default constructor 	MyClass();
+Copy constructor 	MyClass(const MyClass& other);
+Move constructor 	MyClass(MyClass&& other) noexcept;
+Copy assignment operator 	MyClass& operator=(const MyClass& other);
+Move assignment operator 	MyClass& operator=(MyClass&& other) noexcept;
+Destructor 	~MyClass();
+
+
+Default constructor:      no other constructor is explicitly declared
+Destructor
+Copy constructor:         no move constructor 
+                          no move assignment operator
+                          If a destructor is declared generation of a copy constructor is deprecated (C++11)
+Copy assignment operator: no move constructor 
+                          no move assignment operator are explicitly declared.
+                          If a destructor is declared generation of a copy assignment operator is deprecated.                                             
+Move constructor:         no copy constructor 
+                          no copy assignment operator
+                          no move assignment operator 
+                          no destructor                      
+Move assignment operator: no copy constructor
+                          no copy assignment operator
+                          no move constructor 
+                          no destructor
+
+                          
+//============================================================================
+C++ 11 threads
+//============================================================================
+
+http://en.cppreference.com/w/cpp/thread
+
+thread
+mutex
+condition_variable
+futures
+
+//-----------------------------------------------------------------
+
+mutex:
+mutex
+timed_mutex
+recursive_mutex
+recursive_timed_mutex
+shared_mutex (c++17)
+shared_timed_mutex (c++14)
+
+mutex methods:
+lock, try_lock, unlock
+
+shared_mutex (shared_mutex has two levels of access:
+    shared - several threads can share ownership of the same mutex. 
+    exclusive - only one thread can own the mutex. (one writer - multiple readers)):
+lock, try_lock, unlock
+lock_shared, try_lock_shared, unlock_shared
+
+
+scope locks:
+lock_guard
+unique_lock
+shared_lock
+
+{
+    std::lock_guard<std::mutex> lock(g_i_mutex);
+}    
+
+lock, try_lock - lock algorithms, avoid deadlocks.
+std::lock(e1.m, e2.m);
+std::lock_guard<std::mutex> lk1(e1.m, std::adopt_lock);
+std::lock_guard<std::mutex> lk2(e2.m, std::adopt_lock);
+
+
+Difference lock_guard - unique_lock:
+The difference is that you can lock and unlock a std::unique_lock. std::lock_guard will be locked only once on construction and unlocked on destruction.
+
+
+call_once - Executes the Callable object f exactly once, even if called from several threads. 
+
+
+//-----------------------------------------------------------------
+
+conditional_variable:
+
+void ThreadPool::runTask(ThreadFunction fun, void *userData)
+{
+    {
+        unique_lock<mutex> lock(mutexTasks);
+    
+        tasks.push(ThreadPoolTask(fun,userData));
+    }
+
+    cvTasks.notify_one();
+}
+...........................
+
+{
+    unique_lock<mutex> lock(mutexTasks);
+
+    //проверка делается под mutex-ом, так что не может быть такого, что
+    //проверили условие, потом оно изменилось, а мы попали в wait
+    while(tasks.empty())
+    {
+        cvTasks.wait(lock);                
+    }
+}
+
+std::condition_variable works only with std::unique_lock<std::mutex>
+std::condition_variable_any provides a condition variable that works with any BasicLockable object. 
+
+notify_all_at_thread_exit provides a mechanism to notify other threads that a given thread has completely finished:
+void notify_all_at_thread_exit( std::condition_variable& cond,
+                                std::unique_lock<std::mutex> lk );
+            
+Do I have to aquire lock before calling condition_variable.notify_one()?
+You do not need to be holding a lock when calling condition_variable::notify_one(), 
+but it's not wrong in the sense that it's still well defined behavior and not an error.
+However, it might be a "pessimization" since whatever waiting thread is made runnable (if any) 
+will immediately try to acquire the lock that the notifying thread holds.
+                                
+//-----------------------------------------------------------------
+           
+
+//============================================================================
+Copy and swap
+//============================================================================
+
+The copy-and-swap idiom is the solution, 
+and elegantly assists the assignment operator in achieving two things: 
+avoiding code duplication, and providing a strong exception guarantee.
+
+it works by using the copy-constructor's functionality to create a local copy of the data, 
+then takes the copied data with a swap function, swapping the old data with the new data. 
+The temporary copy then destructs, taking the old data with it. We are left with a copy of the new data.
+
+In order to use the copy-and-swap idiom, we need three things: a working copy-constructor, 
+a working destructor (both are the basis of any wrapper, so should be complete anyway), and a non-throwing swap function.
+
+Нельзя использовать std::swap, т.к. он использует  copy-constructor and copy-assignment operator,
+нужно написать свой swap.
+
+class dumb_array{
+public:
+    friend void swap(dumb_array& first, dumb_array& second) // nothrow
+    {
+        using std::swap;
+        swap(first.mSize, second.mSize);
+        swap(first.mArray, second.mArray);
+    }
+};
+dumb_array& operator=(dumb_array other) // (1)
+{
+    swap(*this, other); // (2)
+
+    return *this;
+}
+
+
+//move constructor (не обязательно, просто пример):
+    dumb_array(dumb_array&& other)
+        : dumb_array() // initialize via default constructor, C++11 only
+    {
+        swap(*this, other);
+    }
+if other is being initialized with an rvalue, it will be move-constructed.     
+
+
+//============================================================================
+sockets
+//============================================================================
+
+Вызовы клиент:
+socket
+gethostbyname или getaddrinfo
+connect
+send / write
+recv / read
+close
+
+Вызовы сервер:
+socket
+bind //связывает сокет с конкретным адресом. Когда сокет создается при помощи socket(), он ассоциируется с некоторым семейством адресов, но не с конкретным адресом.
+listen
+while
+{
+    client_socket = accept
+    recv
+    send
+    close
+}
+close
+
+
+udp socket client:
+socket
+gethostbyname
+while
+{
+    sendto
+    recvfrom
+}
+close
+
+udp socket server:
+socket
+bind
+while
+{
+    recvfrom //returns client address
+    sendto   //we can send back to client address
+}    
+close
+
+                         
+//============================================================================
+tcp/ip levels
+//============================================================================
+
+Application layer (Прикладной)     HTTP, RTSP, FTP, DNS
+Transport layer   (Транспортный)   TCP, UDP
+Internet layer    (Сетевой)        IP, ICMP
+Link layer        (Канальный)      Ethernet, Wifi
+
+
+Сетевая модель OSI (open systems interconnection basic reference model):
+----- Host layers -----
+Прикладной (application)
+Представительский (представления) (presentation)
+Сеансовый (session)
+Транспортный (transport)
+
+----- Media Layers -----
+Сетевой (network)
+Канальный (data link)
+Физический (physical)
+
+
+Tcp/Ip - OSI - соответствие:
+TCP/IP        OSI
+
+Application - application, presentation, session
+transport   - transport
+network     - network
+Link layer  - link, physical
+
+
+//============================================================================
+Exceptions
+//============================================================================
+
+The standard practice for exceptions in C++ is
+Throw by value, catch by reference
+
+If the stack unwinds completely without finding a suitable catch block, the standard function terminate is called.
+You can install your own handler that terminates exception processing by calling set_terminate
+
+An exception specification  - They are now deprecated in C++
+An exception specification is a guarantee to the caller of a function that only certain exceptions will be thrown within it.
+void fetch(char *name, char *&data) throw (BadFileName, HandlesGone);
+If the function throws an exception of a type not listed in the exception specification, 
+or of a type not derived from one of the listed types, the standard function std::unexpected is called. 
+The default behavior for this function is to terminate the program.
+You can install your own handler for this by calling set_unexpected
+
+class exception;
+Standard exception class
+Base class for standard exceptions.
+All objects thrown by components of the standard library are derived from this class. 
+Therefore, all standard exceptions can be caught by catching this type by reference.
+virtual const char* what() const throw();
+
+Если ловить по значению, то catch(BaseClass ex) поймает и ChildClass,
+но класс при этом преобразуется в BaseClass.
+Если ловить по ссылке, то можно ловить полиморфно:
+catch(BaseClass &ex) поймает ChildClass и ex будет привязана к объекту ребенка.
+
+Неправильный порядок catch - сначала базовый, потом ребенок.
+g++ выдает сообщение:
+warning: exception of type ‘MyExceptionB’ will be caught by earlier handler for ‘MyExceptionA’,
+но код нормально компилирует.
+catch(...) может быть только последним, иначе ошибка:
+error: ‘...’ handler must be the last handler for its try block
+
+//размещение объекта исключения:
+most implementations seem to allocate memory on a local thread storage (heap) 
+but resort to an emergency storage (presumably static) if out of memory. 
+
+https://monoinfinito.wordpress.com/series/exception-handling-in-c/
+http://mentorembedded.github.io/cxx-abi/
+http://www.logix.cz/michal/devel/gas-cfi/
+
+
+throw 1; //базовые типы:
+при catch базовых типов преобразование не производится.
+тип исключения в catch должен точно соответствовать типу бросаемого исключения.
+
+
+//============================================================================
+undefined/unspecified behavior
+//============================================================================
+
+undefined behaviour - неправильное использование программы - например,
+обращение за границы массива.
+
+unspecified behaviour - скорее всего все в порядке, но что точно сделает
+программа - не известно. Например:
+f(foo(), bar());
+Неизвестно, что будет вызвано раньше - foo или bar.
+
+Unspecified behavior
+Система может реализовать любое из поведений
+и не должна говорить какое именно реализовано и даже не обязательно, 
+чтобы она вела себя в таких ситуациях одинаково внутри одной программы или функции.
+unspecified behavior означает "как будет работать толком неизвестно, но все будет хорошо".
+Программа, в которой есть unspecified behavior - правильная программа.
+Пример - порядок вычисления аргументов функции.
+
+Undefined behavior
+поведение может возникать только как реакция на неправильную программу.
+Undefined behavior означает, что стандарт не накладывает каких-либо ограничений. 
+Может случиться все, что угодно.
+Пример - разыменование указателя, который равен NULL, может дать 0, 
+или любое произвольное значение, или остановку программы, 
+или сигнал какого-либо вида, или исключение.
+
+
+//============================================================================
+Singleton realization
+//============================================================================
+    
+class S
+{
+    public:
+        static S& getInstance()
+        {
+            static S    instance; // Guaranteed to be destroyed. Instantiated on first use. 
+            return instance;
+        }
+    private:
+        S() {};                   // Constructor? (the {} brackets) are needed here.
+        // C++ 03
+        // ========
+        // Dont forget to declare these two. You want to make sure they
+        // are unacceptable otherwise you may accidentally get copies of
+        // your singleton appearing.
+        S(S const&);              // Don't Implement
+        void operator=(S const&); // Don't implement
+
+        // C++ 11
+        // =======
+        // We can use the better technique of deleting the methods
+        // we don't want.
+    public:
+        S(S const&)               = delete;
+        void operator=(S const&)  = delete;
+
+        // Note: Scott Meyers mentions in his Effective Modern
+        //       C++ book, that deleted functions should generally
+        //       be public as it results in better error messages
+        //       due to the compilers behavior to check accessibility
+        //       before deleted status
+};
+
+То же самое: This implementation is known as Meyers' Singleton. 
+В C++11 thread safe, прежде чем C++11 не thread safe.
+
+class OnlyOne
+{
+public:
+        static const OnlyOne& Instance()
+        {
+                static OnlyOne theSingleInstance;
+                return theSingleInstance;
+        }
+private:        
+        OnlyOne(){}
+        OnlyOne(const OnlyOne& root);
+        OnlyOne& operator=(const OnlyOne&);
+};
+
+
+//============================================================================
+характеристики сортировок
+//============================================================================
+
+Вычислительная сложность - худшая, средняя и лучшая 
+Устойчивость (англ. stability) — устойчивая сортировка не меняет взаимного расположения элементов с одинаковыми ключами (сортировка слиянием, Сортировка вставками (Insertion sort)).
+Естественность поведения — эффективность метода при обработке уже упорядоченных или частично упорядоченных данных. 
+                           Алгоритм ведёт себя естественно, если учитывает эту характеристику входной последовательности и работает лучше.
+Использование операции сравнения - если только сравнение, то мин. трудоемкость n*log(n), если про данные известно больше, то можно быстрее.
+Внутренняя сортировка - все данные в оперативной памяти, Внешняя сортировка - данные на устройстве с последовательным доступом.  
+Требуется доп. память / не требуется доп. память.
+потребность в знаниях о структуре данных, выходящих за рамки операции сравнения
+
+
+//============================================================================
+ООП
+//============================================================================
+Инкапсуляция
+   bundling of data with the methods operating on that data
+   restricting direct access to some of the object's components
+Наследование
+   механизм языка, позволяющий описать новый класс на основе уже существующего класса или интерфейса.
+Полиморфизм
+   is the provision of a single interface to entities of different types.
+   способность программы обрабатывать данные разных типов
+
+   
+*************************************************************************************************************************************************************                          
+                          
+                          
 //============================================================================
 priority_queue
 //============================================================================
@@ -140,14 +650,7 @@ Heap property
     Значение в любой вершине не меньше, чем значения её потомков.
     Глубина листьев (расстояние до корня) отличается не более чем на 1 слой.
     Последний слой заполняется слева направо.
-    
-    
-//============================================================================    
-Алгоритмическая сложность контейнеров STL    
-//============================================================================
-
-http://www.cs.northwestern.edu/~riesbeck/programming/c++/stl-summary.html    
-
+       
 
 //============================================================================
 Преобразования типов
@@ -285,45 +788,6 @@ template < typename T >
 void call_with_true_double_only(T) =delete; //prevent call through type promotion of any T to double from succeeding.
 void call_with_true_double_only(double param) { return; } // also define for const double, double&, etc. as needed.
 
-
-//============================================================================
-special member functions
-//============================================================================
-Special member functions in C++ are functions which the compiler will automatically generate if they are used, but not declared explicitly by the programmer.
-
-C++ has six kinds of special member functions:
-*Default constructors   ( if no other constructor is explicitly declared )
-*Destructors
-*Copy constructors          (if no move constructor and move assignment operator are explicitly declared. If a destructor is declared generation of a copy constructor is deprecated)
-*Copy assignment operators  (if no move constructor and move assignment operator are explicitly declared. If a destructor is declared generation of a copy assignment operator is deprecated.) 
-*Move constructors          (if no copy constructor, copy assignment operator, move assignment operator and destructor are explicitly declared.)
-*Move assignment operators  (if no copy constructor, copy assignment operator, move constructor and destructor are explicitly declared.)
-
-Signatures:
-Default constructor 	MyClass();
-Copy constructor 	MyClass(const MyClass& other);
-Move constructor 	MyClass(MyClass&& other) noexcept;
-Copy assignment operator 	MyClass& operator=(const MyClass& other);
-Move assignment operator 	MyClass& operator=(MyClass&& other) noexcept;
-Destructor 	~MyClass();
-
-
-Default constructor:      no other constructor is explicitly declared
-Destructor
-Copy constructor:         no move constructor 
-                          no move assignment operator
-                          If a destructor is declared generation of a copy constructor is deprecated (C++11)
-Copy assignment operator: no move constructor 
-                          no move assignment operator are explicitly declared.
-                          If a destructor is declared generation of a copy assignment operator is deprecated.                                             
-Move constructor:         no copy constructor 
-                          no copy assignment operator
-                          no move assignment operator 
-                          no destructor                      
-Move assignment operator: no copy constructor
-                          no copy assignment operator
-                          no move constructor 
-                          no destructor
                           
 //============================================================================
 move semantics
@@ -884,102 +1348,6 @@ may be parallelized internally as long as this does not change the user-visible 
 
 
 //============================================================================
-C++ 11 threads
-//============================================================================
-
-http://en.cppreference.com/w/cpp/thread
-
-thread
-mutex
-condition_variable
-futures
-
-//-----------------------------------------------------------------
-
-mutex:
-mutex
-timed_mutex
-recursive_mutex
-recursive_timed_mutex
-shared_mutex (c++17)
-shared_timed_mutex (c++14)
-
-mutex methods:
-lock, try_lock, unlock
-
-shared_mutex (shared_mutex has two levels of access:
-    shared - several threads can share ownership of the same mutex. 
-    exclusive - only one thread can own the mutex. (one writer - multiple readers)):
-lock, try_lock, unlock
-lock_shared, try_lock_shared, unlock_shared
-
-
-scope locks:
-lock_guard
-unique_lock
-shared_lock
-
-{
-    std::lock_guard<std::mutex> lock(g_i_mutex);
-}    
-
-lock, try_lock - lock algorithms, avoid deadlocks.
-std::lock(e1.m, e2.m);
-std::lock_guard<std::mutex> lk1(e1.m, std::adopt_lock);
-std::lock_guard<std::mutex> lk2(e2.m, std::adopt_lock);
-
-
-Difference lock_guard - unique_lock:
-The difference is that you can lock and unlock a std::unique_lock. std::lock_guard will be locked only once on construction and unlocked on destruction.
-
-
-call_once - Executes the Callable object f exactly once, even if called from several threads. 
-
-
-//-----------------------------------------------------------------
-
-conditional_variable:
-
-void ThreadPool::runTask(ThreadFunction fun, void *userData)
-{
-    {
-        unique_lock<mutex> lock(mutexTasks);
-    
-        tasks.push(ThreadPoolTask(fun,userData));
-    }
-
-    cvTasks.notify_one();
-}
-...........................
-
-{
-    unique_lock<mutex> lock(mutexTasks);
-
-    //проверка делается под mutex-ом, так что не может быть такого, что
-    //проверили условие, потом оно изменилось, а мы попали в wait
-    while(tasks.empty())
-    {
-        cvTasks.wait(lock);                
-    }
-}
-
-std::condition_variable works only with std::unique_lock<std::mutex>
-std::condition_variable_any provides a condition variable that works with any BasicLockable object. 
-
-notify_all_at_thread_exit provides a mechanism to notify other threads that a given thread has completely finished:
-void notify_all_at_thread_exit( std::condition_variable& cond,
-                                std::unique_lock<std::mutex> lk );
-            
-Do I have to aquire lock before calling condition_variable.notify_one()?
-You do not need to be holding a lock when calling condition_variable::notify_one(), 
-but it's not wrong in the sense that it's still well defined behavior and not an error.
-However, it might be a "pessimization" since whatever waiting thread is made runnable (if any) 
-will immediately try to acquire the lock that the notifying thread holds.
-                                
-//-----------------------------------------------------------------
-
-
-//============================================================================
 c++11 futures
 //============================================================================
 small_progs/futures.cpp
@@ -1073,83 +1441,6 @@ std::async - template function async runs the function f asynchronously (potenti
 and returns a std::future that will eventually hold the result of that function call. 
 
 Simply spoken a std::packaged_task is a std::function linked to a std::future and std::async wraps and calls a std::packaged_task
-
-//============================================================================
-sockets
-//============================================================================
-
-Вызовы клиент:
-socket
-gethostbyname или getaddrinfo
-connect
-send / write
-recv / read
-close
-
-Вызовы сервер:
-socket
-bind //связывает сокет с конкретным адресом. Когда сокет создается при помощи socket(), он ассоциируется с некоторым семейством адресов, но не с конкретным адресом.
-listen
-while
-{
-    client_socket = accept
-    recv
-    send
-    close
-}
-close
-
-
-udp socket client:
-socket
-gethostbyname
-while
-{
-    sendto
-    recvfrom
-}
-close
-
-udp socket server:
-socket
-bind
-while
-{
-    recvfrom //returns client address
-    sendto   //we can send back to client address
-}    
-close
-
-//============================================================================
-tcp/ip levels
-//============================================================================
-
-Application layer (Прикладной)     HTTP, RTSP, FTP, DNS
-Transport layer   (Транспортный)   TCP, UDP
-Internet layer    (Сетевой)        IP, ICMP
-Link layer        (Канальный)      Ethernet, Wifi
-
-
-Сетевая модель OSI (open systems interconnection basic reference model):
------ Host layers -----
-Прикладной (application)
-Представительский (представления) (presentation)
-Сеансовый (session)
-Транспортный (transport)
-
------ Media Layers -----
-Сетевой (network)
-Канальный (data link)
-Физический (physical)
-
-
-Tcp/Ip - OSI - соответствие:
-TCP/IP        OSI
-
-Application - application, presentation, session
-transport   - transport
-network     - network
-Link layer  - link, physical
 
 
 //============================================================================
@@ -1361,56 +1652,6 @@ Template method
 
 
 //============================================================================
-Exceptions
-//============================================================================
-
-The standard practice for exceptions in C++ is
-Throw by value, catch by reference
-
-If the stack unwinds completely without finding a suitable catch block, the standard function terminate is called.
-You can install your own handler that terminates exception processing by calling set_terminate
-
-An exception specification  - They are now deprecated in C++
-An exception specification is a guarantee to the caller of a function that only certain exceptions will be thrown within it.
-void fetch(char *name, char *&data) throw (BadFileName, HandlesGone);
-If the function throws an exception of a type not listed in the exception specification, 
-or of a type not derived from one of the listed types, the standard function std::unexpected is called. 
-The default behavior for this function is to terminate the program.
-You can install your own handler for this by calling set_unexpected
-
-class exception;
-Standard exception class
-Base class for standard exceptions.
-All objects thrown by components of the standard library are derived from this class. 
-Therefore, all standard exceptions can be caught by catching this type by reference.
-virtual const char* what() const throw();
-
-Если ловить по значению, то catch(BaseClass ex) поймает и ChildClass,
-но класс при этом преобразуется в BaseClass.
-Если ловить по ссылке, то можно ловить полиморфно:
-catch(BaseClass &ex) поймает ChildClass и ex будет привязана к объекту ребенка.
-
-Неправильный порядок catch - сначала базовый, потом ребенок.
-g++ выдает сообщение:
-warning: exception of type ‘MyExceptionB’ will be caught by earlier handler for ‘MyExceptionA’,
-но код нормально компилирует.
-catch(...) может быть только последним, иначе ошибка:
-error: ‘...’ handler must be the last handler for its try block
-
-//размещение объекта исключения:
-most implementations seem to allocate memory on a local thread storage (heap) 
-but resort to an emergency storage (presumably static) if out of memory. 
-
-https://monoinfinito.wordpress.com/series/exception-handling-in-c/
-http://mentorembedded.github.io/cxx-abi/
-http://www.logix.cz/michal/devel/gas-cfi/
-
-
-throw 1; //базовые типы:
-при catch базовых типов преобразование не производится.
-тип исключения в catch должен точно соответствовать типу бросаемого исключения.
-
-//============================================================================
 object slicing
 //============================================================================
 
@@ -1505,34 +1746,6 @@ always make base classes' destructors virtual when they're meant to be manipulat
 If you want to prevent the deletion of an instance through a base class pointer, 
 you can make the base class destuctor protected and nonvirtual; 
 by doing so, the compiler won't let you call delete on a base class pointer.
-
-//============================================================================
-undefined/unspecified behavior
-//============================================================================
-
-undefined behaviour - неправильное использование программы - например,
-обращение за границы массива.
-
-unspecified behaviour - скорее всего все в порядке, но что точно сделает
-программа - не известно. Например:
-f(foo(), bar());
-Неизвестно, что будет вызвано раньше - foo или bar.
-
-Unspecified behavior
-Система может реализовать любое из поведений
-и не должна говорить какое именно реализовано и даже не обязательно, 
-чтобы она вела себя в таких ситуациях одинаково внутри одной программы или функции.
-unspecified behavior означает "как будет работать толком неизвестно, но все будет хорошо".
-Программа, в которой есть unspecified behavior - правильная программа.
-Пример - порядок вычисления аргументов функции.
-
-Undefined behavior
-поведение может возникать только как реакция на неправильную программу.
-Undefined behavior означает, что стандарт не накладывает каких-либо ограничений. 
-Может случиться все, что угодно.
-Пример - разыменование указателя, который равен NULL, может дать 0, 
-или любое произвольное значение, или остановку программы, 
-или сигнал какого-либо вида, или исключение.
 
 
 //============================================================================
@@ -1650,114 +1863,6 @@ template<class T> void f() { T::x * p; ... }
 T::x * p; - либо умножение, либо объявление переменной. 
 Чтобы не было непонятности нужно писать:
 typename T::x * p;
-
-//============================================================================
-Copy and swap
-//============================================================================
-
-The copy-and-swap idiom is the solution, 
-and elegantly assists the assignment operator in achieving two things: 
-avoiding code duplication, and providing a strong exception guarantee.
-
-it works by using the copy-constructor's functionality to create a local copy of the data, 
-then takes the copied data with a swap function, swapping the old data with the new data. 
-The temporary copy then destructs, taking the old data with it. We are left with a copy of the new data.
-
-In order to use the copy-and-swap idiom, we need three things: a working copy-constructor, 
-a working destructor (both are the basis of any wrapper, so should be complete anyway), and a non-throwing swap function.
-
-Нельзя использовать std::swap, т.к. он использует  copy-constructor and copy-assignment operator,
-нужно написать свой swap.
-
-class dumb_array{
-public:
-    friend void swap(dumb_array& first, dumb_array& second) // nothrow
-    {
-        using std::swap;
-        swap(first.mSize, second.mSize);
-        swap(first.mArray, second.mArray);
-    }
-};
-dumb_array& operator=(dumb_array other) // (1)
-{
-    swap(*this, other); // (2)
-
-    return *this;
-}
-
-
-//move constructor (не обязательно, просто пример):
-    dumb_array(dumb_array&& other)
-        : dumb_array() // initialize via default constructor, C++11 only
-    {
-        swap(*this, other);
-    }
-if other is being initialized with an rvalue, it will be move-constructed.     
-
-
-//============================================================================
-smart pointers
-//============================================================================
-
-weak_ptr - метод lock() возвращает shared_ptr на указываемый объект.
-Если объект уже удален, то возращается default constructed shared_ptr.
-Есть метод expired() - проверить, что объект удален.
-
-В shared_ptr может исползоваться deleter - функтор объект для удаления указателя.
-
-__shared_ptr{
-      _Tp*	   	   _M_ptr;         // Contained pointer.
-      __shared_count<_Lp>  _M_refcount;    // Reference counter.
-};
-
-__shared_count{
-    _Sp_counted_base<_Lp>*  _M_pi;
-};
-
-_Sp_counted_base{
-      _Atomic_word  _M_use_count;     // #shared
-      _Atomic_word  _M_weak_count;    // #weak + (#shared != 0)
-}
-
-_Sp_counted_deleter:_Sp_counted_base
-{
-      _Ptr             _M_ptr;  // copy constructor must not throw
-      _My_Deleter      _M_del;  // copy constructor must not throw
-};
-
-!!! It is only the control block itself which is thread-safe.
-
-//Реализация reset g++:
-void reset() noexcept
-{ 
-    __shared_ptr().swap(*this); 
-}
-
-template<typename _Tp1>
-void reset(_Tp1* __p) // _Tp1 must be complete.
-{
-  __shared_ptr(__p).swap(*this);
-}
-
-Т.е reset меняет только определенный объект shared_ptr,
-в control_block, на который раньше указывал shared_ptr уменьшается счетчик ссылок.
-Все объекты которые работали с прежним указателем будут работать с ним дальше.
-Т.е. reset нельзя вызывать на одном и том же объекте shared_ptr из разных потоков, но можно вызывать на разных объектах shared_ptr. 
-
-Можно в разных потоках создавать и удалять shared_ptr.
-Нельзя вызывать методы (reset) на одном объекте shared_ptr из разных потоков.
-Нельзя вызывать изменяющие методы на самих данных, с которыми работает shared_ptr.
-
-make_shared:
-
-fun(std::make_shared<Lhs>("foo"), std::make_shared<Rhs>("bar"));
-
-std::make_shared performs one heap-allocation, whereas calling the std::shared_ptr constructor performs two.
-std::make_shared performs a single heap-allocation accounting for the space necessary for both the control block and the data. 
-In the other case, new Obj("foo") invokes a heap-allocation for the managed data and the std::shared_ptr constructor performs another one for the control block.
-
-Disadvantage of make_shared: 
-Since there there's only one allocation, the pointee's memory cannot be deallocated until the control block is no longer in use. A weak_ptr can keep the control block alive indefinitely.
 
 
 //============================================================================
@@ -1898,74 +2003,7 @@ At that point, the overload resolution rules kick in to find the best match of a
 This is "By Design". In C++ overload resolution for this type of method works like the following.
     Starting at the type of the reference and then going to the base type, find the first type which has a method named "gogo"
     Considering only methods named "gogo" on that type find a matching overload
-
-    
-//============================================================================
-Singleton realization
-//============================================================================
-    
-class S
-{
-    public:
-        static S& getInstance()
-        {
-            static S    instance; // Guaranteed to be destroyed. Instantiated on first use. 
-            return instance;
-        }
-    private:
-        S() {};                   // Constructor? (the {} brackets) are needed here.
-        // C++ 03
-        // ========
-        // Dont forget to declare these two. You want to make sure they
-        // are unacceptable otherwise you may accidentally get copies of
-        // your singleton appearing.
-        S(S const&);              // Don't Implement
-        void operator=(S const&); // Don't implement
-
-        // C++ 11
-        // =======
-        // We can use the better technique of deleting the methods
-        // we don't want.
-    public:
-        S(S const&)               = delete;
-        void operator=(S const&)  = delete;
-
-        // Note: Scott Meyers mentions in his Effective Modern
-        //       C++ book, that deleted functions should generally
-        //       be public as it results in better error messages
-        //       due to the compilers behavior to check accessibility
-        //       before deleted status
-};
-
-То же самое: This implementation is known as Meyers' Singleton. 
-В C++11 thread safe, прежде чем C++11 не thread safe.
-
-class OnlyOne
-{
-public:
-        static const OnlyOne& Instance()
-        {
-                static OnlyOne theSingleInstance;
-                return theSingleInstance;
-        }
-private:        
-        OnlyOne(){}
-        OnlyOne(const OnlyOne& root);
-        OnlyOne& operator=(const OnlyOne&);
-};
-
-//============================================================================
-характеристики сортировок
-//============================================================================
-
-Вычислительная сложность - худшая, средняя и лучшая 
-Устойчивость (англ. stability) — устойчивая сортировка не меняет взаимного расположения элементов с одинаковыми ключами (сортировка слиянием, Сортировка вставками (Insertion sort)).
-Естественность поведения — эффективность метода при обработке уже упорядоченных или частично упорядоченных данных. 
-                           Алгоритм ведёт себя естественно, если учитывает эту характеристику входной последовательности и работает лучше.
-Использование операции сравнения - если только сравнение, то мин. трудоемкость n*log(n), если про данные известно больше, то можно быстрее.
-Внутренняя сортировка - все данные в оперативной памяти, Внешняя сортировка - данные на устройстве с последовательным доступом.  
-Требуется доп. память / не требуется доп. память.
-потребность в знаниях о структуре данных, выходящих за рамки операции сравнения
+   
 
 //============================================================================
 sizeof 
@@ -1976,31 +2014,6 @@ sizeof(expression)
 sizeof не выполняет выражение. Только по выражению определяет тип.
 Все полностью считается во время компиляции.
 Скобки ставить не обязательно, т.е. можно: sizeof expression
-
-//============================================================================
-+ c++11 new features
-//============================================================================
-
-threads
-unordered assoc container
-lambda
-range based loop
-enum class
-auto
-shared_ptr, unique_ptr
-nullptr
-
-//============================================================================
-ООП
-//============================================================================
-Инкапсуляция
-   bundling of data with the methods operating on that data
-   restricting direct access to some of the object's components
-Наследование
-   механизм языка, позволяющий описать новый класс на основе уже существующего класса или интерфейса.
-Полиморфизм
-   is the provision of a single interface to entities of different types.
-   способность программы обрабатывать данные разных типов
    
 
 //============================================================================
