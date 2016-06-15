@@ -7,7 +7,13 @@ using namespace std;
 
 class MyExceptionA{
 public:
-    MyExceptionA(char *msg):msg(msg){}
+    MyExceptionA(char *msg):msg(msg){
+        cout << "MyExceptionA(msg)\n";
+    }
+    
+    MyExceptionA(const MyExceptionA &a):msg(a.msg){
+        cout << "MyExceptionA copy ctr\n";
+    }
     
     virtual 
     string getMessage()
@@ -22,7 +28,11 @@ class MyExceptionB : public MyExceptionA{
 public:
     MyExceptionB(char *msg):MyExceptionA(msg)
     {
-    
+        cout << "MyExceptionB(msg)\n";
+    }
+
+    MyExceptionB(const MyExceptionB &a):MyExceptionA(a){
+        cout << "MyExceptionB copy ctr\n";
     }
     
     virtual 
@@ -62,10 +72,53 @@ void test_exceptions2()
     }
 }
 
+void test_exceptions3_helper(MyExceptionA &e)
+{
+    throw e;
+}
+
+void test_exceptions3()
+{    
+    try{
+        MyExceptionB ex("test");
+        test_exceptions3_helper(ex);
+    }catch(MyExceptionB &ex){
+        cout <<"catch MyExceptionB: "<< ex.getMessage()<<endl;            
+    }catch(MyExceptionA &ex){
+        cout <<"catch MyExceptionA: "<< ex.getMessage()<<endl;                
+    }catch(...){
+        cout <<"catch ...\n";
+    }    
+}
+
+void test_exceptions4()
+{
+    try{
+        try{
+            MyExceptionB ex("test");
+            throw ex;
+        }catch(MyExceptionA &ex){        
+            cout <<"catch MyExceptionA: "<< ex.getMessage()<<endl;
+            //throw ex;
+            throw;
+        }catch(...){
+            cout <<"catch ...\n";
+        }
+    }catch(MyExceptionB &ex){
+        cout <<"catch MyExceptionB: "<< ex.getMessage()<<endl;            
+    }catch(MyExceptionA &ex){
+        cout <<"catch MyExceptionA: "<< ex.getMessage()<<endl;                
+    }catch(...){
+        cout <<"catch ...\n";
+    }            
+}
+
 int main()
 {
-    test_exceptions1();
-    test_exceptions2();
+    //test_exceptions1();
+    //test_exceptions2();
+    //test_exceptions3();
+    test_exceptions4();
     
     return 0;    
 }

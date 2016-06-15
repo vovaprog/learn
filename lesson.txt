@@ -12,6 +12,7 @@
 + характеристики сортировок
 + c++11 new features
 + ООП
++ remove-erase
 
 + priority_queue
 + Преобразования типов
@@ -41,6 +42,12 @@
 + Типы наследования
 + паттерны проектирования
 + сложность вставки в vector - вывод формулы
+
+свертка ссылок (reference collapsing rules)
+deadlocks
++ вызываются ли конструкторы-присваивания при работе с vector и т.п. (да, вызываются)
+copy elision
+
 шаблоны
 Trie
 
@@ -624,6 +631,66 @@ private:
    способность программы обрабатывать данные разных типов
 
    
+//============================================================================   
+remove-erase   
+//============================================================================
+   
+После создания в vector есть место только на 1 элемент, при вставке второго он уже будет расширяться.
+При расширении vector вызываются кострукторы копий и деструкторы элементов.
+
+noexcept:
+implicitly-declared default constructors, copy constructors, move constructors, destructors, copy-assignment operators, move-assignment operators 
+are all noexcept(true) by default, unless they are required to call a function that is noexcept(false), in which case these functions are noexcept(false). 
+
+Чтобы при расширении vector вызывался move конструктор нужно написать:
+Data(Data &&d) = default;    
+или добавить noexcept
+Data(Data &&d) noexcept :x(d.x) {} 
+
+vector вызывает деструкторы с начала - к концу.   
+   
+
+v.erase(remove(v.begin(), v.end(), 10), v.end());
+
+v.erase(remove_if(v.begin(), v.end(),[](int x)
+    {
+        return x % 2 == 0;            
+    }),
+    v.end());
+
+int mod = 3;
+    
+auto afterRemove = remove_if(v.begin(), v.end(), [mod](Data &d)
+    {
+        return d.x % mod == 0;
+    });
+
+v.erase(afterRemove, v.end());
+
+remove_erase.cpp
+
+//============================================================================
+References
+//============================================================================
+
+Things that are declared as rvalue reference can be lvalues or rvalues. 
+The distinguishing criterion is: if it has a name, then it is an lvalue. Otherwise, it is an rvalue. 
+
+void foo(X&& x)
+{
+    //Внутри метода x - lvalue, т.е. будет вызван конструктор копий.
+    X anotherX = x;
+    //x еще может использоваться здесь
+}
+
+http://thbecker.net/articles/rvalue_references/section_08.html
+reference collapsing rules:
+    A& & becomes A&
+    A& && becomes A&
+    A&& & becomes A&
+    A&& && becomes A&&
+
+
 *************************************************************************************************************************************************************                          
                           
                           
@@ -2164,5 +2231,19 @@ The mutable keyword can be used for class member variables. Mutable variables ar
 
 Полиморфизм - единообразная обработка разнотипных данных.
 
+
+Если есть ссылка 
+MyExceptionA &e;
+throw e;
+При throw вызывается конструктор копий для MyExceptionA, даже если ссылка указывает на ребенка.
+
+}catch(MyExceptionA &ex){        
+    cout <<"catch MyExceptionA: "<< ex.getMessage()<<endl;
+    //throw ex; //1
+    throw;      //2
+}
+
+Если написано //1, то будет выброшен тип MyExceptionA, даже если &ex указывает на ребенка (будет вызван конструктор копий).
+Если написано //2, то будет выброшено то исключение, которое было изначально.
 
 
