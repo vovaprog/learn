@@ -43,10 +43,11 @@
 + паттерны проектирования
 + сложность вставки в vector - вывод формулы
 
-свертка ссылок (reference collapsing rules)
++ свертка ссылок (reference collapsing rules)
 deadlocks
 + вызываются ли конструкторы-присваивания при работе с vector и т.п. (да, вызываются)
 copy elision
++ static_assert
 
 шаблоны
 Trie
@@ -2096,7 +2097,26 @@ Exception safety guarantees
   Any stored data will contain valid values, even if they differ from what they were before the exception.
 * No exception safety: No guarantees are made.
 
-   
+
+//============================================================================   
+static_assert
+//============================================================================
+
+//самодельный static_assert:
+
+template<bool x> struct StaticAssertion;
+template<> struct StaticAssertion<true> {};
+#define PIRE_STATIC_ASSERT(x) \
+enum { PireStaticAssertion ## __LINE__ = sizeof(StaticAssertion<(bool) (x)>) }
+
+PIRE_STATIC_ASSERT(std::is_copy_constructible<Data>::value);
+
+
+//стандартный static_assert:
+
+static_assert(std::is_copy_constructible<Data>::value, "Data is not copy constructible");
+
+
 //============================================================================
 Разное
 //============================================================================
