@@ -1,0 +1,21 @@
+
+Create branch:
+git branch some_name
+git checkout some_name
+
+Create branch:
+git checkout -b some_name
+
+Create remote branch:
+git push -u origin fix1
+after it "git pull" will automatically work.
+
+Rebase:
+rebase ветки feature. Переключиться на ветку feature, потом:
+git rebase master
+
+Load all changes from remote:
+git fetch
+
+
+    
