@@ -89,5 +89,16 @@ git config --global alias.hist "log --graph --oneline --all"
 git config --global alias.hist2 "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
 
 
+Commit amend:
+
+$ git commit -m 'initial commit'
+$ git add forgotten_file
+$ git commit --amend
+
+You end up with a single commit – the second commit replaces the results of the first.
+
+
+
+
 detached HEAD state
 
