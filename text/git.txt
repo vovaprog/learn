@@ -17,5 +17,48 @@ git rebase master
 Load all changes from remote:
 git fetch
 
-
+Merge:
+git checkout master
+git merge fix1
     
+
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
+
+git config --global core.editor mcedit
+
+git config --global merge.tool meld    (kdiff3)
+
+Remove last commit. HEAD~Number - remove Number of commits: 
+git reset --hard HEAD~1
+
+the following command will check out out the grandparent of the current commit:
+git checkout HEAD~2
+
+
+Create new commit with undo changes from last commit
+git revert HEAD
+
+Create new commit with undo changes from last two commits
+git revert HEAD~2 
+
+
+git reset - changes commit history
+git revert - does not change commit history. Should be used on public repos.
+
+git revert should be used to undo changes on a public branch, and git reset should be reserved for undoing changes on a private branch.
+You can also think of git revert as a tool for undoing committed changes, while git reset HEAD is for undoing uncommitted changes.
+
+change file foo.py in working folder to commit HEAD~2:
+git checkout HEAD~2 foo.py
+
+git reset	   Commit-level   Discard commits in a private branch or throw away uncommited changes
+git reset	   File-level     Unstage a file
+git checkout   Commit-level   Switch between branches or inspect old snapshots
+git checkout   File-level     Discard changes in the working directory
+git revert     Commit-level   Undo commits in a public branch
+git revert     File-level     (N/A)
+
+
+detached HEAD state
+
