@@ -29,6 +29,12 @@ git config --global core.editor mcedit
 
 git config --global merge.tool meld    (kdiff3)
 
+
+Установить только для одного репозитория - перейти в папку с репозиторием:
+git config user.name "vova"
+git config user.email "vovaprog@yandex.ru"
+
+
 Remove last commit. HEAD~Number - remove Number of commits: 
 git reset --hard HEAD~1
 
