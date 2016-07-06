@@ -104,6 +104,9 @@ $ git commit --amend
 You end up with a single commit – the second commit replaces the results of the first.
 
 
+Имя ветки в командной строке (записать в .bashrc):
+export PS1='`__git_ps1 "%s"` \w \$ '
+
 
 
 detached HEAD state
