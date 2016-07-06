@@ -101,4 +101,4 @@ You end up with a single commit – the second commit replaces the results of th
 
 
 detached HEAD state
-
+git cherry pick
