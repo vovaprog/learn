@@ -108,6 +108,10 @@ You end up with a single commit – the second commit replaces the results of th
 export PS1='`__git_ps1 "%s"` \w \$ '
 
 
+Показать url, откуда получен repository:
+git remote show origin
+
+
 
 detached HEAD state
 git cherry pick
