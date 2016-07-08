@@ -1,0 +1,11 @@
+dch - change deb change log
+
+Изменения пакета:
+/usr/share/doc/package_name/changelog
+
+build, test with lintian, sign with GPG
+debuild
+
+build without signing:
+dpkg-buildpackage -uc -us
+

@@ -1,3 +1,14 @@
+Показать url, откуда получен repository:
+git remote show origin
+
+===================================================================================
+
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
+
+git config --global core.editor mcedit
+
+===================================================================================
 
 Create branch:
 git branch some_name
@@ -21,11 +32,6 @@ Merge:
 git checkout master
 git merge fix1
     
-
-git config --global user.name "John Doe"
-git config --global user.email johndoe@example.com
-
-git config --global core.editor mcedit
 
 git config --global merge.tool meld    (kdiff3)
 
@@ -72,6 +78,8 @@ git log --graph --pretty=oneline --abbrev-commit
 
 git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 
+git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
+
 
 start http browser of repository:
 git instaweb
@@ -107,11 +115,16 @@ You end up with a single commit – the second commit replaces the results of th
 Имя ветки в командной строке (записать в .bashrc):
 export PS1='`__git_ps1 "%s"` \w \$ '
 
+==============================================================================================
 
-Показать url, откуда получен repository:
-git remote show origin
+Добавить изменения в последний локальный commit:
+Как обычно изменить файлы, сделать add. Потом:
+git commit --amend -m "some change description"
 
+==============================================================================================
 
 
 detached HEAD state
 git cherry pick
+
+
