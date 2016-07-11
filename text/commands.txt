@@ -27,7 +27,7 @@ passwd some_username
 
 //======================================================================
 
-rsync -r --progress -v --delete --owner --group --chown=group_name:user_name --chmod=Dug=rx,Fug=r ./local_folder_name/ "username@address:/some/folder/name"
+rsync --dry-run -r --progress -v --delete --owner --group --chown=username:group --chmod=Dug=rx,Fug=r ./local_folder/ "username@address:remote_folder_name"
 --dry-run    - just print commands
 / slash at local folder name end is important.
 
