@@ -32,6 +32,13 @@ rsync --dry-run -r --progress -v --delete --owner --group --chown=username:group
 / slash at local folder name end is important.
 
 //======================================================================
+astyle:
+http://astyle.sourceforge.net/astyle.html
 
+Work style:
+./astyle --attach-namespaces --pad-header --indent=spaces=4 --style=kr ./LinkFastMd.cpp
+./astyle --attach-namespaces --pad-header --indent=tab --style=kr ./LinkFastMd.cpp
 
+Home style:
+./astyle --attach-namespaces --indent=spaces=4 --pad-header --pad-oper --style=allman ./609d.cpp
 

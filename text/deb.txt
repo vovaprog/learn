@@ -9,3 +9,46 @@ debuild
 build without signing:
 dpkg-buildpackage -uc -us
 
+build package. do not clean sources (do not rebuild):
+dpkg-buildpackage -nc
+
+show list of files in package:
+dpkg -c ./package.deb
+
+==========================================================
+Создание deb пакета:
+В проекте создается папка debian
+В ней 4 файла:
+changelog
+compat
+control
+rules
+
+changelog генерится программой dch
+compat содержит строку "9\n"
+
+control - данные о пакете
+
+rules - файл формата Makefile с командами сборки пакета.
+Имеет вид:
+#!/usr/bin/make -f
+
+%:
+	dh $@ --buildsystem cmake
+
+override_dh_auto_build:
+	dh_auto_build --parallel
+
+override_dh_auto_configure:
+	dh_auto_configure -S cmake -- -DBUILD_TESTS=OFF
+
+override_dh_auto_install:
+	mkdir -p debian/packagename/usr/include
+	cp -r some_folder debian/packagename/usr/include
+	dh_auto_install
+
+Для сборки вызывается dh.
+У нее есть набор стандартных target-ов.
+Если нужно сделать что-то не стандартное, то target можно переопределить как override_target_name:
+override_dh_auto_build, override_dh_auto_configure.
+

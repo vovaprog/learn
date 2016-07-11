@@ -1,0 +1,8 @@
+QtCreator debugger
+LLVM clang
+gdb
+vim (ctags)
+grep, find, locate
+python
+
+
