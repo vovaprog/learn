@@ -66,6 +66,7 @@ void printLimits()
     
     cout << "is signed: " << numeric_limits<T>::is_signed << endl;
     cout << "Non-sign bits: " << numeric_limits<T>::digits << endl;
+    cout << "digits 10: " << numeric_limits<T>::digits10 << endl;
     cout << "has infinity: " << numeric_limits<T>::has_infinity << endl;
     cout <<endl;
 }
@@ -77,6 +78,7 @@ int main ()
     printLimits<unsigned int>();
     printLimits<long int>();
     printLimits<unsigned long int>();
+    printLimits<unsigned long long int>();
     
     printLimits<char>();
     printLimits<signed char>();    

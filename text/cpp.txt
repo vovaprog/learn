@@ -1,0 +1,18 @@
+
+The format attribute specifies that a function takes printf, scanf, strftime or strfmon style 
+arguments which should be type-checked against a format string:  
+
+format (archetype, string-index, first-to-check) 
+archetype determines how the format string is interpreted, and should be printf, scanf, strftime or strfmon.
+The parameter string-index specifies which argument is the format string argument (starting from 1)
+first-to-check is the number of the first argument to check against the format string
+
+extern int my_printf (void *my_object, const char *my_format, ...) __attribute__ ((format (printf, 2, 3)));
+
+====================================================================================================
+
+
+
+
+
+

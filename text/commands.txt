@@ -42,3 +42,41 @@ Work style:
 Home style:
 ./astyle --attach-namespaces --indent=spaces=4 --pad-header --pad-oper --style=allman ./609d.cpp
 
+
+alias astyle_allman_spaces='~/tools/astyle --attach-namespaces --indent=spaces=4 --pad-header --pad-oper --style=allman --suffix=none'
+
+Не сохранять .orig файлы:
+--suffix=none
+
+//======================================================================
+
+Форматирование питона:
+autopep8 -i -v ./test_link_fastmd.py
+
+alias autopep='autopep8 -i -v'
+
+//======================================================================
+
+Форматирование LLVM:
+clang-format-3.6 --style="{BasedOnStyle: mozilla, IndentWidth: 4, BreakBeforeBraces: Allman, ColumnLimit: 100, AccessModifierOffset: -4}" ./link.h
+
+alias clangf='clang-format-3.6 -i --style="{BasedOnStyle: mozilla, IndentWidth: 4, BreakBeforeBraces: Allman, ColumnLimit: 100, AccessModifierOffset: -4}"'
+
+//======================================================================
+
+Загрузить so lib-ы из текущей папки:
+/lib64/ld-linux-x86-64.so.2 --library-path . ./program_name
+
+/lib64/ld-linux-x86-64.so.2 - загрузчик linux
+
+Показать какие so файлы и откуда будут загружены:
+/lib64/ld-linux-x86-64.so.2 --list ./program_name
+
+//======================================================================
+
+to print cmake commands run:
+make VERBOSE=1
+
+//======================================================================
+
+

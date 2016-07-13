@@ -32,6 +32,10 @@ int main()
 {
     cout <<sizeof func() <<endl;        
     
+    char buf[4];
+    
+    cout <<sizeof(buf)<<endl;
+    
     return 0;
 }
 
