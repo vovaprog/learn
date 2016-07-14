@@ -1,3 +1,13 @@
+build without signing:
+dpkg-buildpackage -uc -us
+
+==========================================================
+
+build package. do not clean sources (do not rebuild):
+dpkg-buildpackage -nc
+
+==========================================================
+
 dch - change deb change log
 
 Изменения пакета:
@@ -5,12 +15,6 @@ dch - change deb change log
 
 build, test with lintian, sign with GPG
 debuild
-
-build without signing:
-dpkg-buildpackage -uc -us
-
-build package. do not clean sources (do not rebuild):
-dpkg-buildpackage -nc
 
 show list of files in package:
 dpkg -c ./package.deb

@@ -7,9 +7,12 @@ grep, find, locate
 python
 valgrind
 
+https://github.com/cppit/jucipp
 
 + rsync
 + deb
 + astyle
 + clang-format
++ jenkins
++ chroot
 
