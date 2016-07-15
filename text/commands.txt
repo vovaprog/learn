@@ -79,4 +79,74 @@ make VERBOSE=1
 
 //======================================================================
 
+run nose tests:
+/usr/bin/nosetests "python/test.py" "-v" "--with-xunit"
 
+//======================================================================
+
+chroot
+
+Добавить в 
+/etc/schroot/schroot.conf
+
+[ubuntu1404]
+description=ubuntu1404
+directory=/home/username/chroot/ubuntu1404
+users=username
+preserve-environment=true
+
+Потом
+schroot -c ubuntu1404
+
+list all schroots: 
+schroot -l
+
+
+debootstrap --variant=buildd --arch amd64 trusty ./ubuntu1404 http://archive.ubuntu.com/ubuntu
+
+//======================================================================
+
+Создание новой home папки пользователя:
+
+mkhomedir_helper username
+
+//======================================================================
+
+btrfs:
+
+truncate -s 20G ./fs.img
+ 1998  losetup --find
+ 1999  ls
+ 2000  losetup /dev/loop0 ./fs.img 
+ 2001  mkfs.btrfs -L snapfs /dev/loop0
+ 2003  mount /dev/loop0 .
+ 2004  pwd
+ 2005  btrfs subvolume create /var/chroot/ubuntu1404/root
+ 2006  btrfs subvolume create /var/chroot/ubuntu1404/snapshots
+ 2007  btrfs subvolume delete /var/chroot/ubuntu1404/root
+ 2008  btrfs subvolume create /var/chroot/ubuntu1404/roots
+ 2009  btrfs subvolume create /var/chroot/ubuntu1404/roots/ubuntu1404
+ 2011  debootstrap --variant=buildd --arch amd64 trusty ./ubuntu1404 http://archive.ubuntu.com/ubuntu
+ 2012  btrfs subvolume list .
+ btrfs subvolume snapshot ./roots/ubuntu1404_configured/ ./snapshots/buildN
+
+delete snapshot:
+btrfs subvolume delete ./snapshots/build1
+
+Workflow:
+mount_chroot_fs.sh
+(
+losetup /dev/loop0 ./fs.img
+mount /dev/loop0 /var/chroot/ubuntu1404
+)
+btrfs subvolume list .
+btrfs subvolume snapshot ./roots/ubuntu1404_configured/ ./snapshots/buildN
+chroot /var/chroot/ubuntu1404/snapshots/buildN
+btrfs subvolume delete ./snapshots/buildN
+umount_chroot_fs.sh
+(
+umount /var/chroot/ubuntu1404
+losetup -d /dev/loop0
+)
+
+//======================================================================

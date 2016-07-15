@@ -16,6 +16,23 @@ git commit --amend -m "some change description"
 
 ===================================================================================
 
+Одновременно push изменений и тэгов. Push-атся только тэги у коммитов, которые push-атся на сервер.
+
+git push --follow-tags origin master
+
+===================================================================================
+
+git load submodules. from project folder:
+
+git submodule update --init --recursive
+
+clone with submodules:
+git clone --recursive git://github.com/foo/bar.git
+git clone --recursive -j8 git://github.com/foo/bar.git
+(second will clone submodules simultaneously)
+
+==============================================================================================
+
 Create branch:
 git branch some_name
 git checkout some_name
@@ -144,6 +161,7 @@ git push some_remote_name master
 git config --global http.postBuffer 524288000
 
 ==============================================================================================
+
 
 detached HEAD state
 git cherry pick

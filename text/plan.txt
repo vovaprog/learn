@@ -15,4 +15,6 @@ https://github.com/cppit/jucipp
 + clang-format
 + jenkins
 + chroot
-
++ schroot
++ nosetests
++ btrfs
