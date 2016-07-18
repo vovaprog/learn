@@ -1,4 +1,3 @@
-QtCreator debugger
 LLVM clang
 LLVM debugger
 gdb
@@ -6,8 +5,11 @@ vim (ctags)
 grep, find, locate
 python
 valgrind
+google code checker + other code checker
+sed - awk (Build-Depends)
 
-https://github.com/cppit/jucipp
+Eclipse CDT
+virtualbox
 
 + rsync
 + deb
@@ -18,3 +20,6 @@ https://github.com/cppit/jucipp
 + schroot
 + nosetests
 + btrfs
++ https://github.com/cppit/jucipp
++ QtCreator debugger
+

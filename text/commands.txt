@@ -150,3 +150,18 @@ losetup -d /dev/loop0
 )
 
 //======================================================================
+Debug .so started from Python script in QtCreator: 
+
+Executable:
+/lib/x86_64-linux-gnu/ld-2.19.so
+
+Arguments:
+--library-path . /usr/bin/python /home/user/some_script.py
+
+//======================================================================
+
+Чтобы появилось меню в QtCreator в Ubuntu1404:
+sudo apt-get remove appmenu-qt5
+
+//======================================================================
+

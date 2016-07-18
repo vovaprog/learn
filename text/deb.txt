@@ -56,3 +56,16 @@ override_dh_auto_install:
 Если нужно сделать что-то не стандартное, то target можно переопределить как override_target_name:
 override_dh_auto_build, override_dh_auto_configure.
 
+==========================================================
+
+Найти в каком пакете заданных файл:
+apt-file search mk-build-deps
+
+==========================================================
+
+install dependencies from debian/control file:
+mk-build-deps --install <controfile>
+
+==========================================================
+
+
