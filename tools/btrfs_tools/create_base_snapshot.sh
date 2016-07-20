@@ -5,7 +5,7 @@ FILE_NAME=./images/${IMAGE_NAME}.img
 SOURCE_NAME=$2
 DEST_NAME=$3
 
-USAGE="USAGE: create_snapshot.sh image_name source_name dest_name"
+USAGE="USAGE: create_base_snapshot.sh image_name source_name dest_name"
 if [ -z "$IMAGE_NAME" ] || [ ! -f $FILE_NAME ] || [ -z "$SOURCE_NAME" ] || [ -z "$DEST_NAME" ]
 then
     echo $USAGE
