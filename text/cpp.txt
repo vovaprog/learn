@@ -11,8 +11,9 @@ extern int my_printf (void *my_object, const char *my_format, ...) __attribute__
 
 ====================================================================================================
 
+cmake set c and c++ compiler:
+SET(CMAKE_C_COMPILER /path/to/c/compiler)
+SET(CMAKE_CXX_COMPILER /path/to/cpp/compiler)
 
-
-
-
+====================================================================================================
 

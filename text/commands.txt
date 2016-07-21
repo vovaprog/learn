@@ -165,3 +165,14 @@ sudo apt-get remove appmenu-qt5
 
 //======================================================================
 
+Google c++ static analysis:
+./cpplint.py --filter=-whitespace,-legal ./linkfastmd.cpp
+
+LLVM:
+scan-build clang++ -c ./file_name.cpp
+scan-build make -j 6 VERBOSE=1
+
+//======================================================================
+
+
+
