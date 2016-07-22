@@ -1,6 +1,7 @@
+#include <bitset>
+
 #include <iostream>
 #include <iomanip>
-#include <bitset>
 
 static void printHex(void *buf, int size)
 {
