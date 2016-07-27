@@ -9,7 +9,6 @@ google code checker + other code checker
 sed - awk (Build-Depends)
 
 Eclipse CDT
-virtualbox
 midnight commander
 
 + rsync
@@ -24,5 +23,5 @@ midnight commander
 + https://github.com/cppit/jucipp
 + QtCreator debugger
 + github pull request
-
++ virtualbox
 
