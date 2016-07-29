@@ -188,3 +188,26 @@ gnome remove icon from launch panel
 Alt + Win + RightClick    on icon.
 
 //======================================================================
+
+Run qt creator dark:
+/home/user/tools/qtcreator-4.0.3/bin/qtcreator -stylesheet=/home/user/tools/qt_creator_dark/darcula/darcula.css
+Select Dark Theme.
+Darcula, Wombat
+Выбор подсветки - Инструменты, Параметры, Текстовый редактор, Цветовая Схема.
+
+//======================================================================
+
+Install Oracle Java jre:
+
+update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8/bin/java 2000
+update-alternatives --config java
+
+List of alternatives:
+sudo update-alternatives --list java
+
+Remove invalid:
+sudo update-alternatives --remove java /usr/lib/jvm/java-8
+
+//======================================================================
+
+
