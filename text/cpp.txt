@@ -15,5 +15,9 @@ cmake set c and c++ compiler:
 SET(CMAKE_C_COMPILER /path/to/c/compiler)
 SET(CMAKE_CXX_COMPILER /path/to/cpp/compiler)
 
+Или из командной строки:
+export CC=clang-3.6
+export CXX=clang++-3.6
+
 ====================================================================================================
 

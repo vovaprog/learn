@@ -210,4 +210,35 @@ sudo update-alternatives --remove java /usr/lib/jvm/java-8
 
 //======================================================================
 
+To save core dump (can be run as user(non root) ):
+ulimit -c unlimited
 
+
+gdb core dump:
+
+gdb <executable> <core-file> 
+or 
+gdb <executable> -c <core-file> 
+or
+gdb <executable>
+...
+(gdb) core <core-file>
+
+//======================================================================
+
+set compilers for cmake: 
+2072  export CCC_ANALYZER_CPLUSPLUS=1
+2073  export CC=clang-3.6
+2074  export CXX=clang++-3.6
+
+//======================================================================
+
+grep search:
+grep -in "some word" ./restoretimelink.cc
+grep -in "return" ./*.cc ./*.h
+
+find . -name "*link*"
+
+find . -type f -iname "*.cc" -o -iname "*.h" -o -iname "*.cpp" -o -iname "*.c" | xargs grep -in --color=auto "link"
+
+//======================================================================
