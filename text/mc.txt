@@ -1,0 +1,42 @@
+Alt+I - open current dir on other panel (how Alt+O should work)
+
+Alt-y - prev dir in history
+Alt-u - next dir in history
+
+* - reverse selection (made by ins or +)
+* - select / deselect all.
+
+Columns in the panels can be sorted using mouse click
+
+press ^ in right up corner of panel with mouse - dir history
+
+Compress current directory:
+enter inside directory which you want to compress
+F2
+Menu appears. Select compress directory, or press number key.
+
+
+=========================================================================
+
+Ctrl-X I information about file
+Ctrl+x, q  - quick view (read) file in another panel.
+
+Ctrl-X D -- compare directories (release ctrl-x before pressing d) 
+Ctrl-X-C -- built-in graphic chmod command,
+Ctrl-X-O -- built-in graphic chown command
+
+Alt-H - show dir history. H capital. To enter press CapsLock first.
+        or press ^ in right up corner of panel with mouse. 
+
+Alt+Enter - current file to command line (does not work with back terminal).
+
+Ctrl+x, p  - add path from active panel to cmd line.
+
+/, ? - search in viewer.
+
+Alt+b - goto matching bracket in editor.
+
+ 
+
+
+

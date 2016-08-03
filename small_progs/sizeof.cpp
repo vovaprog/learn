@@ -20,7 +20,8 @@ typedef long long int int64;
 class A{
 public:    
     A(){cout <<"ctr\n";}
-    ~A(){cout <<"dest\n";}    
+    ~A(){cout <<"dest\n";}
+    const long long int MAX_VALUE=123;
 };
 
 A func()
@@ -35,6 +36,10 @@ int main()
     char buf[4];
     
     cout <<sizeof(buf)<<endl;
+    
+    A arr[4];
+    
+    cout <<sizeof(arr)<<endl;
     
     return 0;
 }

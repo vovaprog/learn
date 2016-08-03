@@ -1,5 +1,6 @@
-midnight commander
+midnight commander user menu
 gdb
+console text editor
 valgrind
 python
 LLVM clang
@@ -7,6 +8,7 @@ LLVM debugger
 vim (ctags)
 sed - awk (Build-Depends)
 Eclipse CDT
+zmq
 
 + rsync
 + deb
@@ -23,3 +25,5 @@ Eclipse CDT
 + virtualbox
 + grep, find, locate
 + google code checker
++ Будет ли const член класса занимать место? (будет)
++ midnight commander
