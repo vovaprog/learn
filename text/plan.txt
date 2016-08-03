@@ -1,15 +1,12 @@
+midnight commander
+gdb
+valgrind
+python
 LLVM clang
 LLVM debugger
-gdb
 vim (ctags)
-grep, find, locate
-python
-valgrind
-google code checker + other code checker
 sed - awk (Build-Depends)
-
 Eclipse CDT
-midnight commander
 
 + rsync
 + deb
@@ -24,4 +21,5 @@ midnight commander
 + QtCreator debugger
 + github pull request
 + virtualbox
-
++ grep, find, locate
++ google code checker

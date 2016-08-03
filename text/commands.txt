@@ -239,6 +239,53 @@ grep -in "return" ./*.cc ./*.h
 
 find . -name "*link*"
 
-find . -type f -iname "*.cc" -o -iname "*.h" -o -iname "*.cpp" -o -iname "*.c" | xargs grep -in --color=auto "link"
+find . -type f -iname "*.cc" -o -iname "*.cpp" -o -iname "*.c" -o -iname "*.h" -o -iname "*.hh"  | xargs grep -in --color=auto "link"
+
+findcode() {
+    if [ -z "$1" ]
+    then
+        echo "USAGE: findcode search_pattern show_lines"
+    fi
+    if [ -z "$2" ]
+    then
+        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp" \
+                    -o -iname "*.py" -o -iname "*.pl" -o -iname "Makefile" -o -iname "*.CMakeLists.txt" -o -iname "*.sh" | xargs grep -in --color=auto $1        
+    else
+        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp" \
+                    -o -iname "*.py" -o -iname "*.pl" -o -iname "Makefile" -o -iname "*.CMakeLists.txt" -o -iname "*.sh" | xargs grep -in --color=auto -C $2 $1                    
+    fi
+}
+
+findc() {
+    if [ -z "$1" ]
+    then
+        echo "USAGE: findc search_pattern show_lines"
+    fi
+    if [ -z "$2" ]
+    then
+      find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -in --color=auto $1
+    else
+      find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -in --color=auto -C $2 $1
+    fi    
+}
+
+
+#--include - case sensative
+grep -rin --include "*.c" --include "*.cc" --include "*.cpp" --include "*.h" --include "*.hh" --include "*.hpp" $1
+grep -rin --include "*.c" --include "*.cc" --include "*.cpp" --include "*.h" --include "*.hh" --include "*.hpp" \
+          --include "*.py" --include "*.pl" --include "Makefile" --include "CMakeLists.txt" $1
+
+//======================================================================
+Locate:
+
+locate file_name
+
+Update locate database:
+sudo updatedb
+
+Database:
+/var/lib/mlocate/mlocate.db
+Config:
+/etc/updatedb.conf
 
 //======================================================================
