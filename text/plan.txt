@@ -27,3 +27,5 @@ zmq
 + google code checker
 + Будет ли const член класса занимать место? (будет)
 + midnight commander
+
+

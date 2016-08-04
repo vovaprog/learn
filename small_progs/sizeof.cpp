@@ -29,6 +29,12 @@ A func()
     return A();
 }
 
+struct B{    
+    char a[20];
+    char b[16];
+    long long int x;
+};
+
 int main()
 {
     cout <<sizeof func() <<endl;        
@@ -40,6 +46,9 @@ int main()
     A arr[4];
     
     cout <<sizeof(arr)<<endl;
+
+    
+    cout <<sizeof(B) <<endl;
     
     return 0;
 }
