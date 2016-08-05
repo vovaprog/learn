@@ -9,6 +9,7 @@ alias clangf='clang-format-3.6 -i --style="{BasedOnStyle: mozilla, IndentWidth: 
 alias cpplint='python ~/tools/cpplint.py --filter=-whitespace,-legal'
 alias mk="make -j 6"
 alias cmk="cmake .."
+alias nospace='sed -i "s/[[:blank:]]*$//"'
 
 findcode() {
     if [ -z "$1" ]
