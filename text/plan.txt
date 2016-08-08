@@ -3,6 +3,7 @@ gdb
 console text editor
 valgrind
 python
+pylint, pyflakes
 LLVM clang
 LLVM debugger
 vim (ctags)
