@@ -182,8 +182,13 @@ git pull --rebase
 
 ==============================================================================================
 
-
 detached HEAD state
 git cherry pick
 
+==============================================================================================
+
+checkout remote branch:
+If there is only one remote - just do (this will create local branch):
+git fetch
+git checkout branch_name
 
