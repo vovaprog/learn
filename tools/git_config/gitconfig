@@ -1,0 +1,12 @@
+[core]
+	editor = mcedit
+[alias]
+	hist = log --graph --oneline --all
+	hist2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+	push-master = push origin HEAD:refs/for/master
+	push-production = push origin HEAD:refs/for/production
+[user]
+	email = user@mail
+	name = user name
+[http]
+	postBuffer = 524288000

@@ -1,4 +1,3 @@
-mcedit
 gdb
 console text editor
 valgrind
@@ -29,4 +28,5 @@ zmq
 + Будет ли const член класса занимать место? (будет)
 + midnight commander
 + midnight commander user menu
-
++ mcedit
++ etags, ctags

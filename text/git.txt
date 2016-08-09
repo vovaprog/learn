@@ -192,3 +192,8 @@ If there is only one remote - just do (this will create local branch):
 git fetch
 git checkout branch_name
 
+==============================================================================================
+
+undo add file:
+git reset <file>
+

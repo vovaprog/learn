@@ -311,4 +311,27 @@ sed -i "s/[[:blank:]]*$//" file_name
 
 //======================================================================
 
+set default editor mcedit:
+sudo update-alternatives --config editor
+
+//======================================================================
+
+Gnome terminal with 256 colors:
+export TERM="xterm-256color"
+
+//======================================================================
+ctags
+generate tags for mcedit:
+ctags -e -R
+
+use tags in mcedit:
+cursor at end of word, Alt+Enter
+
+human readable tags:
+ctags -R -x > ./out.txt
+
+list all classes:
+ctags -R -x --languages=C++ --C++-kinds=c
+
+//======================================================================
 

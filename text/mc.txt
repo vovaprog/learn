@@ -36,7 +36,21 @@ Ctrl+x, p  - add path from active panel to cmd line.
 
 Alt+b - goto matching bracket in editor.
 
- 
+========================================================================= 
+mcedit
 
+Alt + l    или      Escape, потом l       -      перейти к строке. 
+Ctrl + u   Undo 
+Alt + n   -  show line numbers.
+Alt + e   -  select encoding.
 
+=========================================================================
 
+ctags
+generate tags for mcedit:
+ctags -e -R
+
+use tags in mcedit:
+cursor at end of word, Alt+Enter
+
+=========================================================================
