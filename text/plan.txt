@@ -1,8 +1,8 @@
+qt creator
 gdb
 console text editor
 valgrind
 python
-pylint, pyflakes
 LLVM clang
 LLVM debugger
 vim (ctags)
@@ -29,4 +29,5 @@ zmq
 + midnight commander
 + midnight commander user menu
 + mcedit
-+ etags, ctags
++ ctags
++ pylint, pyflakes, pychecker, flake8

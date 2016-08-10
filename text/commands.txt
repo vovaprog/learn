@@ -335,3 +335,12 @@ ctags -R -x --languages=C++ --C++-kinds=c
 
 //======================================================================
 
+grep stderr:
+
+./some_command   2>&1 >/dev/null | grep 'ERROR'
+
+or this (works only in bash):
+./some_command |& grep 'ERROR'
+
+//======================================================================
+

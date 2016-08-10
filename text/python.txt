@@ -4,3 +4,7 @@ for field_name, obj1_value in vars(obj1).iteritems():
 #Get object field by name:    
     obj2_value = getattr(obj2, field_name)
 
+
+code checkers (best pylint):    
+pylint, pyflakes, pychecker, flake8
+    
