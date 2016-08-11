@@ -344,3 +344,19 @@ or this (works only in bash):
 
 //======================================================================
 
+use callgrind: 
+valgrind --tool=callgrind ./program_name --prog-args
+
+get text output:
+callgrind_annotate ./callgrind.out.1515
+
+output also callers and called functions:
+callgrind_annotate --tree=both ./callgrind.out.1515
+
+Only profile selected function and functions called from it:
+valgrind --tool=callgrind "--toggle-collect=ClassName::FunctionName*" ./program_name arg1 arg2
+
+--toggle-collect can be given multiple times to specify different functions of interest.
+
+//======================================================================
+

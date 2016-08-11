@@ -77,3 +77,10 @@ mk-build-deps --install <controfile>
 dpkg --search file_name
 
 ==========================================================
+
+install from specific repository:
+apt-get install -t repo_name package_name
+
+==========================================================
+
+

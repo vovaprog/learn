@@ -1,12 +1,13 @@
 qt creator
+callgrind
+profiler
 gdb
-console text editor
 valgrind
 python
 LLVM clang
 LLVM debugger
 vim (ctags)
-sed - awk (Build-Depends)
+sed - awk
 Eclipse CDT
 zmq
 
