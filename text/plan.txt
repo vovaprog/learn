@@ -1,5 +1,7 @@
-qt creator
 callgrind
+pandas
+
+apt-get, package tools
 profiler
 gdb
 valgrind
@@ -10,6 +12,7 @@ vim (ctags)
 sed - awk
 Eclipse CDT
 zmq
+docker
 
 + rsync
 + deb
@@ -32,3 +35,4 @@ zmq
 + mcedit
 + ctags
 + pylint, pyflakes, pychecker, flake8
++ qt creator

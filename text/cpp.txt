@@ -25,3 +25,12 @@ export CXX=clang++-3.6
 set(CMAKE_BUILD_TYPE Debug)
 
 ====================================================================================================
+
+qtcreator qt creator search project - Ctrl + Shift + f
+Alt + 0    -   hide side bar
+Ctrl + mouse click symbol - go to declaration
+Ctrl + Shift + V  - clipboard history
+Ctrl + /   - comment with line comments
+Ctrl + Space - autocomplete
+
+====================================================================================================
