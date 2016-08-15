@@ -1,4 +1,4 @@
-callgrind
+unaligned int64 access
 pandas
 
 apt-get, package tools
@@ -36,3 +36,6 @@ docker
 + ctags
 + pylint, pyflakes, pychecker, flake8
 + qt creator
++ callgrind
++ cachegrind
+
