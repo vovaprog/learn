@@ -367,4 +367,8 @@ cmake -G "Eclipse CDT4 - Unix Makefiles" ./
 
 //======================================================================
 
+format flash ntfs
+sudo mkfs.ntfs -L label /dev/sdf1
+sudo mkfs.ntfs --fast -L label /dev/sdf1
 
+//======================================================================

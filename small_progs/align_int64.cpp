@@ -15,6 +15,16 @@ pack count:10000000, repeat:100        : 1129
 aligned count:10000000, repeat:100     : 1985
 pack count:100, repeat:10000000        : 721
 aligned count:100, repeat:10000000     : 894
+
+core 2 quad q9550:
+sizeof DataPacked: 9
+sizeof Data: 16
+sizeof buf packed: 90000000
+sizeof buf: 160000000
+pack count:10000000, repeat:100        : 3443
+aligned count:10000000, repeat:100     : 6033
+pack count:100, repeat:10000000        : 1127
+aligned count:100, repeat:10000000     : 945
 */
 
 class SimpleProfiler
