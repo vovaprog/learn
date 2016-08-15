@@ -1,10 +1,13 @@
-unaligned int64 access
+valgrind Memcheck
+valgrind Massif
+valgrind Helgrind
+valgrind DRD
+google sparse hash table
+mem, gather
 pandas
-
 apt-get, package tools
 profiler
 gdb
-valgrind
 python
 LLVM clang
 LLVM debugger
@@ -38,4 +41,4 @@ docker
 + qt creator
 + callgrind
 + cachegrind
-
++ unaligned int64 access
