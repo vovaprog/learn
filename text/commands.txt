@@ -230,6 +230,13 @@ gdb <executable>
 ...
 (gdb) core <core-file>
 
+
+start program with arguments:
+gdb --args ./program arg1 arg2 arg3
+
+break on first throw:
+gdb$ catch throw
+
 //======================================================================
 
 set compilers for cmake: 
@@ -372,3 +379,10 @@ sudo mkfs.ntfs -L label /dev/sdf1
 sudo mkfs.ntfs --fast -L label /dev/sdf1
 
 //======================================================================
+
+get motherboard info (non root):
+
+cat /sys/devices/virtual/dmi/id/board_{vendor,name,version}
+
+//======================================================================
+

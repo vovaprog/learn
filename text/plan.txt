@@ -42,3 +42,5 @@ docker
 + callgrind
 + cachegrind
 + unaligned int64 access
++ boost::lockfree::spsc_queue
+
