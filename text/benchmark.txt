@@ -41,3 +41,16 @@ workVirtualBox3 / work3 = 1.44
 workVirtualBox6 / work6 = 1.27
 
 
+server (Core2 Duo CPU T7700  @ 2.40GHz
+cpu MHz		: 3400.022
+cache size	: 4096 KB
+cpu cores	: 1):
+-j 1
+real	0m18.557s
+user	0m17.624s
+sys	0m0.680s
+
+-j 3
+real	0m19.651s
+user	0m18.312s
+sys	0m1.060s

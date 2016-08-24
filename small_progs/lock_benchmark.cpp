@@ -21,6 +21,20 @@ t: 3860123
 t: 3763813
 t: 3848070
 t: 3780573
+
+
+core2 quad q9550:
+spinlock:
+t: 5167227
+t: 5130392
+t: 5173901
+t: 5161747
+
+mutex:
+t: 2190857
+t: 2116585
+t: 2102457
+t: 2111986
 */
 
 
@@ -70,7 +84,7 @@ int main()
 {
     for(int i=0; i<4 ;++i)
     {
-        new thread(threadEntry2);
+        new thread(threadEntry);
     }    
     
     for(long long int i=0;;++i)
@@ -84,8 +98,8 @@ int main()
                 long long int xCopy;
                 
                 {
-                   //std::lock_guard<std::mutex> lock(mtx);
-                   std::lock_guard<Spinlock> lock(spinlock);
+                   std::lock_guard<std::mutex> lock(mtx);
+                   //std::lock_guard<Spinlock> lock(spinlock);
                    xCopy = x;
                 }       
                                 
