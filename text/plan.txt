@@ -1,4 +1,3 @@
-std mutex implementation
 valgrind Memcheck
 valgrind Massif
 valgrind Helgrind
@@ -44,4 +43,5 @@ docker
 + cachegrind
 + unaligned int64 access
 + boost::lockfree::spsc_queue
++ spinlock
 
