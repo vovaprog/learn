@@ -386,3 +386,9 @@ cat /sys/devices/virtual/dmi/id/board_{vendor,name,version}
 
 //======================================================================
 
+show running threads:
+
+ps -eL -o user,pid,psr,comm,args
+htop
+
+//======================================================================

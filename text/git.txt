@@ -2,6 +2,19 @@
 git remote show origin
 
 ===================================================================================
+Выпуск пакета:
+dch -v 0.28.37
+git tag -a v0.28.37 -m "version 0.28.37"
+
+push с тегами:
+git push --follow-tags origin master
+
+push тега отдельно:
+git push origin v0.35.0
+
+===================================================================================
+
+===================================================================================
 
 git config --global user.name "John Doe"
 git config --global user.email johndoe@example.com

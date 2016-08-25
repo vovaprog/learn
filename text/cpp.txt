@@ -39,3 +39,20 @@ std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 std::this_thread::yield();
 
 ====================================================================================================
+
+set thread name:
+
+pthread_setname_np(pthread_self(), threadName.c_str());
+
+
+set thread affinity:
+
+cpu_set_t cpuset;
+
+CPU_ZERO(&cpuset);
+CPU_SET(cpu, &cpuset);
+
+pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
+
+====================================================================================================
+
