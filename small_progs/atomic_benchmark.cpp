@@ -3,7 +3,16 @@
 #include "../SimpleProfiler.h"
 
 using namespace std;
-
+/*
+home core2quad q9550:
+ints: 153
+atomics: 1063
+ints cas: 149
+atomics cas: 1509
+atomics cas relaxed: 1507
+atomics fetch_add: 1060
+atomics fetch_add relaxed: 1060
+*/
 
 const int BSIZE = 100000000;
 
