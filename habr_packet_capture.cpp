@@ -276,7 +276,7 @@ bool execute_strict_cpu_affinity = false;
 
 bool use_multiple_fanout_processes = true;
 
-int habr_packet_capture_main() {
+int main() {
     int fanout_group_id = getpid() & 0xffff;
 
     boost::thread speed_printer_thread( speed_printer );

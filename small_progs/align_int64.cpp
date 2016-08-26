@@ -103,21 +103,25 @@ int main()
     cout << "sizeof buf packed: " << sizeof(bufPack) << endl;
     cout << "sizeof buf: " << sizeof (buf) << endl;
 
+    memset(bufPack, 0, sizeof(DataPacked) * BUF_SIZE);
     {
         SimpleProfiler prof("pack count:10000000, repeat:100        ");
         writeBuf(bufPack, BUF_SIZE, 100);
     }
 
+    memset(buf, 0, sizeof(Data) * BUF_SIZE);
     {
         SimpleProfiler prof("aligned count:10000000, repeat:100     ");
         writeBuf(buf, BUF_SIZE, 100);
     }
 
+    memset(bufPack, 0, sizeof(DataPacked) * BUF_SIZE);
     {
         SimpleProfiler prof("pack count:100, repeat:10000000        ");
         writeBuf(bufPack, 100, 10000000);
     }
 
+    memset(buf, 0, sizeof(Data) * BUF_SIZE);
     {
         SimpleProfiler prof("aligned count:100, repeat:10000000     ");
         writeBuf(buf, 100, 10000000);

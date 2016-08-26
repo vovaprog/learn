@@ -1,3 +1,4 @@
+htop
 valgrind Memcheck
 valgrind Massif
 valgrind Helgrind
