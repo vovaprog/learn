@@ -25,6 +25,16 @@ pack count:10000000, repeat:100        : 3443
 aligned count:10000000, repeat:100     : 6033
 pack count:100, repeat:10000000        : 1127
 aligned count:100, repeat:10000000     : 945
+
+atom n455:
+sizeof DataPacked: 9
+sizeof Data: 12
+sizeof buf packed: 90000000
+sizeof buf: 120000000
+pack count:10000000, repeat:100        : 6852
+aligned count:10000000, repeat:100     : 8986
+pack count:100, repeat:10000000        : 5198
+aligned count:100, repeat:10000000     : 4372
 */
 
 class SimpleProfiler
