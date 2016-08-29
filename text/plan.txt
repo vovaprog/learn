@@ -1,9 +1,10 @@
+socket: send stream
 valgrind Memcheck
 valgrind Massif
 valgrind Helgrind
 valgrind DRD
 google sparse hash table
-mem, gather
+mem, rate 
 pandas
 apt-get, package tools
 profiler
@@ -44,4 +45,5 @@ docker
 + unaligned int64 access
 + boost::lockfree::spsc_queue
 + spinlock
-
++ gather
++ htop

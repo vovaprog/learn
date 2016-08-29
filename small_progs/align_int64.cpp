@@ -25,6 +25,16 @@ pack count:10000000, repeat:100        : 3443
 aligned count:10000000, repeat:100     : 6033
 pack count:100, repeat:10000000        : 1127
 aligned count:100, repeat:10000000     : 945
+
+atom n455:
+sizeof DataPacked: 9
+sizeof Data: 12
+sizeof buf packed: 90000000
+sizeof buf: 120000000
+pack count:10000000, repeat:100        : 6852
+aligned count:10000000, repeat:100     : 8986
+pack count:100, repeat:10000000        : 5198
+aligned count:100, repeat:10000000     : 4372
 */
 
 class SimpleProfiler
@@ -103,21 +113,25 @@ int main()
     cout << "sizeof buf packed: " << sizeof(bufPack) << endl;
     cout << "sizeof buf: " << sizeof (buf) << endl;
 
+    memset(bufPack, 0, sizeof(DataPacked) * BUF_SIZE);
     {
         SimpleProfiler prof("pack count:10000000, repeat:100        ");
         writeBuf(bufPack, BUF_SIZE, 100);
     }
 
+    memset(buf, 0, sizeof(Data) * BUF_SIZE);
     {
         SimpleProfiler prof("aligned count:10000000, repeat:100     ");
         writeBuf(buf, BUF_SIZE, 100);
     }
 
+    memset(bufPack, 0, sizeof(DataPacked) * BUF_SIZE);
     {
         SimpleProfiler prof("pack count:100, repeat:10000000        ");
         writeBuf(bufPack, 100, 10000000);
     }
 
+    memset(buf, 0, sizeof(Data) * BUF_SIZE);
     {
         SimpleProfiler prof("aligned count:100, repeat:10000000     ");
         writeBuf(buf, 100, 10000000);
