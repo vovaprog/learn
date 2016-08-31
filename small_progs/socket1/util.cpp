@@ -27,7 +27,7 @@ int readBytes(int fd, char *buf, int numberOfBytes)
         }
         bytesRead += curBytes;
     }
-    return 0;
+    return bytesRead;
 }
 
 int writeBytes(int fd, char *buf, int numberOfBytes)
@@ -42,5 +42,5 @@ int writeBytes(int fd, char *buf, int numberOfBytes)
         }
         bytesWritten += curBytes;
     }
-    return 0;
+    return bytesWritten;
 }

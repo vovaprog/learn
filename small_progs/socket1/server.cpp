@@ -27,7 +27,7 @@ void sig_int_handler(int i)
 }
 
 
-void processRequest(int sock)
+void processRequest1(int sock)
 {
     Message msg;
 
@@ -38,9 +38,26 @@ void processRequest(int sock)
         return;
     }
     msg.id = msg.id + 1;
-    printf("new id: %llu\n",msg.id);
+
     writeBytes(sock, (char*)&msg, sizeof(Message));
     close(sock);
+}
+
+void processRequest2(int sock)
+{
+    Message msg;    
+    while(true)
+    {
+        int ret = readBytes(sock, (char*)&msg, sizeof(Message));
+        if(ret != sizeof(Message))
+        {
+            close(sock);
+            return;
+        }
+        msg.id = msg.id + 1;
+    
+        writeBytes(sock, (char*)&msg, sizeof(Message));
+    }
 }
 
 
@@ -97,7 +114,8 @@ bool server()
         }
         else
         {
-            processRequest(clientSocket);
+            //processRequest(clientSocket);
+            processRequest2(clientSocket);            
         }
     }
 }
