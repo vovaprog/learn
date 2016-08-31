@@ -56,3 +56,10 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
 
 ====================================================================================================
 
+sleep for milliseconds:
+
+std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+====================================================================================================
+
+
