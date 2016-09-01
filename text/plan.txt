@@ -18,6 +18,7 @@ Eclipse CDT
 zmq
 docker
 
++ mfast
 + rsync
 + deb
 + astyle
@@ -47,3 +48,5 @@ docker
 + spinlock
 + gather
 + htop
++ ticket/cas based thread pool
+

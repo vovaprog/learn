@@ -15,7 +15,7 @@ public:
     }
     inline void print()
     {
-        if((counter & 0x0fff) == 0)
+        if((counter & 0x00ff) == 0)
         {
             long long int millis = getMilliseconds();
     
@@ -34,6 +34,12 @@ public:
     inline void incAndPrint()
     {
         inc();
+        print();
+    }
+    
+    inline void addAndPrint(long long int add)
+    {
+        counter += add;
         print();
     }
     

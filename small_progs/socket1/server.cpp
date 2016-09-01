@@ -61,7 +61,7 @@ void processRequest2(int sock)
 }
 
 
-bool server()
+bool initSocket()
 {
     signal(SIGINT, sig_int_handler);
 
@@ -81,8 +81,9 @@ bool server()
         return false;
     }
 
-    struct sockaddr_in serv_addr, cli_addr;
-    socklen_t clilen = sizeof(sockaddr_in);
+    struct sockaddr_in serv_addr;
+    /*, cli_addr;
+    socklen_t clilen = sizeof(sockaddr_in);*/
 
     memset(&serv_addr, 0, sizeof(struct sockaddr_in));
 
@@ -103,7 +104,20 @@ bool server()
         close(sockfd);
         return false;
     }
+    
+    return true;
+}
 
+bool server1()
+{
+    if(!initSocket())
+    {
+        return false;
+    }
+
+    struct sockaddr_in cli_addr;
+    socklen_t clilen = sizeof(sockaddr_in);    
+    
     while(true)
     {
         int clientSocket = accept(sockfd, (struct sockaddr*) &cli_addr, &clilen);
@@ -114,15 +128,64 @@ bool server()
         }
         else
         {
-            //processRequest(clientSocket);
-            processRequest2(clientSocket);            
+            processRequest1(clientSocket);
+            //processRequest2(clientSocket);            
+        }
+    }
+}
+
+bool server2()
+{
+    if(!initSocket())
+    {
+        return false;
+    }
+
+    struct sockaddr_in cli_addr;
+    socklen_t clilen = sizeof(sockaddr_in);    
+    
+    printf("q\n");
+    while(true)
+    {
+        int clientSocket = accept(sockfd, (struct sockaddr*) &cli_addr, &clilen);
+
+        if(clientSocket < 0)
+        {
+            printf("accept failed\r\n");
+        }
+        else
+        {
+            printf("1\n");
+            
+            unsigned char buf[1000];
+            
+            while(true)
+            {
+                int curBytes = read(clientSocket, buf, 1000);
+
+                for(int i=0;i<curBytes-1;++i)
+                {
+                    if(!(buf[i] == 255 && buf[i+1]==0 || buf[i] + 1 == buf[i+1]))
+                    {
+                        printf("invalid data\n");
+                        return false;
+                    }
+                }
+                
+                if(writeBytes(clientSocket, (char*)buf, curBytes)!=curBytes)
+                {
+                    printf("writeBytes failed\n");
+                    return false;
+                }
+            }
         }
     }
 }
 
 int main()
 {
-    server();
+    //server1();
+    server2();
 
     return 0;
 }
