@@ -15,6 +15,9 @@ enter inside directory which you want to compress
 F2
 Menu appears. Select compress directory, or press number key.
 
+=========================================================================
+
+Ctrl + Space on selected folder - show SIZE of folder directory
 
 =========================================================================
 

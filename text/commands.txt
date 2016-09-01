@@ -220,6 +220,14 @@ To save core dump (can be run as user(non root) ):
 ulimit -c unlimited
 
 
+Куда пишется файл core записано в файле:
+/proc/sys/kernel/core_pattern
+
+Например:
+/opt/coredumps/core.%e.%p.%t
+|/usr/share/apport/apport %p %s %c %P
+
+
 gdb core dump:
 
 gdb <executable> <core-file> 
