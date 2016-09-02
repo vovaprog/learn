@@ -26,31 +26,33 @@ def colorize(line, keys, types, vals, preps):
 
 
 def colorize_cpp(line):
-    keys_string = """auto   const   struct
-break  continue  else    for            switch   void
-case   default   enum    goto   register  sizeof  typedef  volatile
-char        do            extern     if     return     static  union   while
-asm         dynamic_cast  namespace  reinterpret_cast  try
-explicit    new           static_cast       typeid
-catch       operator      template          typename
-class       friend        private    this              using
-const_cast  inline        public     throw             virtual
-delete      mutable       protected                
-and      bitand   compl   not_eq   or_eq   xor_eq
-and_eq   bitor    not     or       xor"""
+    keys_string = """     auto        const            struct
+break       continue      else        for              switch   void
+case        default       enum        goto             register  sizeof  typedef  volatile
+char        do            extern      if               return     static  union   while
+asm         dynamic_cast  namespace   reinterpret_cast try
+explicit    new           static_cast typeid
+catch       operator      template    typename
+class       friend        private     this             using
+const_cast  inline        public      throw            virtual
+delete      mutable       protected
+and         bitand        compl       not_eq   or_eq   xor_eq
+and_eq      bitor         not         or       xor"""
 
-    keys = keys_string.split()    
-    types = ['int', 'char', 'short', 'long', 'double', 'float', 'void', 'unsigned', 'signed', 'bool', 'wchar_t']
+    keys = keys_string.split()
+    types = ['int', 'char', 'short', 'long', 'double',
+             'float', 'void', 'unsigned', 'signed', 'bool', 'wchar_t']
     vals = ['true', 'false']
     preps = ['include', '#', 'define', 'ifdef', 'ifndef']
 
     return colorize(line, keys, types, vals, preps)
 
+
 def colorize_python(line):
-    keys = keyword.kwlist    
+    keys = keyword.kwlist
     types = ['int', 'float', 'bool', 'str']
     vals = ['True', 'False']
-    preps = []    
+    preps = []
 
     return colorize(line, keys, types, vals, preps)
 
@@ -69,7 +71,8 @@ file_name = sys.argv[1]
 cat_output = subprocess.check_output(['cat', file_name])
 
 fname = file_name.lower()
-if fname.endswith('.cpp') or fname.endswith('.c') or fname.endswith('.cc') or fname.endswith('.h') or fname.endswith('.hpp') or fname.endswith('.hh'):
+if (fname.endswith('.cpp') or fname.endswith('.c') or fname.endswith('.cc') or 
+    fname.endswith('.h') or fname.endswith('.hpp') or fname.endswith('.hh')):
     colorize_text(cat_output, colorize_cpp)
 elif fname.endswith('.py'):
     colorize_text(cat_output, colorize_python)

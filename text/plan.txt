@@ -51,3 +51,4 @@ docker
 + ticket/cas based thread pool
 + flask basic auth
 + git blame
++ python color output

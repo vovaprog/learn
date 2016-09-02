@@ -4,6 +4,7 @@ from flask import request, Response
 from flask import render_template
 from calendar import Calendar
 from datetime import date
+import calendar
 
 if __name__ == "__main__":
     app = Flask(__name__)
@@ -65,6 +66,8 @@ def page(year, month):
 
     data['prev_month_link'] = str.format('/{0}/{1}', prev_year, prev_month)
     data['next_month_link'] = str.format('/{0}/{1}', next_year, next_month)
+
+    data["title"] = "{0} {1}".format(year, calendar.month_name[month])
 
     return render_template('page.html', data = data)
 
