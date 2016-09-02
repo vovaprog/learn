@@ -10,11 +10,21 @@ a:hover   {color:{{settings['link_color']}}; text-decoration:underline; font-fam
 </head>
 {#<body bgcolor="{{settings['bgcolor']}}">#}
 <body>
-<table align="center" cellspacing="3px" cellpadding="0px" width="90%" height="90%" border="1">
+<a href="{{data.prev_month_link}}">prev</a>
+<a href="{{data.next_month_link}}">next</a>
+<table align="center" cellspacing="1px" cellpadding="0px" width="90%" height="90%" border="1">
 {% for week in data.month %}
 <tr>
     {% for date in week %}
-        <td>{{ date.day }}</td>        
+    <td valign="top">
+        <table width="100%">
+        <tr>
+        <td bgcolor="#90ff90">{{ date.day }}</td>
+        </tr>
+        <tr><td bgcolor="#9090ff"><a href="test" style="color:black;text-decoration:none;">test</a></td></tr>
+        <tr><td bgcolor="#90ffff"><a href="test2" style="color:black;text-decoration:none;">test 2</a></td></tr>        
+        </table>
+    </td>        
     {% endfor %}
 </tr>
 {% endfor %}
