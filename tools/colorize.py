@@ -26,7 +26,7 @@ def colorize(line, keys, types, vals, preps):
 
 
 def colorize_cpp(line):
-    keys_string = """     auto        const            struct
+    keys = """     auto        const            struct
 break       continue      else        for              switch   void
 case        default       enum        goto             register  sizeof  typedef  volatile
 char        do            extern      if               return     static  union   while
@@ -37,21 +37,18 @@ class       friend        private     this             using
 const_cast  inline        public      throw            virtual
 delete      mutable       protected
 and         bitand        compl       not_eq   or_eq   xor_eq
-and_eq      bitor         not         or       xor"""
-
-    keys = keys_string.split()
-    types = ['int', 'char', 'short', 'long', 'double',
-             'float', 'void', 'unsigned', 'signed', 'bool', 'wchar_t']
-    vals = ['true', 'false']
-    preps = ['include', '#', 'define', 'ifdef', 'ifndef']
+and_eq      bitor         not         or       xor""".split()
+    types = 'int char short long double float void unsigned signed bool wchar_t'.split()
+    vals = 'true false'.split()
+    preps = 'include # define ifdef ifndef endif'.split()
 
     return colorize(line, keys, types, vals, preps)
 
 
 def colorize_python(line):
     keys = keyword.kwlist
-    types = ['int', 'float', 'bool', 'str']
-    vals = ['True', 'False']
+    types = 'int float bool str'.split()
+    vals = 'True False'.split()
     preps = []
 
     return colorize(line, keys, types, vals, preps)

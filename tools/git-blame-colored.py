@@ -26,7 +26,7 @@ def colorize(line, keys, types, vals, preps):
 
 
 def colorize_cpp(line):
-    keys_string = """     auto        const            struct
+    keys = """     auto        const            struct
 break       continue      else        for              switch   void
 case        default       enum        goto             register  sizeof  typedef  volatile
 char        do            extern      if               return     static  union   while
@@ -37,24 +37,22 @@ class       friend        private     this             using
 const_cast  inline        public      throw            virtual
 delete      mutable       protected
 and         bitand        compl       not_eq   or_eq   xor_eq
-and_eq      bitor         not         or       xor"""
-
-    keys = keys_string.split()
-    types = ['int', 'char', 'short', 'long', 'double',
-             'float', 'void', 'unsigned', 'signed', 'bool', 'wchar_t']
-    vals = ['true', 'false']
-    preps = ['include', '#', 'define', 'ifdef', 'ifndef']
+and_eq      bitor         not         or       xor""".split()
+    types = 'int char short long double float void unsigned signed bool wchar_t'.split()
+    vals = 'true false'.split()
+    preps = 'include # define ifdef ifndef endif'.split()
 
     return colorize(line, keys, types, vals, preps)
 
 
 def colorize_python(line):
     keys = keyword.kwlist
-    types = ['int', 'float', 'bool', 'str']
-    vals = ['True', 'False']
+    types = 'int float bool str'.split()
+    vals = 'True False'.split()
     preps = []
 
     return colorize(line, keys, types, vals, preps)
+
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -62,16 +60,15 @@ sys.setdefaultencoding('utf8')
 file_name = sys.argv[1]
 fname = file_name.lower()
 
-blame_output = subprocess.check_output(
-    ['git', 'blame', '--line-porcelain', file_name])
+blame_output = subprocess.check_output(['git', 'blame', '--line-porcelain', file_name])
 
 
 author_color = {}
 
 colors = ['grey', 'red', 'green',  'yellow',
           'blue', 'magenta', 'cyan', 'white']
-color_index = 0
 
+color_index = 0
 line_number = 1
 max_author = 0
 
@@ -101,7 +98,7 @@ for line in blame_output.splitlines():
         code = m.group(1)
 
         if (fname.endswith('.cpp') or fname.endswith('.c') or fname.endswith('.cc') or
-            fname.endswith('.h') or fname.endswith('.hpp') or fname.endswith('.hh')):
+                fname.endswith('.h') or fname.endswith('.hpp') or fname.endswith('.hh')):
             code = colorize_cpp(code)
         elif fname.endswith('.py'):
             code = colorize_python(code)
