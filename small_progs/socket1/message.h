@@ -2,7 +2,7 @@
 #define MESSAGE_H
 
 struct Message{
-    unsigned long long int id;
+    unsigned long long int id;    
     char data[100];
 };
 

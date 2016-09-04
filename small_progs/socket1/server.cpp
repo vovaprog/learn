@@ -134,6 +134,22 @@ bool server1()
     }
 }
 
+const int BUF_SIZE = 1000000;
+unsigned char buf[BUF_SIZE];
+
+inline void checkBuf()
+{
+    for(int i=0;i<BUF_SIZE-1;++i)
+    {
+        if(!(buf[i] == 255 && buf[i+1]==0 || buf[i] + 1 == buf[i+1]))
+        {
+            printf("invalid data\n");
+            exit(-1);
+        }
+    }
+}
+
+
 bool server2()
 {
     if(!initSocket())
@@ -144,7 +160,6 @@ bool server2()
     struct sockaddr_in cli_addr;
     socklen_t clilen = sizeof(sockaddr_in);    
     
-    printf("q\n");
     while(true)
     {
         int clientSocket = accept(sockfd, (struct sockaddr*) &cli_addr, &clilen);
@@ -154,25 +169,22 @@ bool server2()
             printf("accept failed\r\n");
         }
         else
-        {
-            printf("1\n");
-            
-            unsigned char buf[1000];
-            
+        {            
             while(true)
-            {
-                int curBytes = read(clientSocket, buf, 1000);
-
-                for(int i=0;i<curBytes-1;++i)
-                {
-                    if(!(buf[i] == 255 && buf[i+1]==0 || buf[i] + 1 == buf[i+1]))
-                    {
-                        printf("invalid data\n");
-                        return false;
-                    }
-                }
+            {                
+                //int curBytes = read(clientSocket, buf, BUF_SIZE);
                 
-                if(writeBytes(clientSocket, (char*)buf, curBytes)!=curBytes)
+                if(readBytes(clientSocket, (char*)buf, BUF_SIZE)!=BUF_SIZE)
+                {
+                    printf("readBytes failed\n");
+                    return false;
+                }
+
+                //printf("read: %d\n",curBytes);
+                
+                //checkBuf();
+                
+                if(writeBytes(clientSocket, (char*)buf, BUF_SIZE)!=BUF_SIZE)
                 {
                     printf("writeBytes failed\n");
                     return false;

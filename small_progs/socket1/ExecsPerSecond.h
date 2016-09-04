@@ -9,13 +9,19 @@
 
 class ExecsPerSecond {
 public:
+    ExecsPerSecond() = default;
+    
+    ExecsPerSecond(unsigned int checkInterval): checkInterval(checkInterval)
+    {
+    }
+    
     inline void inc()
     {
         ++counter;
     }
     inline void print()
     {
-        if((counter & 0x00ff) == 0)
+        if(counter - prevCounter >= checkInterval)
         {
             long long int millis = getMilliseconds();
     
@@ -54,6 +60,7 @@ private:
     long long int prevMillis = 0;
     long long int counter = 0;
     long long int prevCounter = 0;
+    unsigned int checkInterval = 1000;
 };
 
 #endif

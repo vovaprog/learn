@@ -136,19 +136,32 @@ int client2()
     return 0;
 }
 
+const int BUF_SIZE = 1000000;   
+unsigned char buf[BUF_SIZE];
+
+inline void checkBuf(int &readCounter)
+{
+    for(int i=0;i<BUF_SIZE;++i)
+    {
+        if(buf[i] != readCounter)
+        {
+            printf("invalid data %d : %d\n",(int)buf[i],(int)readCounter);
+            exit(-1);            
+        }
+        readCounter = ((readCounter + 1) & 0xff);
+    }    
+}
+
 int client3()
 {
     int socket_fd = clientConnect();
     
-    ExecsPerSecond execCounter;
+    ExecsPerSecond execCounter(100000);
     
     int charCounter = 0, readCounter = 0;
     
     while(true)
-    {
-        const int BUF_SIZE = 1000;
-        unsigned char buf[BUF_SIZE];
-        
+    {        
         for(int i=0;i<BUF_SIZE;++i)
         {
             buf[i]=charCounter;
@@ -162,27 +175,16 @@ int client3()
             return -1;
         }
         
-        int readBytes = read(socket_fd, (char*)buf, BUF_SIZE);
-        
-        if(readBytes<=0)
+        if(readBytes(socket_fd, (char*)buf, BUF_SIZE)!=BUF_SIZE)
         {
             printf("readBytes failed\n");
             close(socket_fd);
             return -1;            
         }
+
+        //checkBuf(readCounter);
         
-        for(int i=0;i<readBytes;++i)
-        {
-            if(buf[i] != readCounter)
-            {
-                printf("invalid data %d : %d\n",(int)buf[i],(int)readCounter);
-                close(socket_fd);
-                return -1;
-            }
-            readCounter = ((readCounter + 1) & 0xff);
-        }
-        
-        execCounter.addAndPrint(readCounter);
+        execCounter.addAndPrint(BUF_SIZE);       
     }
     
     close(socket_fd);
