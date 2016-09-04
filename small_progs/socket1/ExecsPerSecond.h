@@ -54,7 +54,7 @@ private:
     {
         struct timeval tv;
         gettimeofday(&tv, 0);
-        return (long long int)((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+        return (((long long int)tv.tv_sec * 1000) + ((long long int)tv.tv_usec / 1000));
     }    
     
     long long int prevMillis = 0;
