@@ -4,6 +4,9 @@
 int readBytes(int fd, char *buf, int numberOfBytes);
 int writeBytes(int fd, char *buf, int numberOfBytes);
 
+int socketConnect(const char *address, int port);
+
+int socketListen(int port);
 
 #endif
 
