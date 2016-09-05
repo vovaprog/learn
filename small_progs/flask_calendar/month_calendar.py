@@ -5,6 +5,8 @@ from flask import render_template
 from calendar import Calendar
 from datetime import date
 import calendar
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
+
 
 if __name__ == "__main__":
     app = Flask(__name__)
@@ -44,11 +46,21 @@ def get_next_month(year, month):
     else:
         return year, month + 1
 
+class TaskEditForm(Form):
+    text = StringField('text', [validators.Length(min=0, max=1000)])
+    
 
-@app.route('/',defaults={'year':0, 'month':0})
-@app.route('/<year>/<month>')
+@app.route('/create-task/<year>/<month>/<day>')
 @requires_auth
-def page(year, month):
+def create_task_page(year, month, day):
+    form = TaskEditForm()
+    return render_template('edit-task.html', form=form)
+
+
+@app.route('/calendar',defaults={'year':0, 'month':0})
+@app.route('/calendar/<year>/<month>')
+@requires_auth
+def calendar_page(year, month):
     year = int(year)
     month = int(month)
     if year==0 or month==0:
@@ -59,17 +71,29 @@ def page(year, month):
     cal = Calendar(0)    
     month_cal = cal.monthdatescalendar(year, month)
 
-    data={'month':month_cal}
+    month_data = []
+
+    for week in month_cal:
+        week_data = []
+        for day in week:
+            day_data = {}
+            day_data['day'] = day.day
+            day_data['create_task_link'] = '/create-task/{0}/{1}/{2}'.format(day.year, day.month, day.day)
+            week_data.append(day_data)
+        month_data.append(week_data)        
+
+    data={'month':month_data}
     
     prev_year, prev_month = get_prev_month(year, month)
     next_year, next_month = get_next_month(year, month)
 
     data['prev_month_link'] = str.format('/{0}/{1}', prev_year, prev_month)
-    data['next_month_link'] = str.format('/{0}/{1}', next_year, next_month)
+    data['next_month_link'] = str.format('/{0}/{1}', next_year, next_month)    
 
     data["title"] = "{0} {1}".format(year, calendar.month_name[month])
 
     return render_template('page.html', data = data)
+
 
 
 if __name__ == "__main__":

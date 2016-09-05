@@ -27,14 +27,15 @@ a:hover   {color:{{settings['link_color']}}; text-decoration:underline; font-fam
 <table align="center" cellspacing="1px" cellpadding="0px" width="100%" height="100%" border="1">
 {% for week in data.month %}
 <tr>
-    {% for date in week %}
+    {% for date_data in week %}
     <td valign="top">
         <table width="100%">
         <tr>
-        <td bgcolor="#90ff90">{{ date.day }}</td>
+        <td bgcolor="#90ff90">{{ date_data.day }}</td>
         </tr>
         <tr><td bgcolor="#9090ff"><a href="test" style="color:black;text-decoration:none;">test</a></td></tr>
-        <tr><td bgcolor="#90ffff"><a href="test2" style="color:black;text-decoration:none;">test 2</a></td></tr>        
+        <tr><td bgcolor="#50ffff"><a href="test2" style="color:black;text-decoration:none;">test 2</a></td></tr>
+        <tr><td bgcolor="#bbffff"><a href="{{date_data.create_task_link}}" style="color:black;text-decoration:none;">add</a></td></tr>
         </table>
     </td>        
     {% endfor %}
