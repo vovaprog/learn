@@ -6,6 +6,7 @@ import re
 import time
 from termcolor import colored
 import keyword
+import math
 
 
 def colorize(line, keys, types, vals, preps):
@@ -54,13 +55,19 @@ def colorize_python(line):
     return colorize(line, keys, types, vals, preps)
 
 
+def number_of_lines_in_file(file_name):
+    with open(file_name) as f:
+        return sum(1 for _ in f)
+
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 file_name = sys.argv[1]
 fname = file_name.lower()
 
-blame_output = subprocess.check_output(['git', 'blame', '--line-porcelain', file_name])
+blame_output = subprocess.check_output(
+    ['git', 'blame', '--line-porcelain', file_name])
 
 
 author_color = {}
@@ -71,6 +78,7 @@ colors = ['grey', 'red', 'green',  'yellow',
 color_index = 0
 line_number = 1
 max_author = 0
+line_number_chars = int(math.log10(number_of_lines_in_file(file_name))) + 1
 
 for line in blame_output.splitlines():
     m = re.search("^author\s+(.*)$", line)
@@ -103,7 +111,8 @@ for line in blame_output.splitlines():
         elif fname.endswith('.py'):
             code = colorize_python(code)
 
-        print(str.format("{0}   {1}   {2:>5}: {3}", author_time, colored(
-            author.ljust(max_author + 1), author_color[author]), line_number, code))
+        print(str.format("{0}   {1}   {2}: {3}", author_time,
+                         colored(author.ljust(max_author + 1), author_color[author]),
+                         str(line_number).rjust(line_number_chars), code))
         line_number += 1
         continue

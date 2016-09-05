@@ -12,6 +12,7 @@
 #include "message.h"
 #include "util.h"
 #include "ExecsPerSecond.h"
+#include "TransferRingBuffer.h"
 
 //no difference in speed - 127.0.0.1 or local ip address
 
@@ -43,105 +44,14 @@ int clientConnect()
     return socket_fd;
 }
 
-int client1()
-{
-    struct sockaddr_in remoteaddr;
-    remoteaddr.sin_family = AF_INET;
-    remoteaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    //remoteaddr.sin_addr.s_addr = inet_addr("192.168.1.145");
-    remoteaddr.sin_port = htons(7000);
-    
-    Message msg;
-    msg.id = 1;
-    
-    ExecsPerSecond execCounter;
-    
-    for(int i=0;;++i)
-    {    
-        int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    
-        if(socket_fd < 0)
-        {
-            printf("socket failed!\r\n");
-            return -1;
-        }
-    
-        if(connect(socket_fd, (struct sockaddr*)&remoteaddr, sizeof(remoteaddr)) != 0)
-        {
-            printf("connect failed!\r\n");
-            close(socket_fd);
-            return -1;
-        }
-        
-        //printf("request id: %llu\n", msg.id);
-    
-        if(writeBytes(socket_fd, (char*)&msg, sizeof(Message)) != sizeof(Message))
-        {
-            printf("writeBytes failed\n");
-            close(socket_fd);
-            return -1;
-        }
-    
-        if(readBytes(socket_fd, (char*)&msg, sizeof(Message)) != sizeof(Message))
-        {
-            printf("readBytes failed\n");
-            close(socket_fd);
-            return -1;
-        }
-    
-        //printf("response id: %llu\n", msg.id);
-        
-        close(socket_fd);
-        
-        execCounter.incAndPrint();
-    }
-
-    return 0;
-}
-
-int client2()
-{        
-    int socket_fd = clientConnect();
-    
-    ExecsPerSecond execCounter;
-    
-    Message msg;
-    msg.id = 1;    
-    
-    for(int i=0;;++i)
-    {    
-        //printf("request id: %llu\n", msg.id);
-    
-        if(writeBytes(socket_fd, (char*)&msg, sizeof(Message)) != sizeof(Message))
-        {
-            printf("writeBytes failed\n");
-            close(socket_fd);
-            return -1;
-        }
-    
-        if(readBytes(socket_fd, (char*)&msg, sizeof(Message)) != sizeof(Message))
-        {
-            printf("readBytes failed\n");
-            close(socket_fd);
-            return -1;
-        }
-    
-        //printf("response id: %llu\n", msg.id);        
-        
-        execCounter.incAndPrint();
-    }
-    
-    close(socket_fd);
-
-    return 0;
-}
-
-const int BUF_SIZE = 1000000;   
+const int BUF_SIZE = 1000000;
 unsigned char buf[BUF_SIZE];
+unsigned char buf_write[BUF_SIZE];
+unsigned char buf_read[BUF_SIZE];
 
-inline void checkBuf(int &readCounter)
+inline void checkBuf(unsigned char *buf, int &readCounter, int count = BUF_SIZE)
 {
-    for(int i=0;i<BUF_SIZE;++i)
+    for(int i=0;i<count;++i)
     {
         if(buf[i] != readCounter)
         {
@@ -182,7 +92,7 @@ int client3()
             return -1;            
         }
 
-        //checkBuf(readCounter);
+        //checkBuf(buf, readCounter);
         
         execCounter.addAndPrint(BUF_SIZE);       
     }
@@ -192,11 +102,120 @@ int client3()
     return 0;
 }
 
+int client4()
+{
+    int socket_fd = clientConnect();
+    
+    ExecsPerSecond execCounter(100000);
+    
+    int charCounter = 0, readCounter = 0;
+    int startFill = 0;
+    
+    while(true)
+    {        
+        for(int i=startFill;i<BUF_SIZE;++i)
+        {
+            buf_write[i]=charCounter;
+            charCounter = ((charCounter + 1) & 0xff);
+        }
+        
+        int wr = write(socket_fd, buf_write, BUF_SIZE);
+        
+        if(wr <= 0)
+        {
+            printf("writeBytes failed\n");
+            close(socket_fd);
+            return -1;            
+        }
+        
+        if(wr < BUF_SIZE)
+        {
+            memmove(buf_write, buf_write + wr, BUF_SIZE - wr);
+        }
+        startFill = BUF_SIZE - wr;
+        
+        int rd = read(socket_fd, buf_read, wr);
+        
+        if(rd <= 0)
+        {
+            printf("readBytes failed\n");
+            close(socket_fd);
+            return -1;
+        }
+        
+        //checkBuf(buf_read, readCounter, rd);
+        
+        execCounter.addAndPrint(rd);       
+    }
+    
+    close(socket_fd);
+    
+    return 0;
+}
+
+int client5()
+{
+    int socket_fd = clientConnect();
+    
+    ExecsPerSecond execCounter(100000);
+    
+    int charCounter = 0, readCounter = 0;
+    int startFill = 0;
+    
+    TransferRingBuffer tBuf(BUF_SIZE);
+    
+    while(true)
+    {        
+        void *data;
+        int size;
+        tBuf.startWrite(data, size);        
+        
+        for(int i=0;i<size;++i)
+        {
+            ((unsigned char*)data)[i]=charCounter;
+            charCounter = ((charCounter + 1) & 0xff);
+        }
+        
+        int wr = write(socket_fd, data, size);
+        
+        if(wr <= 0)
+        {
+            printf("writeBytes failed\n");
+            close(socket_fd);
+            return -1;            
+        }
+        
+        tBuf.endWrite(wr);
+        
+        
+        tBuf.startRead(data, size);
+        
+        int rd = read(socket_fd, data, size);
+        
+        if(rd <= 0)
+        {
+            printf("readBytes failed\n");
+            close(socket_fd);
+            return -1;
+        }                
+        
+        //checkBuf((unsigned char*)data, readCounter, rd);
+        
+        tBuf.endRead(rd);
+        
+        execCounter.addAndPrint(rd);       
+    }
+    
+    close(socket_fd);
+    
+    return 0;
+}
+
 int main()
 {
-    //client1();
-    //client2();
-    client3();
+    //client3();
+    //client4();
+    client5();
 
     return 0;
 }

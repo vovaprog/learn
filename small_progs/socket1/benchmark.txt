@@ -7,19 +7,42 @@ t: 608_000000
 t: 653_000000
 t: 573_000000
 
+
+localhost, core i7, 1_000_000:
+t: 671_000000
+t: 674000000
+t: 673000000
+
+
 localhost, 10_000_000:
 t: 330_000000
 t: 340_000000
 t: 330_000000
 
-localhost, 1_000_000 with check on client and server:
+localhost, 1_000_000 with check on client and server core 2 quad:
 t: 171_000000
 t: 169_000000
 t: 181_000000
 
+localhost, 1_000_000 with check on client and server, core i7:
+t: 173000000
+t: 174000000
+t: 174000000
+
+
 vm client 1_000_000 (no checks):
 20_000_000
 18_000_000
+
+virtualbox, core i7:
+host server, guest - client
+t: 48_000000
+t: 33_000000
+t: 72_000000
+host client, guest - server
+t: 49_000000
+t: 16_000000
+t: 48_000000
 
 
 hp-mini localhost 1_000_000 no checks:
@@ -52,4 +75,15 @@ read: 1487210
 read: 65483
 read: 130966
 read: 130966
+
+
+
+Чтение BUF_SIZE целиком, потом отправка
+t: 690000000
+t: 677000000
+t: 668000000
+Чтение сколько доступно и отправка (получается быстрее):
+t: 744000000
+t: 785000000
+t: 784000000
 

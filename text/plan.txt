@@ -1,4 +1,9 @@
-socket: send stream
+сервер для проверки скорости передачи данных
+проверка скорости дома при прямом подключении компов
+проверка скорости дома при подключении через хаб
+sendfile, setsockopt, sendmmsg, recvmsg
+сделать прием-передачу через poll
+udp
 valgrind Memcheck
 valgrind Massif
 valgrind Helgrind
@@ -17,6 +22,7 @@ sed - awk
 Eclipse CDT
 zmq
 docker
+Boost ASIO
 
 + mfast
 + rsync
@@ -52,3 +58,4 @@ docker
 + flask basic auth
 + git blame
 + python color output
++ socket: send stream

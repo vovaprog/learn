@@ -405,8 +405,10 @@ htop
 space - select process
 l - show opened files of process
 
+//======================================================================
 
+restart network:
 
-
+/etc/init.d/networking restart
 
 //======================================================================
