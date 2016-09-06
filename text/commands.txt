@@ -411,6 +411,10 @@ restart network:
 
 /etc/init.d/networking restart
 
+ubuntu:
+ifup eth0
+ifdown eth0
+
 //======================================================================
 set eth0 use dhcp:
 
@@ -427,6 +431,6 @@ auto eth0
 iface eth0 inet static
     address 192.168.1.148
     netmask 255.255.255.0
-    gateway 192.168.1.1
-
+    gateway 192.168.1.1    
+    
 //======================================================================

@@ -72,3 +72,11 @@ build gt with g++:
 real	1m28.674s
 user	7m30.816s
 sys	0m25.921s
+
+===============================================================================================================
+
+hp-mini client_write, new server_read
+12_000_000
+
+hp-mini client, new server
+11_560_000
