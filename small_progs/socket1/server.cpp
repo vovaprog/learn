@@ -28,7 +28,6 @@ void sig_int_handler(int i)
 
 
 const int BUF_SIZE = 1000000;
-unsigned char buf[BUF_SIZE];
 bool checkData = false;
 
 inline void checkBuffer(void *buffer, int size)
@@ -37,9 +36,17 @@ inline void checkBuffer(void *buffer, int size)
 
     for(int i = 0; i < size - 1; ++i)
     {
-        if(!(buf[i] == 255 && buf[i + 1] == 0 || buf[i] + 1 == buf[i + 1]))
+        if(!((buf[i] == 255 && buf[i + 1] == 0) || buf[i] + 1 == buf[i + 1]))
         {
-            printf("invalid data\n");
+            printf("invalid data:   buf[%d]=%d   buf[%d]=%d\n", i, (int)buf[i], i + 1, (int)buf[i + 1]);
+            for(int j = i - 10; j < i + 10; ++j)
+            {
+                if(j >= 0 && j < size)
+                {
+                    printf("buf[%d] = %d\n", j, buf[j]);
+                }
+            }
+
             exit(-1);
         }
     }
@@ -51,7 +58,12 @@ static void* clientThreadEntry(void *arg)
     int clientSocket = *static_cast<int*>(arg);
     free(arg);
 
-    int dataSize = 0;
+    if(!setNonBlock(clientSocket))
+    {
+        printf("setNonBlock failed\n");
+        close(clientSocket);
+        return nullptr;
+    }
 
     TransferRingBuffer tBuf(BUF_SIZE);
 
@@ -62,25 +74,30 @@ static void* clientThreadEntry(void *arg)
 
         if(tBuf.startWrite(data, size))
         {
-            printf("a\n");
             int rd = read(clientSocket, data, size);
-            printf("b\n");
-    
+
             if(rd <= 0)
             {
-                if(rd == 0)
+                if(errno != EWOULDBLOCK && errno != EAGAIN)
                 {
-                    printf("client disconnected\n");
+                    if(rd == 0 && errno == 0)
+                    {
+                        printf("client disconnected\n");
+                        close(clientSocket);
+                        return nullptr;
+                    }
+                    else
+                    {
+                        printf("read failed: %s\n", strerror(errno));
+                        close(clientSocket);
+                        return nullptr;
+                    }
                 }
-                else
-                {
-                    printf("readBytes failed: %s\n", strerror(errno));
-                }
-                close(clientSocket);
-                return nullptr;
             }
-    
-            tBuf.endWrite(rd);
+            else
+            {
+                tBuf.endWrite(rd);
+            }
         }
 
 
@@ -90,19 +107,21 @@ static void* clientThreadEntry(void *arg)
             {
                 checkBuffer(data, size);
             }
-    
-            printf("c\n");
+
             int wr = write(clientSocket, data, size);
-            printf("d\n");
-    
             if(wr <= 0)
             {
-                printf("writeBytes failed\n");
-                close(clientSocket);
-                return nullptr;
+                if(errno != EWOULDBLOCK && errno != EAGAIN)
+                {
+                    printf("write failed: %s\n", strerror(errno));
+                    close(clientSocket);
+                    return nullptr;
+                }
             }
-    
-            tBuf.endRead(wr);
+            else
+            {
+                tBuf.endRead(wr);
+            }
         }
     }
 }
@@ -139,9 +158,15 @@ bool server()
 }
 
 
-int main()
+int main(int argc, char** argv)
 {
     signal(SIGINT, sig_int_handler);
+
+    if(argc >= 2 && strcmp(argv[1], "check")==0)
+    {
+        checkData = true;
+        printf("running with check\n");
+    }
 
     server();
 

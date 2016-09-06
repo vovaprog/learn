@@ -9,6 +9,7 @@
 #include <string.h>
 #include <errno.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
 
 
 int readBytes(int fd, char *buf, int numberOfBytes)
@@ -111,5 +112,23 @@ int socketListen(int port)
     }
 
     return sockfd;
+}
+
+bool setNonBlock(int fd)
+{
+    int flags; 
+    
+    if ((flags = fcntl(fd, F_GETFL, 0)) < 0) 
+    { 
+        return false; 
+    } 
+    
+    
+    if (fcntl(fd, F_SETFL, flags | O_NONBLOCK) < 0) 
+    { 
+        return false; 
+    } 
+
+    return true;    
 }
 

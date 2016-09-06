@@ -17,6 +17,18 @@ public:
 
     bool startWrite(void* &data, int &size)
     {
+        if(writeHead == bufSize)
+        {
+            if(readHead == 0)
+            {
+                return false;
+            }
+            else
+            {
+                writeHead = 0;
+            }
+        }
+        
         data = buf + writeHead;
 
         if(writeHead >= readHead)
@@ -25,7 +37,7 @@ public:
         }
         else
         {
-            size = readHead - writeHead;
+            size = readHead - writeHead - 1;
         }
 
         return (size > 0);
@@ -34,10 +46,6 @@ public:
     void endWrite(int size)
     {
         writeHead += size;
-        if(writeHead == bufSize)
-        {
-            writeHead = 0;
-        }
     }
 
     bool startRead(void* &data, int &size)
@@ -48,9 +56,13 @@ public:
         {
             size = writeHead - readHead;
         }
-        else
+        else if(readHead > writeHead)
         {
             size = bufSize - readHead;
+        }
+        else
+        {
+            size = 0;
         }
 
         return (size > 0);
@@ -60,12 +72,16 @@ public:
     {
         readHead += size;
         if(readHead == bufSize)
-        {
+        {            
             readHead = 0;
+            if(writeHead == bufSize)
+            {
+                writeHead = 0;
+            }
         }
     }
 
-protected:
+//protected:
     char *buf = nullptr;
     int readHead = 0, writeHead = 0, bufSize = 0;
 };

@@ -33,32 +33,46 @@ unsigned char buf[BUF_SIZE];
 unsigned char buf_write[BUF_SIZE];
 unsigned char buf_read[BUF_SIZE];
 
-inline void checkBuf(unsigned char *buf, int &readCounter, int count = BUF_SIZE)
+
+void checkBuf(unsigned char *buf, int size, unsigned int &readCounter)
 {
-    for(int i = 0; i < count; ++i)
+    for(int i = 0; i < size; ++i)
     {
         if(buf[i] != readCounter)
         {
-            printf("invalid data %d : %d\n", (int)buf[i], (int)readCounter);
+            printf("invalid data %d != %d   (%d)\n", (int)buf[i], (int)readCounter, i);
+            for(int j = i - 10; j < i + 10; ++j)
+            {
+                if(j >= 0 && j < size)
+                {
+                    printf("buf[%d] = %d\n", j, buf[j]);
+                }
+            }
             exit(-1);
         }
         readCounter = ((readCounter + 1) & 0xff);
     }
 }
 
+
 char recvBuf[BUF_SIZE];
 
 int client(const char *addr, bool checkBuffer)
 {
     sock = socketConnect(addr, 7000);
+    if(!setNonBlock(sock))
+    {
+        printf("setNonBlock failed\n");
+        close(sock);
+        return -1;
+    }
 
     IncPerSecond incCounter(1000000);
 
-    int charCounter = 0, readCounter = 0;
-    int totalWritten = 0, totalRead = 0;
+    unsigned int charCounter = 0, readCounter = 0;
 
     TransferRingBuffer sendBuf(BUF_SIZE);
-    
+
 
     while(true)
     {
@@ -74,45 +88,51 @@ int client(const char *addr, bool checkBuffer)
             }
             sendBuf.endWrite(size);
         }
-        
+
         if(sendBuf.startRead(data, size))
         {
-            printf("a\n");
             int wr = write(sock, data, size);
-            printf("b\n");
-    
             if(wr <= 0)
             {
-                printf("writeBytes failed\n");
-                close(sock);
-                return -1;
+                if(errno != EWOULDBLOCK && errno != EAGAIN)
+                {
+                    printf("write failed: %s\n", strerror(errno));
+                    close(sock);
+                    return -1;
+                }
             }
-    
-            sendBuf.endRead(wr);
-            totalWritten += wr;
+            else
+            {
+                sendBuf.endRead(wr);
+            }
         }
 
-        
-        if(totalWritten > totalRead)
+        int rd = read(sock, recvBuf, size);
+        if(rd <= 0)
         {
-            printf("c\n");
-            int rd = read(sock, recvBuf, size);
-            printf("d\n");
-    
-            if(rd <= 0)
+            if(errno != EWOULDBLOCK && errno != EAGAIN)
             {
-                printf("readBytes failed\n");
-                close(sock);
-                return -1;
+                if(rd == 0 && errno == 0)
+                {
+                    printf("disconnected\n");
+                    close(sock);
+                    return -1;
+                }
+                else
+                {
+                    printf("read failed: %s\n", strerror(errno));
+                    close(sock);
+                    return -1;
+                }
             }
-    
+        }
+        else
+        {
             if(checkBuffer)
             {
-                checkBuf((unsigned char*)recvBuf, readCounter, rd);
+                checkBuf((unsigned char*)recvBuf, rd, readCounter);
             }
 
-            totalRead += rd;
-    
             incCounter.addAndPrint(rd);
         }
     }
@@ -122,18 +142,25 @@ int client(const char *addr, bool checkBuffer)
     return 0;
 }
 
+
 int main(int argc, char** argv)
 {
     signal(SIGINT, sig_int_handler);
 
     const char * addr = "127.0.0.1";
+    bool withCheck = false;
 
     if(argc >= 2)
     {
         addr = argv[1];
     }
+    if(argc >= 3 && strcmp(argv[2], "check") == 0)
+    {
+        withCheck = true;
+        printf("running with check\n");
+    }
 
-    client(addr, false);
+    client(addr, withCheck);
 
     return 0;
 }
