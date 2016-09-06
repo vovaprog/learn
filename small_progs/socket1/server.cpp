@@ -59,44 +59,47 @@ static void* clientThreadEntry(void *arg)
     {
         void *data;
         int size;
-        tBuf.startWrite(data, size);
 
-        int rd = read(clientSocket, data, size);
-
-        if(rd <= 0)
+        if(tBuf.startWrite(data, size))
         {
-            if(rd == 0)
+            int rd = read(clientSocket, data, size);
+    
+            if(rd <= 0)
             {
-                printf("client disconnected\n");
+                if(rd == 0)
+                {
+                    printf("client disconnected\n");
+                }
+                else
+                {
+                    printf("readBytes failed: %s\n", strerror(errno));
+                }
+                close(clientSocket);
+                return nullptr;
             }
-            else
+    
+            tBuf.endWrite(rd);
+        }
+
+
+        if(tBuf.startRead(data, size))
+        {
+            if(checkData)
             {
-                printf("readBytes failed: %s\n", strerror(errno));
+                checkBuffer(data, size);
             }
-            close(clientSocket);
-            return nullptr;
+    
+            int wr = write(clientSocket, data, size);
+    
+            if(wr <= 0)
+            {
+                printf("writeBytes failed\n");
+                close(clientSocket);
+                return nullptr;
+            }
+    
+            tBuf.endRead(wr);
         }
-
-        tBuf.endWrite(rd);
-
-
-        tBuf.startRead(data, size);
-
-        if(checkData)
-        {
-            checkBuffer(data, size);
-        }
-
-        int wr = write(clientSocket, data, size);
-
-        if(wr <= 0)
-        {
-            printf("writeBytes failed\n");
-            close(clientSocket);
-            return nullptr;
-        }
-
-        tBuf.endRead(wr);
     }
 }
 

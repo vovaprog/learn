@@ -97,3 +97,11 @@ core i7 VirtualBox:
 t: 148_934840
 t: 153_609040
 t: 153_869680
+
+
+iperf new - hp-mini через router:
+113 MBytes  94.1 Mbits/sec (11.7 mbytes/sec)
+
+new - server:
+17.8 MBytes  14.7 Mbits/sec (1.84 mbytes/sec)
+

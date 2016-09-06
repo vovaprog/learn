@@ -46,6 +46,7 @@ inline void checkBuf(unsigned char *buf, int &readCounter, int count = BUF_SIZE)
     }
 }
 
+char recvBuf[BUF_SIZE];
 
 int client(const char *addr, bool checkBuffer)
 {
@@ -54,53 +55,62 @@ int client(const char *addr, bool checkBuffer)
     IncPerSecond incCounter(1000000);
 
     int charCounter = 0, readCounter = 0;
-    int startFill = 0;
+    int totalWritten = 0, totalRead = 0;
 
-    TransferRingBuffer tBuf(BUF_SIZE);
+    TransferRingBuffer sendBuf(BUF_SIZE);
+    
 
     while(true)
     {
         void *data;
         int size;
-        tBuf.startWrite(data, size);
 
-        for(int i = 0; i < size; ++i)
+        if(sendBuf.startWrite(data, size))
         {
-            ((unsigned char*)data)[i] = charCounter;
-            charCounter = ((charCounter + 1) & 0xff);
+            for(int i = 0; i < size; ++i)
+            {
+                ((unsigned char*)data)[i] = charCounter;
+                charCounter = ((charCounter + 1) & 0xff);
+            }
+            sendBuf.endWrite(size);
+        }
+        
+        if(sendBuf.startRead(data, size))
+        {
+            int wr = write(sock, data, size);
+    
+            if(wr <= 0)
+            {
+                printf("writeBytes failed\n");
+                close(sock);
+                return -1;
+            }
+    
+            sendBuf.endRead(wr);
+            totalWritten += wr;
         }
 
-        int wr = write(sock, data, size);
-
-        if(wr <= 0)
+        
+        if(totalWritten > totalRead)
         {
-            printf("writeBytes failed\n");
-            close(sock);
-            return -1;
+            int rd = read(sock, recvBuf, size);
+    
+            if(rd <= 0)
+            {
+                printf("readBytes failed\n");
+                close(sock);
+                return -1;
+            }
+    
+            if(checkBuffer)
+            {
+                checkBuf((unsigned char*)recvBuf, readCounter, rd);
+            }
+
+            totalRead += rd;
+    
+            incCounter.addAndPrint(rd);
         }
-
-        tBuf.endWrite(wr);
-
-
-        tBuf.startRead(data, size);
-
-        int rd = read(sock, data, size);
-
-        if(rd <= 0)
-        {
-            printf("readBytes failed\n");
-            close(sock);
-            return -1;
-        }
-
-        if(checkBuffer)
-        {
-            checkBuf((unsigned char*)data, readCounter, rd);
-        }
-
-        tBuf.endRead(rd);
-
-        incCounter.addAndPrint(rd);
     }
 
     close(sock);
