@@ -13,7 +13,10 @@
 #include <IncPerSecond.h>
 #include <TransferRingBuffer.h>
 
+static const int BUF_SIZE = 1000000;
 static int sock = -1;
+static char recvBuf[BUF_SIZE];
+
 
 void sig_int_handler(int i)
 {
@@ -26,12 +29,6 @@ void sig_int_handler(int i)
 
     exit(-1);
 }
-
-
-const int BUF_SIZE = 1000000;
-unsigned char buf[BUF_SIZE];
-unsigned char buf_write[BUF_SIZE];
-unsigned char buf_read[BUF_SIZE];
 
 
 void checkBuffer(unsigned char *buf, int size, int &readCounter)
@@ -54,8 +51,6 @@ void checkBuffer(unsigned char *buf, int size, int &readCounter)
     }
 }
 
-
-char recvBuf[BUF_SIZE];
 
 int client(const char *addr, bool withCheck)
 {
@@ -94,7 +89,7 @@ int client(const char *addr, bool withCheck)
             int wr = write(sock, data, size);
             if(wr <= 0)
             {
-                if(errno != EWOULDBLOCK && errno != EAGAIN)
+                if(errno != EWOULDBLOCK && errno != EAGAIN && errno != EINTR)
                 {
                     printf("write failed: %s\n", strerror(errno));
                     close(sock);
@@ -110,7 +105,7 @@ int client(const char *addr, bool withCheck)
         int rd = read(sock, recvBuf, size);
         if(rd <= 0)
         {
-            if(errno != EWOULDBLOCK && errno != EAGAIN)
+            if(errno != EWOULDBLOCK && errno != EAGAIN && errno != EINTR)
             {
                 if(rd == 0 && errno == 0)
                 {

@@ -62,4 +62,12 @@ std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
 ====================================================================================================
 
+ring buffer implementations:
 
+https://github.com/jackaudio/jack2/blob/master/common/ringbuffer.c
+http://julien.benoist.name/lockfree/
+https://subversion.assembla.com/svn/portaudio/portaudio/trunk/src/common/pa_ringbuffer.h
+https://subversion.assembla.com/svn/portaudio/portaudio/trunk/src/common/pa_ringbuffer.c
+https://subversion.assembla.com/svn/portaudio/portaudio/trunk/src/common/pa_memorybarrier.h
+
+====================================================================================================

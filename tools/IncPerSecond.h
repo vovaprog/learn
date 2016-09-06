@@ -7,13 +7,16 @@
 #include <atomic>
 #include <chrono>
 
+#include <locale.h>
 
 class IncPerSecond
 {
 public:
-    IncPerSecond() = default;
 
-    IncPerSecond(unsigned int checkInterval): checkInterval(checkInterval) { }
+    IncPerSecond(unsigned int checkInterval): checkInterval(checkInterval) 
+    {
+        setlocale(LC_ALL, ""); // for thousand separators
+    }
 
 
     inline void inc()
@@ -24,6 +27,7 @@ public:
 
     inline void print()
     {
+
         if(counter - prevCounter >= checkInterval)
         {
             long long int millis = getMilliseconds();
@@ -32,7 +36,7 @@ public:
             {
                 if(prevMillis > 0)
                 {
-                    std::cout << "t: " << (counter - prevCounter) << std::endl;
+                    printf("[ %'lld ]\n", counter - prevCounter);
                 }
 
                 prevCounter = counter;
