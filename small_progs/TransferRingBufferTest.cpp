@@ -2,13 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-
+#define TRANSFER_RING_BUFFER_DEBUG
 #include "../tools/TransferRingBuffer.h"
-
-void bufInfo(TransferRingBuffer &t)
-{
-    printf("writeHead: %d   readHead: %d\n", t.writeHead, t.readHead);
-}
+#undef TRANSFER_RING_BUFFER_DEBUG
 
 
 void checkBuffer1(unsigned char *buf, int size, unsigned int &readCounter)
@@ -31,7 +27,7 @@ void checkBuffer1(unsigned char *buf, int size, unsigned int &readCounter)
     }
 }
 
-inline void checkBuffer2(void *buffer, int size)
+void checkBuffer2(void *buffer, int size)
 {
     unsigned char *buf = static_cast<unsigned char*>(buffer);
 
@@ -55,20 +51,20 @@ inline void checkBuffer2(void *buffer, int size)
 
 
 void testRing()
-{    
+{
     TransferRingBuffer sendBuf(100);
-    
+
     unsigned int charCounter = 0, readCounter = 0;
-    
-    srand (time(NULL));
-    
+
+    srand(time(NULL));
+
     while(true)
     {
         void *data;
         int size;
-        
+
         printf("-----------------\n");
-        bufInfo(sendBuf);
+        sendBuf.printInfo();
         if(sendBuf.startWrite(data, size))
         {
             int rnd = rand() % size + 1;
@@ -79,18 +75,18 @@ void testRing()
             }
             sendBuf.endWrite(rnd);
         }
-       
-        bufInfo(sendBuf);
+
+        sendBuf.printInfo();
         if(sendBuf.startRead(data, size))
         {
             int rnd = rand() % size + 1;
             checkBuffer1((unsigned char*)data, rnd, readCounter);
-            checkBuffer2((unsigned char*)data, rnd);                                     
-            
+            checkBuffer2((unsigned char*)data, rnd);
+
             sendBuf.endRead(rnd);
-            bufInfo(sendBuf);
-        }                
-    }    
+            sendBuf.printInfo();
+        }
+    }
 }
 
 int main()
@@ -98,3 +94,4 @@ int main()
     testRing();
     return 0;
 }
+

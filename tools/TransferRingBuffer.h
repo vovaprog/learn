@@ -28,7 +28,7 @@ public:
                 writeHead = 0;
             }
         }
-        
+
         data = buf + writeHead;
 
         if(writeHead >= readHead)
@@ -72,7 +72,7 @@ public:
     {
         readHead += size;
         if(readHead == bufSize)
-        {            
+        {
             readHead = 0;
             if(writeHead == bufSize)
             {
@@ -81,7 +81,14 @@ public:
         }
     }
 
-//protected:
+#ifdef TRANSFER_RING_BUFFER_DEBUG
+    void printInfo()
+    {
+        printf("writeHead: %d   readHead: %d\n", writeHead, readHead);
+    }
+#endif
+
+protected:
     char *buf = nullptr;
     int readHead = 0, writeHead = 0, bufSize = 0;
 };
