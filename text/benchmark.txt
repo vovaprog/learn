@@ -60,3 +60,15 @@ sys	0m1.060s
 download from my site
 router: 1.7 mb/s
 
+===============================================================================================================
+
+build gt with clang:
+time make -j 6 VERBOSE=1
+real	1m2.239s
+user	5m23.782s
+sys	0m14.380s
+
+build gt with g++:
+real	1m28.674s
+user	7m30.816s
+sys	0m25.921s

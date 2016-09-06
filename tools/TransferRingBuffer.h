@@ -12,8 +12,15 @@ public:
     ~TransferRingBuffer()
     {
         if(buf != nullptr)
+        {
             delete[] buf;
+        }
     }
+
+    TransferRingBuffer(const TransferRingBuffer &tm) = delete;
+    TransferRingBuffer(TransferRingBuffer &&tm) = delete;
+    TransferRingBuffer& operator=(const TransferRingBuffer &tm) = delete;
+    TransferRingBuffer& operator=(TransferRingBuffer && tm) = delete;
 
     bool startWrite(void* &data, int &size)
     {

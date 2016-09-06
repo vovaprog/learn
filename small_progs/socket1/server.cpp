@@ -28,9 +28,9 @@ void sig_int_handler(int i)
 
 
 const int BUF_SIZE = 1000000;
-bool checkData = false;
+bool withCheck = false;
 
-inline void checkBuffer(void *buffer, int size)
+void checkBuffer(void *buffer, int size)
 {
     unsigned char *buf = static_cast<unsigned char*>(buffer);
 
@@ -103,7 +103,7 @@ static void* clientThreadEntry(void *arg)
 
         if(tBuf.startRead(data, size))
         {
-            if(checkData)
+            if(withCheck)
             {
                 checkBuffer(data, size);
             }
@@ -162,9 +162,9 @@ int main(int argc, char** argv)
 {
     signal(SIGINT, sig_int_handler);
 
-    if(argc >= 2 && strcmp(argv[1], "check")==0)
+    if(argc >= 2 && strcmp(argv[1], "check") == 0)
     {
-        checkData = true;
+        withCheck = true;
         printf("running with check\n");
     }
 

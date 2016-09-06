@@ -34,13 +34,13 @@ unsigned char buf_write[BUF_SIZE];
 unsigned char buf_read[BUF_SIZE];
 
 
-void checkBuf(unsigned char *buf, int size, unsigned int &readCounter)
+void checkBuffer(unsigned char *buf, int size, int &readCounter)
 {
     for(int i = 0; i < size; ++i)
     {
         if(buf[i] != readCounter)
         {
-            printf("invalid data %d != %d   (%d)\n", (int)buf[i], (int)readCounter, i);
+            printf("invalid data %d != %d   (i=%d)\n", (int)buf[i], readCounter, i);
             for(int j = i - 10; j < i + 10; ++j)
             {
                 if(j >= 0 && j < size)
@@ -57,7 +57,7 @@ void checkBuf(unsigned char *buf, int size, unsigned int &readCounter)
 
 char recvBuf[BUF_SIZE];
 
-int client(const char *addr, bool checkBuffer)
+int client(const char *addr, bool withCheck)
 {
     sock = socketConnect(addr, 7000);
     if(!setNonBlock(sock))
@@ -69,7 +69,7 @@ int client(const char *addr, bool checkBuffer)
 
     IncPerSecond incCounter(1000000);
 
-    unsigned int charCounter = 0, readCounter = 0;
+    int charCounter = 0, readCounter = 0;
 
     TransferRingBuffer sendBuf(BUF_SIZE);
 
@@ -128,9 +128,9 @@ int client(const char *addr, bool checkBuffer)
         }
         else
         {
-            if(checkBuffer)
+            if(withCheck)
             {
-                checkBuf((unsigned char*)recvBuf, rd, readCounter);
+                checkBuffer((unsigned char*)recvBuf, rd, readCounter);
             }
 
             incCounter.addAndPrint(rd);
