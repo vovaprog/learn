@@ -77,7 +77,9 @@ int client(const char *addr, bool checkBuffer)
         
         if(sendBuf.startRead(data, size))
         {
+            printf("a\n");
             int wr = write(sock, data, size);
+            printf("b\n");
     
             if(wr <= 0)
             {
@@ -93,7 +95,9 @@ int client(const char *addr, bool checkBuffer)
         
         if(totalWritten > totalRead)
         {
+            printf("c\n");
             int rd = read(sock, recvBuf, size);
+            printf("d\n");
     
             if(rd <= 0)
             {

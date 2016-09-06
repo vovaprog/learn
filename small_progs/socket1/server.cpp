@@ -62,7 +62,9 @@ static void* clientThreadEntry(void *arg)
 
         if(tBuf.startWrite(data, size))
         {
+            printf("a\n");
             int rd = read(clientSocket, data, size);
+            printf("b\n");
     
             if(rd <= 0)
             {
@@ -89,7 +91,9 @@ static void* clientThreadEntry(void *arg)
                 checkBuffer(data, size);
             }
     
+            printf("c\n");
             int wr = write(clientSocket, data, size);
+            printf("d\n");
     
             if(wr <= 0)
             {
