@@ -125,6 +125,11 @@ static bool server()
 
 int main(int argc, char** argv)
 {
+    if(argc <= 1)
+    {
+        printf("usage: server [check]\n");
+    }
+
     signal(SIGINT, sig_int_handler);
 
     if(argc >= 2 && strcmp(argv[1], "check") == 0)

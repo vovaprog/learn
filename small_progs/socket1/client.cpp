@@ -150,6 +150,11 @@ static int client(const char *addr, bool withCheck)
 
 int main(int argc, char** argv)
 {
+    if(argc <= 1)
+    {
+        printf("usage: client [ ip [check] ]\n");
+    }
+
     signal(SIGINT, sig_int_handler);
 
     const char * addr = "127.0.0.1";

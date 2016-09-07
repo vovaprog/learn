@@ -4,6 +4,8 @@
 class TransferRingBuffer
 {
 public:
+    TransferRingBuffer() = default;
+
     TransferRingBuffer(int size): bufSize(size)
     {
         buf = new char[size];
@@ -21,6 +23,20 @@ public:
     TransferRingBuffer(TransferRingBuffer &&tm) = delete;
     TransferRingBuffer& operator=(const TransferRingBuffer &tm) = delete;
     TransferRingBuffer& operator=(TransferRingBuffer && tm) = delete;
+
+    void init(int newSize)
+    {
+        if(newSize != bufSize)
+        {
+            if(buf != nullptr)
+            {
+                delete[] buf;
+                buf = nullptr;
+            }
+            bufSize = newSize;
+            buf = new char[bufSize];
+        }
+    }
 
     bool startWrite(void* &data, int &size)
     {

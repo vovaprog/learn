@@ -34,6 +34,11 @@ static int client(const char *addr, bool withCheck)
 {
     sock = socketConnect(addr, 7000);
 
+    if(sock <= 0)
+    {
+        return -1;
+    }
+
     IncPerSecond incCounter(1000000);
 
     int charCounter = 0;
@@ -98,6 +103,11 @@ static int client(const char *addr, bool withCheck)
 
 int main(int argc, char** argv)
 {
+    if(argc <= 1)
+    {
+        printf("usage: client [ ip [check] ]\n");
+    }
+
     signal(SIGINT, sig_int_handler);
 
     const char * addr = "127.0.0.1";

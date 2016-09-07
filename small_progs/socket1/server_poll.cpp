@@ -14,18 +14,20 @@
 #include <NetworkUtils.h>
 #include <TransferRingBuffer.h>
 
-static int sockfd = -1;
+static int serverSockFd = -1;
 static const int BUF_SIZE = 1000000;
 static bool withCheck = false;
+const int maxPollFds = 20;
+TransferRingBuffer clientBuffers[maxPollFds];
 
 
 static void sig_int_handler(int i)
 {
     printf("sig int handler\n");
 
-    if(sockfd > 0)
+    if(serverSockFd > 0)
     {
-        close(sockfd);
+        close(serverSockFd);
     }
 
     exit(-1);
@@ -57,21 +59,21 @@ static void checkBuffer(void *buffer, int size)
 void processAccept(pollfd *pollFds, TransferRingBuffer *clientBuffers, int maxPollFds, int &pollFdsSize)
 {
     int serverSockFd = pollFds[0].fd;
-    
+
     struct sockaddr_in address;
     socklen_t addrlen = sizeof(address);
-    
+
     int clientSockFd = accept(serverSockFd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
-    
+
     if(clientSockFd < 0)
     {
         printf("accept failed\r\n");
         close(serverSockFd);
         exit(-1);
     }
-    
+
     printf("client connected   ip: %s   port: %d\n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
-    
+
     int emptyIndex = -1;
     for(int i = 1; i < maxPollFds; ++i)
     {
@@ -81,12 +83,12 @@ void processAccept(pollfd *pollFds, TransferRingBuffer *clientBuffers, int maxPo
             break;
         }
     }
-    
-    if(emptyIndex>0)
+
+    if(emptyIndex > 0)
     {
         pollFds[emptyIndex].fd = clientSockFd;
         pollFds[emptyIndex].events = (POLLIN | POLLOUT);
-        if(emptyIndex > pollFdsSize)
+        if(emptyIndex >= pollFdsSize)
         {
             pollFdsSize = emptyIndex + 1;
         }
@@ -96,20 +98,20 @@ void processAccept(pollfd *pollFds, TransferRingBuffer *clientBuffers, int maxPo
     {
         printf("too many connections\n");
         close(clientSockFd);
-    }    
+    }
 }
 
 
 void processPollIn(pollfd *pollFds, TransferRingBuffer *clientBuffers, int ind)
 {
     int clientSockFd = pollFds[ind].fd;
-                    
-    TransferRingBuffer tBuf = clientBuffers[i];
-    
+
+    TransferRingBuffer &tBuf = clientBuffers[ind];
+
     void *data;
     int size;
-    
-    if(tBuf.startWrite(data,size))
+
+    if(tBuf.startWrite(data, size))
     {
         int rd = read(clientSockFd, data, size);
         if(rd <= 0)
@@ -137,6 +139,41 @@ void processPollIn(pollfd *pollFds, TransferRingBuffer *clientBuffers, int ind)
 }
 
 
+void processPollOut(pollfd *pollFds, TransferRingBuffer *clientBuffers, int ind)
+{
+    int clientSockFd = pollFds[ind].fd;
+
+    TransferRingBuffer &tBuf = clientBuffers[ind];
+
+    void *data;
+    int size;
+
+    if(tBuf.startRead(data, size))
+    {
+        if(withCheck)
+        {
+            checkBuffer(data, size);
+        }
+
+        int wr = write(clientSockFd, data, size);
+        if(wr <= 0)
+        {
+            if(errno != EWOULDBLOCK && errno != EAGAIN && errno != EINTR)
+            {
+                printf("write failed: %s\n", strerror(errno));
+                close(clientSockFd);
+                pollFds[ind].fd = -1;
+                return;
+            }
+        }
+        else
+        {
+            tBuf.endRead(wr);
+        }
+    }
+}
+
+
 static bool server_poll()
 {
     serverSockFd = socketListen(7000);
@@ -145,16 +182,16 @@ static bool server_poll()
         return false;
     }
 
-    struct sockaddr_in cli_addr;
-    socklen_t clilen = sizeof(sockaddr_in);
-
-    const int maxPollFds = 1000;
     struct pollfd pollFds[maxPollFds];
-    int pollFdsSize = 1;
 
+    for(int i = 0; i < maxPollFds; ++i)
+    {
+        pollFds[i].fd = -1;
+    }
+
+    int pollFdsSize = 1;
     pollFds[0].fd = serverSockFd;
     pollFds[0].events = POLLIN;
-
 
     while(true)
     {
@@ -173,15 +210,15 @@ static bool server_poll()
                 processAccept(pollFds, clientBuffers, maxPollFds, pollFdsSize);
             }
 
-            for(int i=1;i<pollFdsSize;++i)
+            for(int i = 1; i < pollFdsSize; ++i)
             {
                 if(pollFds[i].revents & POLLIN)
                 {
-                    processPollIn(pollFds, clientBuffers);
+                    processPollIn(pollFds, clientBuffers, i);
                 }
                 if(pollFds[i].revents & POLLOUT)
                 {
-                    processPollOut(pollFds, clientBuffers);
+                    processPollOut(pollFds, clientBuffers, i);
                 }
             }
         }
@@ -191,6 +228,11 @@ static bool server_poll()
 
 int main(int argc, char** argv)
 {
+    if(argc <= 1)
+    {
+        printf("usage: server [check]\n");
+    }
+    
     signal(SIGINT, sig_int_handler);
 
     if(argc >= 2 && strcmp(argv[1], "check") == 0)
