@@ -64,7 +64,7 @@ Boost ASIO
 
 =================================================================
 
-client-server - проверки connect/listen
++ client-server - проверки connect/listen
 client-server через poll
 Проверить скорости и записать дома (iperf и client-server)
 Сделать repo tools.
