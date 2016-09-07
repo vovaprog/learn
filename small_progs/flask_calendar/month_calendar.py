@@ -1,15 +1,22 @@
 from flask import Flask
 from functools import wraps
-from flask import request, Response
+from flask import request, Response, redirect
 from flask import render_template
 from calendar import Calendar
 from datetime import date
 import calendar
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from flask.ext.wtf import Form
+from wtforms import BooleanField, StringField, PasswordField, validators
 
+CSRF_ENABLED = True
+WTF_CSRF_ENABLED = True
+SECRET_KEY = 'some-test-key'
 
 if __name__ == "__main__":
     app = Flask(__name__)
+    app.config.from_object('config')
+
+   
 
 
 def check_auth(username, password):
@@ -47,8 +54,19 @@ def get_next_month(year, month):
         return year, month + 1
 
 class TaskEditForm(Form):
-    text = StringField('text', [validators.Length(min=0, max=1000)])
+    task_text = StringField('text', [validators.Length(min=0, max=1000)])
     
+
+@app.route('/save-task', methods = ['GET', 'POST'])
+@requires_auth
+def save_task_page():
+    form = TaskEditForm() #TaskEditForm(request.form)
+    if form.validate_on_submit():
+        print "save: " + str(form.task_text)
+        return redirect("/")
+    else:
+        print form.task_text
+        return render_template('edit-task.html', form=form)
 
 @app.route('/create-task/<year>/<month>/<day>')
 @requires_auth
@@ -57,8 +75,8 @@ def create_task_page(year, month, day):
     return render_template('edit-task.html', form=form)
 
 
-@app.route('/calendar',defaults={'year':0, 'month':0})
-@app.route('/calendar/<year>/<month>')
+@app.route('/',defaults={'year':0, 'month':0})
+@app.route('/<year>/<month>')
 @requires_auth
 def calendar_page(year, month):
     year = int(year)
