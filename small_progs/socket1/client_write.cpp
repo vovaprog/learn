@@ -17,7 +17,7 @@ static int sock = -1;
 static const int BUF_SIZE = 1000000;
 static char buf[BUF_SIZE];
 
-void sig_int_handler(int i)
+static void sig_int_handler(int i)
 {
     printf("sig int handler\n");
 
@@ -30,7 +30,7 @@ void sig_int_handler(int i)
 }
 
 
-int client(const char *addr, bool withCheck)
+static int client(const char *addr, bool withCheck)
 {
     sock = socketConnect(addr, 7000);
 

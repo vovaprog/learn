@@ -18,7 +18,7 @@ static int sock = -1;
 static char recvBuf[BUF_SIZE];
 
 
-void sig_int_handler(int i)
+static void sig_int_handler(int i)
 {
     printf("sig int handler\n");
 
@@ -31,7 +31,7 @@ void sig_int_handler(int i)
 }
 
 
-void checkBuffer(unsigned char *buf, int size, int &readCounter)
+static void checkBuffer(unsigned char *buf, int size, int &readCounter)
 {
     for(int i = 0; i < size; ++i)
     {
@@ -52,17 +52,23 @@ void checkBuffer(unsigned char *buf, int size, int &readCounter)
 }
 
 
-int client(const char *addr, bool withCheck)
+static int client(const char *addr, bool withCheck)
 {
     sock = socketConnect(addr, 7000);
+    if(sock <= 0)
+    {
+        return -1;
+    }
+
     if(!setNonBlock(sock))
     {
         printf("setNonBlock failed\n");
         close(sock);
+        sock = -1;
         return -1;
     }
 
-    IncPerSecond incCounter(1000000);
+    IncPerSecond incCounter(500000);
 
     int charCounter = 0, readCounter = 0;
 
@@ -93,6 +99,7 @@ int client(const char *addr, bool withCheck)
                 {
                     printf("write failed: %s\n", strerror(errno));
                     close(sock);
+                    sock = -1;
                     return -1;
                 }
             }
@@ -111,12 +118,14 @@ int client(const char *addr, bool withCheck)
                 {
                     printf("disconnected\n");
                     close(sock);
+                    sock = -1;
                     return -1;
                 }
                 else
                 {
                     printf("read failed: %s\n", strerror(errno));
                     close(sock);
+                    sock = -1;
                     return -1;
                 }
             }
@@ -133,6 +142,7 @@ int client(const char *addr, bool withCheck)
     }
 
     close(sock);
+    sock = -1;
 
     return 0;
 }

@@ -14,8 +14,12 @@
 #include <IncPerSecond.h>
 
 static int sockfd = -1;
+static const int BUF_SIZE = 1000000;
+static bool withCheck = false;
+static char buf[BUF_SIZE];
 
-void sig_int_handler(int i)
+
+static void sig_int_handler(int i)
 {
     printf("sig int handler\n");
 
@@ -28,11 +32,7 @@ void sig_int_handler(int i)
 }
 
 
-static const int BUF_SIZE = 1000000;
-static bool withCheck = false;
-static char buf[BUF_SIZE];
-
-void checkBuffer(void *buffer, int size)
+static void checkBuffer(void *buffer, int size)
 {
     unsigned char *buf = static_cast<unsigned char*>(buffer);
 
@@ -92,7 +92,7 @@ static void* clientThreadEntry(void *arg)
 }
 
 
-bool server()
+static bool server()
 {
     sockfd = socketListen(7000);
     if(sockfd <= 0)

@@ -1,8 +1,6 @@
-non blocking socket
-проверка скорости дома при прямом подключении компов
-проверка скорости дома при подключении через хаб
+Загрузить Raspberry с флешки
+L2TP на new
 sendfile, setsockopt, sendmmsg, recvmsg
-сделать прием-передачу через poll
 udp
 docker
 ssl
@@ -61,3 +59,12 @@ Boost ASIO
 + python color output
 + socket: send stream
 + iperf
++ non blocking socket
+
+
+=================================================================
+
+client-server - проверки connect/listen
+client-server через poll
+Проверить скорости и записать дома (iperf и client-server)
+Сделать repo tools.

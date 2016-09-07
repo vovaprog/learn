@@ -106,7 +106,7 @@ int socketListen(int port)
 
     if(listen(sockfd, 1000) != 0) //length of queue of pending connections
     {
-        printf("listen failed!\r\n");
+        printf("listen failed\r\n");
         close(sockfd);
         return -1;
     }
