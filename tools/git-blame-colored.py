@@ -14,9 +14,9 @@ def colorize(line, keys, types, vals, preps):
     out = ""
     for word in words:
         if word in keys:
-            out += colored(word, 'blue')
+            out += colored(word, 'cyan')
         elif word in types:
-            out += colored(word, 'red')
+            out += colored(word, 'yellow')
         elif re.match('^[0-9]+(\.[0-9]+)?$', word) or word in vals:
             out += colored(word, 'green')
         elif word in preps:
