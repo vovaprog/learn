@@ -8,20 +8,27 @@ from termcolor import colored
 import keyword
 import math
 
+keyword_color = 'cyan'
+brace_color = 'yellow'
+type_color = 'red'
+value_color = 'green'
+preproc_color = 'magenta'
 
 def colorize(line, keys, types, vals, preps):
     words = re.split('(\W+)', line)
     out = ""
     for word in words:
         if word in keys:
-            out += colored(word, 'cyan')
+            out += colored(word, keyword_color)
         elif word in types:
-            out += colored(word, 'yellow')
+            out += colored(word, type_color)
         elif re.match('^[0-9]+(\.[0-9]+)?$', word) or word in vals:
-            out += colored(word, 'green')
+            out += colored(word, value_color)
         elif word in preps:
-            out += colored(word, 'magenta')
+            out += colored(word, preproc_color)
         else:
+            for brace in '[ ] { } ( )'.split(): 
+                word = word.replace(brace, colored(brace, brace_color))            
             out += word
     return out
 
