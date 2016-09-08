@@ -3,6 +3,9 @@
   {{ form.csrf_token }}
   <dl>
   task:{{ form.task_text }}
+  {{ form.date }}
+  {{ form.id }}
   </dl>
-  <p><input type=submit value="ok">
+  <p>{{ form.submit_edit }}
+  {{ form.submit_delete }}
 </form>

@@ -6,7 +6,11 @@ from calendar import Calendar
 from datetime import date
 import calendar
 from flask.ext.wtf import Form
-from wtforms import BooleanField, StringField, PasswordField, validators
+from wtforms import BooleanField, StringField, PasswordField, validators, HiddenField, SubmitField
+import sqlite3
+from flask import g
+import os
+import storage
 
 CSRF_ENABLED = True
 WTF_CSRF_ENABLED = True
@@ -15,6 +19,11 @@ SECRET_KEY = 'some-test-key'
 if __name__ == "__main__":
     app = Flask(__name__)
     app.config.from_object('config')
+
+
+@app.teardown_appcontext
+def close_connection(exception):
+    storage.close()
 
    
 
@@ -54,24 +63,52 @@ def get_next_month(year, month):
         return year, month + 1
 
 class TaskEditForm(Form):
+    date = HiddenField('date')
+    id = HiddenField('id')
     task_text = StringField('text', [validators.Length(min=0, max=1000)])
+    submit_edit = SubmitField(label='ok')
+    submit_delete = SubmitField(label='delete')
     
+
+
 
 @app.route('/save-task', methods = ['GET', 'POST'])
 @requires_auth
 def save_task_page():
-    form = TaskEditForm() #TaskEditForm(request.form)
+    form = TaskEditForm()
     if form.validate_on_submit():
-        print "save: " + str(form.task_text)
+        id = int(form.id.data)
+
+        if form.submit_delete.data == True:
+            storage.delete_task(id)
+        else:
+            if id < 0:
+                storage.create_task(form.date.data, form.task_text.data)
+            else:
+                storage.edit_task(id, form.date.data, form.task_text.data)
+
         return redirect("/")
     else:
-        print form.task_text
         return render_template('edit-task.html', form=form)
 
 @app.route('/create-task/<year>/<month>/<day>')
 @requires_auth
 def create_task_page(year, month, day):
     form = TaskEditForm()
+    form.date.data = "{0}-{1}-{2}".format(year, month, day)
+    form.id.data = -1
+    return render_template('edit-task.html', form=form)
+
+@app.route('/edit-task/<id>')
+@requires_auth
+def edit_task_page(id):
+    r = storage.get_task(id)
+    
+    form = TaskEditForm()
+    form.id.data = id
+    form.date.data = r['date']
+    form.task_text.data = r['task']
+
     return render_template('edit-task.html', form=form)
 
 
@@ -91,12 +128,23 @@ def calendar_page(year, month):
 
     month_data = []
 
+    rs = storage.get_tasks()
+
     for week in month_cal:
         week_data = []
         for day in week:
             day_data = {}
             day_data['day'] = day.day
             day_data['create_task_link'] = '/create-task/{0}/{1}/{2}'.format(day.year, day.month, day.day)
+            day_data['tasks'] = []
+            for r in rs:
+                task_data = {}
+                task_data['id'] = r['id']
+                task_data['date'] = r['date']
+                task_data['task'] = r['task']
+                task_data['edit_link'] = '/edit-task/{0}'.format(r['id']) 
+                day_data['tasks'].append(task_data)
+            
             week_data.append(day_data)
         month_data.append(week_data)        
 
