@@ -20,7 +20,7 @@ LLVM debugger
 vim (ctags)
 sed - awk
 Eclipse CDT
-zmq
+zmq, nanomsg
 Boost ASIO
 
 + mfast
@@ -65,6 +65,7 @@ Boost ASIO
 =================================================================
 
 + client-server - проверки connect/listen
-client-server через poll
++ server через poll
+client через poll
 Проверить скорости и записать дома (iperf и client-server)
 Сделать repo tools.

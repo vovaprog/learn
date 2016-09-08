@@ -80,13 +80,23 @@ line_number = 1
 max_author = 0
 line_number_chars = int(math.log10(number_of_lines_in_file(file_name))) + 1
 
-for line in blame_output.splitlines():
+lines = blame_output.splitlines()
+
+
+for line in lines:
     m = re.search("^author\s+(.*)$", line)
     if m:
         author = m.group(1)
         author = author.strip().decode()
         if len(author) > max_author:
             max_author = len(author)
+
+
+for line in lines:
+    m = re.search("^author\s+(.*)$", line)
+    if m:
+        author = m.group(1)
+        author = author.strip().decode()
 
         if not author in author_color:
             color_index = (color_index + 1) % len(colors)
