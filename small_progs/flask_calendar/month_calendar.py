@@ -65,6 +65,7 @@ class TaskEditForm(Form):
     id = HiddenField('id')
     task_text = StringField('text', [validators.Length(min=0, max=1000)])
     submit_edit = SubmitField(label='ok')
+    submit_done = SubmitField(label='done')
     submit_delete = SubmitField(label='delete')
     
 
@@ -79,6 +80,8 @@ def save_task_page():
 
         if form.submit_delete.data == True:
             storage.delete_task(id)
+        elif form.submit_done.data == True:
+            storage.edit_task(id, form.date.data, form.task_text.data, 'done')
         else:
             if id < 0:
                 storage.create_task(form.date.data, form.task_text.data)

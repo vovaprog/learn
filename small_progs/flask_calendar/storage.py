@@ -65,7 +65,7 @@ def create_task(date, task):
     execute_non_query('INSERT INTO tasks VALUES (NULL, ?, ?)', (date, task))    
 
 
-def edit_task(id, date, task):
+def edit_task(id, date, task, color=None):
     execute_non_query('UPDATE tasks SET date=?, task=? WHERE id=?', (date, task, id))
 
 

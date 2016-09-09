@@ -31,10 +31,10 @@ a:hover   {color:{{settings['link_color']}}; text-decoration:underline; font-fam
     <td valign="top" width="14%">
         <table width="100%">
         <tr>
-        <td bgcolor="#90ff90"><a href="{{date_data.create_task_link}}" style="color:black;text-decoration:none;">{{ date_data.day }}</a></td>
+        <td bgcolor="#dddddd"><a href="{{date_data.create_task_link}}" style="color:black;text-decoration:none;">{{ date_data.day }}</a></td>
         </tr>
         {% for task_data in date_data.tasks %}
-            <tr><td bgcolor="#ffffff"><a href="{{ task_data.edit_link }}" style="color:black;text-decoration:none;">{{ task_data.task }}</a></td></tr>        
+            <tr><td bgcolor="#bbffbb"><a href="{{ task_data.edit_link }}" style="color:black;text-decoration:none;">{{ task_data.task }}</a></td></tr>        
         {% endfor %}        
         </table>
     </td>        

@@ -21,7 +21,8 @@ vim (ctags)
 sed - awk
 Eclipse CDT
 zmq, nanomsg
-Boost ASIO
+boost ASIO
+boost intrusive containers
 
 + mfast
 + rsync
@@ -60,6 +61,8 @@ Boost ASIO
 + socket: send stream
 + iperf
 + non blocking socket
++ python sqlite
++ flask forms
 
 
 =================================================================
