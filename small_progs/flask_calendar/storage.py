@@ -73,8 +73,8 @@ def delete_task(id):
     execute_non_query('DELETE FROM tasks WHERE id=?', (id,))
     
 
-def get_tasks():
-    return execute_fetch_all('SELECT * from tasks', ())
+def get_tasks(date_start, date_end):
+    return execute_fetch_all('SELECT * from tasks WHERE date>=date(?) and date<=date(?)', (str(date_start), str(date_end)))
 
 
 def get_task(id):

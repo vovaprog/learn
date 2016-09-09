@@ -14,6 +14,14 @@ git push origin v0.35.0
 
 ===================================================================================
 
+rebase fix branch to the latest master:
+fetch
+checkout fix
+git rebase master
+edit any conflicts
+git add ./file_with_conflict.cpp
+git rebase --continue
+
 ===================================================================================
 
 git config --global user.name "John Doe"

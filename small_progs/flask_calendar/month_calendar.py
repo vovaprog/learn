@@ -11,10 +11,8 @@ import sqlite3
 from flask import g
 import os
 import storage
+import re
 
-CSRF_ENABLED = True
-WTF_CSRF_ENABLED = True
-SECRET_KEY = 'some-test-key'
 
 if __name__ == "__main__":
     app = Flask(__name__)
@@ -87,15 +85,15 @@ def save_task_page():
             else:
                 storage.edit_task(id, form.date.data, form.task_text.data)
 
-        return redirect("/")
+        return redirect("/{0}".format(form.date.data))
     else:
         return render_template('edit-task.html', form=form)
 
-@app.route('/create-task/<year>/<month>/<day>')
+@app.route('/create-task/<date>')
 @requires_auth
-def create_task_page(year, month, day):
+def create_task_page(date):
     form = TaskEditForm()
-    form.date.data = "{0}-{1}-{2}".format(year, month, day)
+    form.date.data = date
     form.id.data = -1
     return render_template('edit-task.html', form=form)
 
@@ -112,12 +110,30 @@ def edit_task_page(id):
     return render_template('edit-task.html', form=form)
 
 
-@app.route('/',defaults={'year':0, 'month':0})
-@app.route('/<year>/<month>')
+def parse_date(date):
+    m = re.match("^([0-9]{4})-([0-9]{1,2})(-([0-9]{1,2}))?$", date)
+    if m:
+        year = m.group(1)
+        month = m.group(2)
+        if len(m.groups())>4:
+            day = m.group(4)
+        else:
+            day = 0
+        return int(year), int(month), int(day)
+    return 0, 0, 0
+
+def date_to_string(year, month, day=0):
+    if day != 0:
+        return "{0}-{1:0>2}-{2:0>2}".format(year, month, day)
+    else:
+        return "{0}-{1:0>2}".format(year, month)
+
+@app.route('/',defaults={'page_date':''})
+@app.route('/<page_date>')
 @requires_auth
-def calendar_page(year, month):
-    year = int(year)
-    month = int(month)
+def calendar_page(page_date):    
+    year, month, day = parse_date(page_date)
+
     if year==0 or month==0:
         now = date.today()
         year = now.year
@@ -126,24 +142,29 @@ def calendar_page(year, month):
     cal = Calendar(0)    
     month_cal = cal.monthdatescalendar(year, month)
 
-    month_data = []
+    date_start = month_cal[0][0]
+    date_end = month_cal[len(month_cal)-1][len(month_cal[len(month_cal)-1])-1]
+    
+    tasks = storage.get_tasks(date_start, date_end)
 
-    rs = storage.get_tasks()
+    month_data = []
 
     for week in month_cal:
         week_data = []
         for day in week:
+            print day
             day_data = {}
             day_data['day'] = day.day
-            day_data['create_task_link'] = '/create-task/{0}/{1}/{2}'.format(day.year, day.month, day.day)
+            day_data['create_task_link'] = '/create-task/{0}-{1:0>2}-{2:0>2}'.format(day.year, day.month, day.day)
             day_data['tasks'] = []
-            for r in rs:
-                task_data = {}
-                task_data['id'] = r['id']
-                task_data['date'] = r['date']
-                task_data['task'] = r['task']
-                task_data['edit_link'] = '/edit-task/{0}'.format(r['id']) 
-                day_data['tasks'].append(task_data)
+            for task in tasks:
+                if str(day) == task['date']:
+                    task_data = {}
+                    task_data['id'] = task['id']
+                    task_data['date'] = task['date']
+                    task_data['task'] = task['task']
+                    task_data['edit_link'] = '/edit-task/{0}'.format(task['id']) 
+                    day_data['tasks'].append(task_data)
             
             week_data.append(day_data)
         month_data.append(week_data)        
@@ -153,8 +174,8 @@ def calendar_page(year, month):
     prev_year, prev_month = get_prev_month(year, month)
     next_year, next_month = get_next_month(year, month)
 
-    data['prev_month_link'] = str.format('/{0}/{1}', prev_year, prev_month)
-    data['next_month_link'] = str.format('/{0}/{1}', next_year, next_month)    
+    data['prev_month_link'] = str.format('/{0}', date_to_string(prev_year, prev_month))
+    data['next_month_link'] = str.format('/{0}', date_to_string(next_year, next_month))    
 
     data["title"] = "{0} {1}".format(year, calendar.month_name[month])
 
