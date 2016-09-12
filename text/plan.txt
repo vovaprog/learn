@@ -23,6 +23,7 @@ Eclipse CDT
 zmq, nanomsg
 boost ASIO
 boost intrusive containers
+EASTL
 
 + mfast
 + rsync

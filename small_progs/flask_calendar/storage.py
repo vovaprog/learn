@@ -14,27 +14,31 @@ import os
 
 DATABASE = 'sqlite.db'
 
+
 def init_db(db):
     cur = db.cursor()
-    cur.execute('CREATE TABLE tasks (id INTEGER PRIMARY KEY ASC, date TEXT, task TEXT)')
+    cur.execute(
+        'CREATE TABLE tasks (id INTEGER PRIMARY KEY ASC, date TEXT, task TEXT, state TEXT)')
     db.commit()
 
 
 def get_db():
-    new_database = False;
+    new_database = False
     if not os.path.isfile(DATABASE):
         new_database = True
-    
+
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-        
+        db = sqlite3.connect(DATABASE)
+        g._database = db
+
     if new_database:
         init_db(db)
 
     db.row_factory = sqlite3.Row
 
     return db
+
 
 def close():
     db = getattr(g, '_database', None)
@@ -43,14 +47,14 @@ def close():
 
 
 def execute_non_query(q, params):
-    db = get_db()            
+    db = get_db()
     cur = db.cursor()
     cur.execute(q, params)
     db.commit()
 
 
 def execute_fetch_all(q, params):
-    db = get_db()    
+    db = get_db()
     cur = db.execute(q, params)
     rs = cur.fetchall()
     cur.close()
@@ -62,16 +66,22 @@ def execute_fetch_first(q, params):
 
 
 def create_task(date, task):
-    execute_non_query('INSERT INTO tasks VALUES (NULL, ?, ?)', (date, task))    
+    execute_non_query(
+        "INSERT INTO tasks VALUES (NULL, ?, ?, ?)", (date, task, 'active'))
 
 
-def edit_task(id, date, task, color=None):
-    execute_non_query('UPDATE tasks SET date=?, task=? WHERE id=?', (date, task, id))
+def edit_task(id, date, task, state=None):
+    if state:
+        execute_non_query(
+            'UPDATE tasks SET date=?, task=?, state=? WHERE id=?', (date, task, state, id))
+    else:
+        execute_non_query(
+            'UPDATE tasks SET date=?, task=? WHERE id=?', (date, task, id))
 
 
 def delete_task(id):
     execute_non_query('DELETE FROM tasks WHERE id=?', (id,))
-    
+
 
 def get_tasks(date_start, date_end):
     return execute_fetch_all('SELECT * from tasks WHERE date>=date(?) and date<=date(?)', (str(date_start), str(date_end)))
@@ -79,4 +89,3 @@ def get_tasks(date_start, date_end):
 
 def get_task(id):
     return execute_fetch_first('SELECT * FROM tasks WHERE id=?', (id,))
-
