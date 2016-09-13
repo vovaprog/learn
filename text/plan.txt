@@ -70,6 +70,5 @@ EASTL
 
 + client-server - проверки connect/listen
 + server через poll
-client через poll
 Проверить скорости и записать дома (iperf и client-server)
-Сделать repo tools.
++ Сделать repo tools.

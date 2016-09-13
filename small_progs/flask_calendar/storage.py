@@ -18,7 +18,7 @@ DATABASE = 'sqlite.db'
 def init_db(db):
     cur = db.cursor()
     cur.execute(
-        'CREATE TABLE tasks (id INTEGER PRIMARY KEY ASC, date TEXT, task TEXT, state TEXT)')
+        'CREATE TABLE tasks (id INTEGER PRIMARY KEY ASC, date TEXT, task TEXT, state TEXT, color TEXT)')
     db.commit()
 
 
@@ -65,18 +65,14 @@ def execute_fetch_first(q, params):
     return execute_fetch_all(q, params)[0]
 
 
-def create_task(date, task):
+def create_task(date, task, color):
     execute_non_query(
-        "INSERT INTO tasks VALUES (NULL, ?, ?, ?)", (date, task, 'active'))
+        "INSERT INTO tasks (id, date, task, state, color) VALUES (NULL, ?, ?, ?, ?)", (date, task, 'active', color))
 
 
-def edit_task(id, date, task, state=None):
-    if state:
-        execute_non_query(
-            'UPDATE tasks SET date=?, task=?, state=? WHERE id=?', (date, task, state, id))
-    else:
-        execute_non_query(
-            'UPDATE tasks SET date=?, task=? WHERE id=?', (date, task, id))
+def edit_task(id, date, task, state, color):
+    execute_non_query(
+        'UPDATE tasks SET date=?, task=?, state=?, color=? WHERE id=?', (date, task, state, color, id))
 
 
 def delete_task(id):

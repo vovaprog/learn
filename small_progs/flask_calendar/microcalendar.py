@@ -1,16 +1,13 @@
+import os
+import re
 from flask import Flask
 from functools import wraps
-from flask import request, Response, redirect
-from flask import render_template
-from calendar import Calendar
+from flask import request, Response, redirect, render_template, g
 from datetime import date
 import calendar
 from flask.ext.wtf import Form
-from wtforms import BooleanField, StringField, PasswordField, validators, HiddenField, SubmitField, DateField
+from wtforms import StringField, validators, HiddenField, SubmitField, DateField
 import sqlite3
-from flask import g
-import os
-import re
 import storage
 from settings import settings
 
@@ -93,7 +90,10 @@ def state_to_backcolor(state):
 class TaskEditForm(Form):
     date = HiddenField('date')
     id = HiddenField('id')
+    state = HiddenField('state')
+
     task_text = StringField('text', [validators.Length(min=1, max=1000)])
+
     submit_edit = SubmitField(label='ok')
     submit_done = SubmitField(label='done')
     submit_delete = SubmitField(label='delete')
@@ -111,21 +111,25 @@ def save_task_page():
         return redirect("/{0}".format(form.date.data))
         
     id = int(form.id.data)
+
     if form.validate_on_submit():
         if form.submit_delete.data == True:
             storage.delete_task(id)
+
         elif form.submit_done.data == True:
-            storage.edit_task(id, form.date.data, form.task_text.data, 'done')
+            storage.edit_task(id, date=form.date.data, task=form.task_text.data, state='done', color='default')
+
         elif form.submit_activate.data == True:
-            storage.edit_task(id, form.date.data,
-                              form.task_text.data, 'active')
+            storage.edit_task(id, date=form.date.data, task=form.task_text.data, state='active', color='default')
+
         elif form.submit_edit.data == True:
             if id < 0:
-                storage.create_task(form.date.data, form.task_text.data)
+                storage.create_task(date=form.date.data, task=form.task_text.data, color='default')
             else:
-                storage.edit_task(id, form.date.data, form.task_text.data)
+                storage.edit_task(id=id, date=form.date.data, task=form.task_text.data, state=form.state.data, color='default')
 
         return redirect("/{0}".format(form.date.data))
+
     else:
         if id < 0:
             return create_task_page(form.date.data)
@@ -139,6 +143,7 @@ def create_task_page(date):
     form = TaskEditForm()
     form.date.data = date
     form.id.data = -1
+    form.state.data = 'active'
 
     data = {}
     data['title'] = 'create task'
@@ -156,6 +161,7 @@ def edit_task_page(id):
     form.id.data = id
     form.date.data = r['date']
     form.task_text.data = r['task']
+    form.state.data = r['state']
 
     data = {}
     data['title'] = 'edit task'
@@ -176,25 +182,23 @@ def calendar_page(page_date):
         year = today.year
         month = today.month
 
-    cal = Calendar(0)
+    cal = calendar.Calendar(0)
     month_cal = cal.monthdatescalendar(year, month)
 
     date_start = month_cal[0][0]
-    date_end = month_cal[len(month_cal) - 1][
-        len(month_cal[len(month_cal) - 1]) - 1]
+    date_end = month_cal[len(month_cal) - 1][len(month_cal[len(month_cal) - 1]) - 1]
 
     tasks = storage.get_tasks(date_start, date_end)
 
     month_data = []
-
 
     for week in month_cal:
         week_data = []
         for day in week:            
             day_data = {}
             day_data['day'] = day.day
-            day_data['header_backcolor'] = '88ddff' if day == today else 'dddddd'
-            day_data['create_task_link'] = '/create-task/{0}-{1:0>2}-{2:0>2}'.format(day.year, day.month, day.day)
+            day_data['header_backcolor'] = settings['header_backcolor_today'] if day == today else settings['header_backcolor']
+            day_data['create_task_link'] = '/create-task/{0}'.format(date_to_string(day.year, day.month, day.day))
             day_data['tasks'] = []
             for db_task in tasks:
                 if str(day) == db_task['date']:
@@ -225,3 +229,4 @@ def calendar_page(page_date):
 if __name__ == "__main__":
     app.debug = True
     app.run(host='0.0.0.0')
+

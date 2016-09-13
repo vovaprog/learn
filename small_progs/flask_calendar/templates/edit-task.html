@@ -4,7 +4,8 @@
 <form method=post action="/save-task">
   {{ form.csrf_token }}
   {{ form.date }}
-  {{ form.id }}  
+  {{ form.id }}
+  {{ form.state }}
   <table>
   <tr><td>&nbsp;</td></tr>
   <tr><td>&nbsp;</td></tr>
@@ -27,6 +28,7 @@
         <td align="center">{{ form.submit_activate }}</td>
         <td align="center">{{ form.submit_delete }}</td>
     {% endif %}
+
     <td align="center">{{ form.submit_back }}</td>
     </tr></table>
     </td>
