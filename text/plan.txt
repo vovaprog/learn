@@ -70,5 +70,10 @@ EASTL
 
 + client-server - проверки connect/listen
 + server через poll
-Проверить скорости и записать дома (iperf и client-server)
 + Сделать repo tools.
+Проверить скорости и записать дома (iperf и client-server)
+Сделать repo для календаря
+calendar docker
+calendar ssl
+calendar загрузить на сервер
+
