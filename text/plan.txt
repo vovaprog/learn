@@ -1,4 +1,4 @@
-Загрузить Raspberry с флешки
+epoll server
 L2TP на new
 sendfile, setsockopt, sendmmsg, recvmsg
 udp
@@ -64,6 +64,7 @@ EASTL
 + non blocking socket
 + python sqlite
 + flask forms
++ Загрузить Raspberry с флешки
 
 
 =================================================================

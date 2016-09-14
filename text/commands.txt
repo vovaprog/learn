@@ -458,4 +458,20 @@ service docker start
 
 docker run hello-world
 
+-------
+
+move image to another host:
+docker save -o <save image to path> <image name>
+
+copy to another computer, then:
+
+docker load -i <path to image tar file>
+
+git for docker:
+https://ryanfb.github.io/etc/2015/07/29/git_strategies_for_docker.html
+
+volumes:
+http://container42.com/2013/12/16/persistent-volumes-with-docker-container-as-volume-pattern/
+https://docs.docker.com/engine/tutorials/dockervolumes/
+
 //======================================================================
