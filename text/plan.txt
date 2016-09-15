@@ -1,3 +1,4 @@
+gtest
 epoll server
 L2TP на new
 sendfile, setsockopt, sendmmsg, recvmsg
@@ -24,6 +25,7 @@ zmq, nanomsg
 boost ASIO
 boost intrusive containers
 EASTL
+google sanitizers https://github.com/google/sanitizers
 
 + mfast
 + rsync
