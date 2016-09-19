@@ -8,9 +8,12 @@ alias astyle_my='astyle --indent=spaces=4 --pad-oper --style=allman --suffix=non
 alias autopep='autopep8 -i -v'
 alias clangf='clang-format-3.6 -i --style="{BasedOnStyle: mozilla, IndentWidth: 4, BreakBeforeBraces: Allman, ColumnLimit: 100, AccessModifierOffset: -4}"'
 alias cpplint='python ~/tools/cpplint.py --filter=-whitespace,-legal'
-alias mk="make -j 6"
+alias mk='printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" && make -j 6'
 alias cmk="cmake .."
 alias nospace='sed -i "s/[[:blank:]]*$//"'
+alias blamec='~/tools/git-blame-colored.py'
+alias p='printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"'
+alias pmake='printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" && make'
 
 findcode() {
     if [ -z "$1" ]

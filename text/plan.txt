@@ -1,5 +1,7 @@
-gtest
+move в каледарь
+perf, zoom
 epoll server
+gtest
 L2TP на new
 sendfile, setsockopt, sendmmsg, recvmsg
 udp
@@ -26,6 +28,8 @@ boost ASIO
 boost intrusive containers
 EASTL
 google sanitizers https://github.com/google/sanitizers
+containers without allocations
+vim
 
 + mfast
 + rsync
