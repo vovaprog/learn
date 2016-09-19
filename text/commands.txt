@@ -386,6 +386,13 @@ format flash ntfs
 sudo mkfs.ntfs -L label /dev/sdf1
 sudo mkfs.ntfs --fast -L label /dev/sdf1
 
+create partition:
+fdisk
+p - print partitions
+n - create partition
+d - delete partition
+w - write changes to disk
+
 //======================================================================
 
 get motherboard info (non root):
