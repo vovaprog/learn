@@ -28,6 +28,13 @@ user	  22.2        23.388     23.968
 sys	       2.0         2.4        2.61
 
 
+big dimin comp (core 2 quad q6600)
+          1                 6
+real	30.340s         10.462s
+user	27.916s         30.000s
+sys	     2.108s          2.228s
+
+
 
 home1 / work1 = 1.2
 home6 / work6 = 1.13
