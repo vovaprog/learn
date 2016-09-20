@@ -475,3 +475,10 @@ http://container42.com/2013/12/16/persistent-volumes-with-docker-container-as-vo
 https://docs.docker.com/engine/tutorials/dockervolumes/
 
 //======================================================================
+
+perf:
+perf record -F 99 -g ./some_program
+perf report
+
+
+//======================================================================

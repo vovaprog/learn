@@ -71,3 +71,59 @@ https://subversion.assembla.com/svn/portaudio/portaudio/trunk/src/common/pa_ring
 https://subversion.assembla.com/svn/portaudio/portaudio/trunk/src/common/pa_memorybarrier.h
 
 ====================================================================================================
+
+vector.clear():
+void
+clear() _GLIBCXX_NOEXCEPT
+{ _M_erase_at_end(this->_M_impl._M_start); }
+
+void
+_M_erase_at_end(pointer __pos)
+{
+std::_Destroy(__pos, this->_M_impl._M_finish, _M_get_Tp_allocator());
+this->_M_impl._M_finish = __pos;
+}
+
+stl_construct.h:
+
+template<typename _Tp>
+inline void
+_Destroy(_Tp* __pointer)
+{ __pointer->~_Tp(); }
+
+template<bool>
+struct _Destroy_aux
+{
+  template<typename _ForwardIterator>
+    static void
+    __destroy(_ForwardIterator __first, _ForwardIterator __last)
+{
+  for (; __first != __last; ++__first)
+    std::_Destroy(std::__addressof(*__first));
+}
+};
+
+template<>
+struct _Destroy_aux<true>
+{
+  template<typename _ForwardIterator>
+    static void
+    __destroy(_ForwardIterator, _ForwardIterator) { }
+};
+
+/**
+* Destroy a range of objects.  If the value_type of the object has
+* a trivial destructor, the compiler should optimize all of this
+* away, otherwise the objects' destructors must be invoked.
+*/
+template<typename _ForwardIterator>
+inline void
+_Destroy(_ForwardIterator __first, _ForwardIterator __last)
+{
+  typedef typename iterator_traits<_ForwardIterator>::value_type
+                   _Value_type;
+  std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+__destroy(__first, __last);
+}
+
+====================================================================================================

@@ -1,5 +1,4 @@
-move в каледарь
-perf, zoom
+gperftools
 epoll server
 gtest
 L2TP на new
@@ -71,16 +70,10 @@ vim
 + python sqlite
 + flask forms
 + Загрузить Raspberry с флешки
++ perf, zoom
 
 
 =================================================================
 
-+ client-server - проверки connect/listen
-+ server через poll
-+ Сделать repo tools.
 Проверить скорости и записать дома (iperf и client-server)
-Сделать repo для календаря
-calendar docker
-calendar ssl
-calendar загрузить на сервер
 
