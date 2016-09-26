@@ -77,3 +77,11 @@ vim
 
 Проверить скорости и записать дома (iperf и client-server)
 
+http server:
++ server context
++ лог
+параметры командной строки
+отправка ошибки, что нет файла
+
+mod_wsgi
+ssl

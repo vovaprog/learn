@@ -494,3 +494,16 @@ run test whose name matches regex:
 ctest -V -R ".*test-name.*"
 
 //======================================================================
+
+convert to base 64
+echo -n "admin:123" | base64
+from base 64
+echo "YWRtaW46MTIz" | base64 --decode
+
+//======================================================================
+
+uwsgi
+uwsgi --http-socket 127.0.0.1:7070 --wsgi-file ./gallery.wsgi
+sudo pip install uwsgi
+
+//======================================================================
