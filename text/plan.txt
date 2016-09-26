@@ -1,10 +1,8 @@
 gperftools
-epoll server
 gtest
 L2TP на new
-sendfile, setsockopt, sendmmsg, recvmsg
+setsockopt, sendmmsg, recvmsg
 udp
-docker
 ssl
 valgrind Memcheck
 valgrind Massif
@@ -71,9 +69,24 @@ vim
 + flask forms
 + Загрузить Raspberry с флешки
 + perf, zoom
++ sendfile
++ epoll
++ docker
 
 
 =================================================================
 
 Проверить скорости и записать дома (iperf и client-server)
+
+http_server:
+отправка ошибок
++ вывод состояния
+лог
+чтение параметров командной строки
+буфер - не ring.
+
+сравнение с busybox http server
+Параметр сокета для отправки заголовка
+python wsgi
+ssl
 

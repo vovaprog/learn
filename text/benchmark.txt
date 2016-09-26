@@ -87,3 +87,19 @@ hp-mini client_write, new server_read
 
 hp-mini client, new server
 11_560_000
+
+===============================================================================================================
+
+http_server
+
+openload http://127.0.0.1:7000/test1.jpg 10
+-O0
+MaTps 384.29, Tps 389.61, Resp Time  0.026, Err   0%, Count   776
+MaTps 384.38, Tps 385.23, Resp Time  0.026, Err   0%, Count  1162
+MaTps 384.65, Tps 387.06, Resp Time  0.026, Err   0%, Count  1551
+
+-O2
+MaTps 393.71, Tps 403.60, Resp Time  0.025, Err   0%, Count  1201
+MaTps 393.14, Tps 388.06, Resp Time  0.026, Err   0%, Count  1591
+MaTps 393.65, Tps 398.20, Resp Time  0.025, Err   0%, Count  1990
+
