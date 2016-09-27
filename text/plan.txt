@@ -1,7 +1,7 @@
 gperftools
 gtest
 L2TP на new
-setsockopt, sendmmsg, recvmsg
+setsockopt, sendmsg, recvmsg
 udp
 ssl
 valgrind Memcheck
@@ -83,10 +83,12 @@ http server:
 + лог
 параметры командной строки
 отправка ошибки, что нет файла
+wsgi
 
 сравнение с busybox http server
 Параметр сокета для отправки заголовка
 буфер - не ring.
 wsgi
 ssl
+rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); // Allow socket descriptor to be reuseable
 
