@@ -88,6 +88,10 @@ make VERBOSE=1
 run nose tests:
 /usr/bin/nosetests "python/test.py" "-v" "--with-xunit"
 
+run specific nose test:
+cd /home/user/project/python
+/bin/sh "-c" "LD_LIBRARY_PATH=/home/user/project/build/lib: nosetests -v test/test.py:test_name"
+
 //======================================================================
 
 chroot

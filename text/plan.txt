@@ -81,14 +81,26 @@ vim
 http server:
 + server context
 + лог
-параметры командной строки
-отправка ошибки, что нет файла
-wsgi
++ wsgi
 
+разобраться - убрать ServerContext.
+убрать лишние поля из структур.
+Привести код в порядок
+remove all perror
+нормальная инициализация
+
+ssl
+несколько ServerExecutor
+
+сначала проверять, что это приложение или файл, а потом для файла проверять url строже.
+отправка ошибки, что нет файла
+параметры командной строки, xml конфигурация
+
+запись лога в файл
 сравнение с busybox http server
 Параметр сокета для отправки заголовка
 буфер - не ring.
 wsgi
-ssl
+
 rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); // Allow socket descriptor to be reuseable
 
