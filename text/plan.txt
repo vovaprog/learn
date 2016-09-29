@@ -1,3 +1,4 @@
+call graph c++
 gperftools
 gtest
 L2TP на new
@@ -83,6 +84,7 @@ http server:
 + лог
 + wsgi
 
+Много потоков для обработки
 разобраться - убрать ServerContext.
 убрать лишние поля из структур.
 Привести код в порядок
