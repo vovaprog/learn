@@ -83,26 +83,28 @@ http server:
 + server context
 + лог
 + wsgi
++ Много потоков для обработки
++ разобраться - убрать ServerContext.
++ несколько ServerExecutor
 
-Много потоков для обработки
-разобраться - убрать ServerContext.
 убрать лишние поля из структур.
 Привести код в порядок
 remove all perror
 нормальная инициализация
+нормальное завершение
+лог в файлы с rotate
 
 ssl
-несколько ServerExecutor
 
 сначала проверять, что это приложение или файл, а потом для файла проверять url строже.
 отправка ошибки, что нет файла
 параметры командной строки, xml конфигурация
 
-запись лога в файл
 сравнение с busybox http server
 Параметр сокета для отправки заголовка
 буфер - не ring.
-wsgi
+__attribute__ ((format (printf, 1, 2)))
+
 
 rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); // Allow socket descriptor to be reuseable
 

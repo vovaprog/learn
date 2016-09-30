@@ -14,6 +14,7 @@ alias nospace='sed -i "s/[[:blank:]]*$//"'
 alias blamec='~/tools/git-blame-colored.py'
 alias p='printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"'
 alias pmake='printf "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" && make'
+alias findspace='grep -r -n "if(\|while(\|for(\|switch(\|[[:blank:]]$" .'
 
 findcode() {
     if [ -z "$1" ]
