@@ -112,6 +112,8 @@ remove all perror
 буфер - не ring.
 uwsgi - port
 friend классы
+__attribute__ ((format (printf, 1, 2)))
+
 
 rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); // Allow socket descriptor to be reuseable
 
