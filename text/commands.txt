@@ -510,3 +510,11 @@ uwsgi --http-socket 127.0.0.1:7070 --wsgi-file ./gallery.wsgi
 sudo pip install uwsgi
 
 //======================================================================
+
+https://linux.die.net/man/7/capabilities
+
+let program bind listen to port below 1024:
+
+sudo setcap 'cap_net_bind_service+ep' /path/to/program
+
+//======================================================================
