@@ -114,7 +114,7 @@ FileExecutor - заменить stat на fstat
 uwsgi - port
 friend классы
 __attribute__ ((format (printf, 1, 2)))
-
+sigaction instead of signal
 
 rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); // Allow socket descriptor to be reuseable
 

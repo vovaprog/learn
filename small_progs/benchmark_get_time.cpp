@@ -73,6 +73,8 @@ int main()
         }
     }
     
+    printf("\n\n---------\n");
+    
     {
         SimpleProfiler prof("time + ctime");
         
@@ -81,10 +83,15 @@ int main()
             time_t mytime;
             mytime = time(NULL);
             ctime(&mytime);
-            //printf(ctime(&mytime));
+            if(i==0)
+            {
+            	printf(ctime(&mytime));
+            }
         }
     }    
 
+    printf("\n\n---------\n");
+    
     {
         SimpleProfiler prof("chrono + ctime");
         
@@ -92,11 +99,37 @@ int main()
         {
             std::time_t t = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
             std::ctime(&t);
-            //printf(ctime(&t));
+            if(i==0)
+            {
+            	printf(ctime(&t));
+            }
         }
     }    
     
+    printf("\n\n---------\n");
     
+    {
+        SimpleProfiler prof("time + localtime + strftime");
+
+		time_t rawtime;
+		struct tm * timeinfo;
+		char buffer[80];
+        
+        for(int i=0;i<ITERS;++i)
+        {
+        	time (&rawtime);
+        	timeinfo = localtime(&rawtime);
+
+        	strftime(buffer,80,"%d-%m-%Y %I:%M:%S",timeinfo);
+        	//std::string str(buffer);            
+        	if(i==0)
+            {
+            	printf("%s\n",buffer);
+            }
+        }
+    }    
+    
+    printf("\n\n");
 
     
     cout <<accum<<endl;
