@@ -113,12 +113,51 @@ void test_exceptions4()
     }            
 }
 
+class A {
+public:
+	A() 
+	{
+		cout <<"throw in ctr"<<endl;
+		throw 5; 
+	}
+	
+	A(int x) { }
+	
+	~A()
+	{
+		cout << "in A dest"<<endl;
+		throw 5;
+	}	
+	void work()
+	{
+		cout <<"works!"<<endl;
+	}
+};
+
+void test_exceptions5()
+{
+	try{
+		A obj;
+		obj.work();
+	}catch(int x){
+		cout <<"catch"<<endl;	
+	}
+	try{
+		A obj(5);
+		obj.work();
+	}catch(int x){
+		cout <<"catch"<<endl;	
+	}		
+}
+
+
 int main()
 {
     //test_exceptions1();
     //test_exceptions2();
     //test_exceptions3();
-    test_exceptions4();
+    //test_exceptions4();
+    test_exceptions5();
     
     return 0;    
 }

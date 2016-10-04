@@ -521,6 +521,17 @@ throw 1; //базовые типы:
 тип исключения в catch должен точно соответствовать типу бросаемого исключения.
 
 
+noexcept
+http://en.cppreference.com/w/cpp/language/noexcept_spec
+
+If a search for a matching exception handler leaves a function marked noexcept or noexcept(true), std::terminate is called immediately.
+In C++ 11 if destructor has no exception specifiers it is noexcept.
+So throwing from destructor in C++ 11 will terminate program.
+
+Before c++ 11 terminate is called only if exception is thrown during stack unwinding.
+
+
+
 //============================================================================
 undefined/unspecified behavior
 //============================================================================
