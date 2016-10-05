@@ -518,3 +518,9 @@ let program bind listen to port below 1024:
 sudo setcap 'cap_net_bind_service+ep' /path/to/program
 
 //======================================================================
+
+Apache benchmark:
+
+ ab -n 10000 -c 250  "http://127.0.0.1:7000/test2.jpg"
+
+//======================================================================
