@@ -1,3 +1,67 @@
+h j k l - move cursor one char or line
+i, a - insert, append mode
+x - delete char
+
+w - move one word
+0 - start of line
+$ - end of line
+e - end of word
+
+dw - delete word
+dd - delete line 
+
+u - undo
+U - undo line
+Ctrl+r - redo
+
+:wq  - save changes
+
+
+allow backspace remove previously entered text:
+:set backspace=indent,eol,start
+or
+:set backspace=2
+
+Ctrl+g - get current line
+
+G - end of file
+number G - goto line number
+gg - first line
+
+/test  - find text
+n - find next
+N - find prev
+
+?test - find backward
+
+Ctrl + o - move back
+Ctrl + i - move forward
+
+% - go to matching bracket
+
+:! ls   - run ls
+
+:w filename -  save to filename
+
+d - cut
+y - copy
+p - paste
+
+Ctrl+r, потом 0   - paste in insert mode
+
+ignore case in search:
+set ic
+
+Open in tab:
+tabedit {file}
+tabclose
+
+Ctrl + ww   - jump between windows
+
+:qa - close all tabs
+
+==========================================================
+
 tabs to spaces:
 set expandtab
 
@@ -23,6 +87,8 @@ set tabstop=4 shiftwidth=4 expandtab
 set autoindent
 set cindent
 set nu
+set backspace=indent,eol,start
+set nocompatible
 
 h j k l - move cursor one char or line
 
