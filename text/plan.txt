@@ -93,9 +93,9 @@ http server:
 + остановка ssl при stop сервера
 + remove all perror
 + FileExecutor - заменить stat на fstat
++ xml конфигурация
 
 
-xml конфигурация
 правки в календарь
 правки в галерею
 

@@ -1,3 +1,6 @@
+==========================================================
+From tutorial:
+
 h j k l - move cursor one char or line
 i, a - insert, append mode
 x - delete char
@@ -59,6 +62,27 @@ tabclose
 Ctrl + ww   - jump between windows
 
 :qa - close all tabs
+
+:o - insert empty line after current
+
+==========================================================
+Installation:
+Pathogen:
+https://github.com/tpope/vim-pathogen
+install:
+mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
+Nerd tree
+
+Nerd tree tabs:
+https://github.com/jistr/vim-nerdtree-tabs
+
+
+list colors:
+ls /usr/share/vim/vim74/colors
+
+good colors:
+evening darkblue torte
 
 ==========================================================
 
