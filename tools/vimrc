@@ -9,7 +9,7 @@ set showmatch
 
 set mouse=a
 
-set rtp+=~/.vim/bundle/nerdtree
+"set rtp+=~/.vim/bundle/nerdtree
 
 autocmd vimenter * NERDTree
 
@@ -24,9 +24,29 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-
 let NERDTreeShowBookmarks=1
 
 map <F12> :q
 
 colorscheme torte
+
+map <F4> [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+
+"goto definition in new tab:
+"map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+
+set tags=./tags;/
+
+set langmenu=en_US
+let $LANG='en_US'
+
+cscope add /media/vova/programs/programs/git/tools/src/http_server/cscope.out /media/vova/programs/programs/git/tools/src/http_server
+
+"look for vimrc in every dir
+set exrc
+"secure mode for exrc
+set secure
+
+" clang_complete
+"let g:clang_library_path='/usr/lib/llvm-3.8/lib/libclang.so'
+

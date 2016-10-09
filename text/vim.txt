@@ -65,6 +65,15 @@ Ctrl + ww   - jump between windows
 
 :o - insert empty line after current
 
+Ctrl+] - goto definition
+Ctrl+t - go back
+
+add ctags:
+:set tags+=/path/to/file
+
+build cscope database:
+cscope -R -b
+
 ==========================================================
 Installation:
 Pathogen:
@@ -73,9 +82,10 @@ install:
 mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
 Nerd tree
+git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
 
 Nerd tree tabs:
-https://github.com/jistr/vim-nerdtree-tabs
+git clone https://github.com/jistr/vim-nerdtree-tabs ~/.vim/bundle/vim-nerdtree-tabs
 
 
 list colors:
@@ -83,6 +93,10 @@ ls /usr/share/vim/vim74/colors
 
 good colors:
 evening darkblue torte
+
+CtrlP:
+http://www.vim.org/scripts/script.php?script_id=3736
+
 
 ==========================================================
 
