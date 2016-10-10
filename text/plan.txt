@@ -1,5 +1,11 @@
+multicast
+tcp
+starvation
+
 signals and multithreading
 call graph c++
+background processes
+
 gperftools
 gtest
 L2TP на new
@@ -28,7 +34,7 @@ boost intrusive containers
 EASTL
 google sanitizers https://github.com/google/sanitizers
 containers without allocations
-vim
+
 
 + mfast
 + rsync
@@ -75,6 +81,9 @@ vim
 + epoll
 + docker
 + openssl
++ tinyxml2
++ vim
++ cmake - configurations
 
 
 =================================================================
@@ -95,18 +104,24 @@ http server:
 + remove all perror
 + FileExecutor - заменить stat на fstat
 + xml конфигурация
++ uwsgi - port
++ сначала проверять, что это приложение или файл, а потом для файла проверять url строже.
++ __attribute__ ((format (printf, 1, 2)))
 
-
+uwsgi - запуск нескольких приложений
 правки в календарь
 правки в галерею
+создать репозиторий для сервера    simple_http_server    epoll_http_server
+
+
 
 убрать лишние поля из структур.
 Привести код в порядок
 Убрать лишние header-ы
+Перенести весь код в cpp файлы
 
 
 нормальная инициализация
-сначала проверять, что это приложение или файл, а потом для файла проверять url строже.
 отправка ошибки, что нет файла
 Проверка: остановка ssl при stop сервера
 Посмотреть, что еще делает с ssl пример кода
@@ -115,9 +130,7 @@ http server:
 сравнение с busybox http server
 Параметр сокета для отправки заголовка
 буфер - не ring.
-uwsgi - port
 friend классы
-__attribute__ ((format (printf, 1, 2)))
 sigaction instead of signal
 
 rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); // Allow socket descriptor to be reuseable
