@@ -479,6 +479,35 @@ Link layer  - link, physical
 
 
 //============================================================================
+tcp
+//============================================================================
+
+Установка соединения:
+Сервер шлет syn
+Клиент шлет syn ack
+Сервер шлет ack
+
+Разрыв соединения:
+1 сторона FIN
+2 сторона ACK
+2 сторона FIN
+1 сторона ACK
+
+Разрыв соединения:
+1 сторона FIN
+2 сторона FIN ACK 
+1 сторона ACK
+
+В каждом пакете Sequence Number
+Acknowledgement Number - если установлен флаг ack.
+
+Изначально Sequence Number с обоих сторон устанавливается в случайное число.
+
+Sequence Number - стартовое значение seqnum + количество байт, которые отправлены перед текущим пакетом.
+Sequence Number - accumulated sequence number of the first data byte of this segment for the current session
+Acknowledgement Number - if the ACK flag is set then the value of this field is the next sequence number that the receiver is expecting.
+
+//============================================================================
 Exceptions
 //============================================================================
 
