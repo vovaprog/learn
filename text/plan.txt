@@ -1,6 +1,6 @@
 multicast
 tcp
-starvation
+starvation, live lock
 
 signals and multithreading
 call graph c++
@@ -107,18 +107,29 @@ http server:
 + uwsgi - port
 + сначала проверять, что это приложение или файл, а потом для файла проверять url строже.
 + __attribute__ ((format (printf, 1, 2)))
++ Перенести весь код в cpp файлы
++ создать репозиторий для сервера    simple_http_server    epoll_http_server
++ правки в галерею
++ пример конфига
++ ubuntu needed packages (docker)
++ build with clang
+
+
+правки в календарь
+запустить галерею на порту 8000 на сервере
+  скопировать папку с картинками
+  сбилдить сервер
+  установить uwsgi
+  написать скрипт запуска uwsgi и сервера
+
 
 uwsgi - запуск нескольких приложений
-правки в календарь
-правки в галерею
-создать репозиторий для сервера    simple_http_server    epoll_http_server
-
+message log level
 
 
 убрать лишние поля из структур.
 Привести код в порядок
 Убрать лишние header-ы
-Перенести весь код в cpp файлы
 
 
 нормальная инициализация
@@ -134,4 +145,8 @@ friend классы
 sigaction instead of signal
 
 rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); // Allow socket descriptor to be reuseable
+
+
+http packages: libssl-dev libtinyxml2-dev
+
 

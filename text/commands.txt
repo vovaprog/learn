@@ -122,6 +122,16 @@ mkhomedir_helper username
 
 //======================================================================
 
+Создание пользователя:
+addgroup vova
+useradd -g vova vova
+passwd vova
+mkhomedir_helper vova
+
+
+
+//======================================================================
+
 btrfs:
 
 truncate -s 20G ./fs.img
@@ -257,6 +267,7 @@ set compilers for cmake:
 2074  export CXX=clang++-3.6
 
 cmake -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ ..
+cmake -DCMAKE_C_COMPILER=clang-3.6 -DCMAKE_CXX_COMPILER=clang++-3.6 ../src
 
 //======================================================================
 
@@ -537,7 +548,16 @@ cmake -DCMAKE_BUILD_TYPE=Debug ..
 
 run in background:
 
-nohup ./http_server > /dev/null &
+nohup ./http_server > /dev/null 2> /dev/null &
 
 //======================================================================
 
+generate openssl certificate:
+
+openssl req -x509 -newkey rsa:4096 -keyout server.pem -out server.pem -days 20000 -nodes
+openssl req -new -x509 -keyout server.pem -out server.pem -days 20000 -nodes
+
+-nodes       - do not encrypt key
+-keyout -out - могут быть разные файлы, может быть один файл
+
+//======================================================================

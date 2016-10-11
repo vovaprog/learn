@@ -29,6 +29,10 @@ git config --global user.email johndoe@example.com
 
 git config --global core.editor mcedit
 
+set only for one repository:
+git config user.name "test"
+git config user.email "your_email@example.com"
+
 ===================================================================================
 
 undo last commit:
