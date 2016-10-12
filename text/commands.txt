@@ -561,3 +561,17 @@ openssl req -new -x509 -keyout server.pem -out server.pem -days 20000 -nodes
 -keyout -out - могут быть разные файлы, может быть один файл
 
 //======================================================================
+
+find stop kill process by name:
+
+kill -SIGINT $(ps -e | grep 'epoll_http_server' | awk '{ print $1 }')
+
+//======================================================================
+
+run process in background:
+
+cd ./epoll_http_server && nohup ./epoll_http_server > /dev/null 2> /dev/null &
+
+//======================================================================
+
+
