@@ -116,14 +116,16 @@ http server:
 + запустить галерею на порту 7000 на сервере
 + ошибки в SSL_write
 + уменьшить частоту записи состояния
-
-
-правки в календарь
++ правки в календарь
++ установить календарь
++ скопировать всю папку сайта
 
 
 
 uwsgi - запуск нескольких приложений
 message log level
+
+запись в лог из network utils
 
 
 убрать лишние поля из структур.
@@ -149,3 +151,7 @@ rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); 
 http packages: libssl-dev libtinyxml2-dev
 
 
+int sock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
+connect fails after this: Operation now in progress
+
+http://stackoverflow.com/questions/17769964/linux-sockets-non-blocking-connect
