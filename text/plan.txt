@@ -1,6 +1,7 @@
 multicast
 tcp
 starvation, live lock
+zeromq - посмотреть ring buffer.
 
 signals and multithreading
 call graph c++
@@ -119,18 +120,37 @@ http server:
 + правки в календарь
 + установить календарь
 + скопировать всю папку сайта
-
++ запись в лог из network utils
 
 
 uwsgi - запуск нескольких приложений
 message log level
+тип соединения
+Кеширование картинок (сравнить с busybox)
 
-запись в лог из network utils
+
+ConnectionType { clear = 1, ssl = 2 };
+
+<application>
+    <prefix>
+    <address>
+    <port>
+    <connectTypeClear>1</connectTypeClear>
+    <connectTypeSsl>1</connectTypeSsl>
+</application>
+
+<application>
+    <prefix>
+    <address>
+    <port>
+    <connectionType clear = "1" ssl = "1">
+</application>
+
 
 
 убрать лишние поля из структур.
 Привести код в порядок
-Убрать лишние header-ы
+
 
 
 нормальная инициализация
@@ -140,7 +160,14 @@ message log level
 открытие портов и понижение прав.
 
 сравнение с busybox http server
+
 Параметр сокета для отправки заголовка
+http://man7.org/linux/man-pages/man2/sendfile.2.html
+http://man7.org/linux/man-pages/man7/tcp.7.html
+TCP_CORK
+http://blog.debian-help.ru/2014/12/optimizaciya-nginx-parametri-sendfile-tcpnodelay-tcpnopush
+
+
 буфер - не ring.
 friend классы
 sigaction instead of signal
@@ -151,7 +178,13 @@ rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); 
 http packages: libssl-dev libtinyxml2-dev
 
 
-int sock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
-connect fails after this: Operation now in progress
++ int sock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
++ connect fails after this: Operation now in progress
 
 http://stackoverflow.com/questions/17769964/linux-sockets-non-blocking-connect
+
+
+Закрытие сокета:
+https://www.softlab.ntua.gr/facilities/documentation/unix/unix-socket-faq/unix-socket-faq-2.html#time_wait
+https://www.softlab.ntua.gr/facilities/documentation/unix/unix-socket-faq/unix-socket-faq-2.html
+
