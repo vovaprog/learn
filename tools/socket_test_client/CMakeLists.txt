@@ -1,0 +1,5 @@
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -pthread -g -O0")
+
+add_executable(socket_test_client main.cpp)
+
