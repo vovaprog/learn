@@ -1,3 +1,5 @@
+cmake configuration qt creator
+
 multicast
 tcp
 starvation, live lock
@@ -121,31 +123,16 @@ http server:
 + установить календарь
 + скопировать всю папку сайта
 + запись в лог из network utils
++ тип соединения
++ отправка ошибки, что нет файла
++ Проверить - как POST передает параметры.
 
 
 uwsgi - запуск нескольких приложений
 message log level
-тип соединения
 Кеширование картинок (сравнить с busybox)
-
-
-ConnectionType { clear = 1, ssl = 2 };
-
-<application>
-    <prefix>
-    <address>
-    <port>
-    <connectTypeClear>1</connectTypeClear>
-    <connectTypeSsl>1</connectTypeSsl>
-</application>
-
-<application>
-    <prefix>
-    <address>
-    <port>
-    <connectionType clear = "1" ssl = "1">
-</application>
-
+Разбор заголовков
+Отправка Last-Modified
 
 
 убрать лишние поля из структур.
@@ -154,7 +141,6 @@ ConnectionType { clear = 1, ssl = 2 };
 
 
 нормальная инициализация
-отправка ошибки, что нет файла
 Проверка: остановка ssl при stop сервера
 Посмотреть, что еще делает с ssl пример кода
 открытие портов и понижение прав.
