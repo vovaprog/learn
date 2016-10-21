@@ -128,13 +128,18 @@ http server:
 + Проверить - как POST передает параметры.
 + Отправка Last-Modified
 + Вывод в лог ошибок ssl
++ Везде где делается remove executor - писать в лог.
++ Разбор заголовков
 
 
-Везде где делается remove executor - писать в лог.
+сделать, чтобы RequestExecutor работал через HttpRequest.
+Выдавать response Not modified.
+
+? замена uwsgi на proxy ?
 uwsgi - запуск нескольких приложений
 message log level
 Кеширование картинок (сравнить с busybox)
-Разбор заголовков
+
 
 
 убрать лишние поля из структур.
