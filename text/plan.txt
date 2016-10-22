@@ -149,3 +149,27 @@ rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); 
 http packages: libssl-dev libtinyxml2-dev
 
 
+========== get request ================
+GET /gallery-data/preview_300/2016%20thailand/IMG_3369.png HTTP/1.1
+Host: 78.47.191.166
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://78.47.191.166/gallery
+X-Compress: 1
+Proxy-Authorization: fb37e776d68d7274ecdfc07ab326c5d39af1012b263ead2d88499926b25556e3ce4ed49c8fbcbce6
+Connection: keep-alive
+If-Modified-Since: Sun, 07 Aug 2016 21:36:36 GMT
+If-None-Match: "12af2-53982181c0911"
+Cache-Control: max-age=0
+
+========= get response ===========
+HTTP/1.1 304 Not Modified
+Date: Wed, 12 Oct 2016 19:35:00 GMT
+Server: Apache/2.4.10
+Connection: Keep-Alive
+Keep-Alive: timeout=5, max=100
+ETag: "1e101-53982181cf371"
+
+
