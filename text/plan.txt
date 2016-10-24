@@ -130,15 +130,21 @@ http server:
 + Вывод в лог ошибок ssl
 + Везде где делается remove executor - писать в лог.
 + Разбор заголовков
++ сделать, чтобы RequestExecutor работал через HttpRequest.
++ Выдавать response Not modified.
++ HttpResponse
++ uwsgi -> proxy
+test HttpRequest
 
 
-сделать, чтобы RequestExecutor работал через HttpRequest.
-Выдавать response Not modified.
+Проверка valgrind
+Убрать лишние логи
 
-? замена uwsgi на proxy ?
+
+
 uwsgi - запуск нескольких приложений
 message log level
-Кеширование картинок (сравнить с busybox)
+
 
 
 
