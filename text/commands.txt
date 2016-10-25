@@ -542,6 +542,7 @@ set configuration when running cmake:
 Debug, Release, RelWithDebInfo, MinSizeRel.
 
 cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 
 //======================================================================
@@ -580,3 +581,15 @@ ls -l /proc/3510/fd
 
 //======================================================================
 
+valgrind test epoll http server:
+
+valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./epoll_http_server
+ab -n 100 -c 20  "http://127.0.0.1:7000/test.jpg"
+
+valgrind --tool=callgrind ./epoll_http_server
+valgrind --tool=cachegrind ./epoll_http_server
+
+valgrind --tool=massif ./epoll_http_server
+ms_print ./massif.out.pid
+
+//======================================================================
