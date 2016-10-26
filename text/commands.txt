@@ -56,6 +56,23 @@ alias astyle_allman_spaces='~/tools/astyle --attach-namespaces --indent=spaces=4
 
 //======================================================================
 
+set configuration when running cmake:
+Debug, Release, RelWithDebInfo, MinSizeRel.
+
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+cmake -DCMAKE_BUILD_TYPE=MinSizeRel ..
+
+
+to print cmake commands run:
+make VERBOSE=1
+
+set clang compiler:
+cmake -DCMAKE_C_COMPILER=clang-3.6 -DCMAKE_CXX_COMPILER=clang++-3.6 ../src
+
+//======================================================================
+
 Форматирование питона:
 autopep8 -i -v ./test_link_fastmd.py
 
@@ -79,9 +96,6 @@ alias clangf='clang-format-3.6 -i --style="{BasedOnStyle: mozilla, IndentWidth: 
 /lib64/ld-linux-x86-64.so.2 --list ./program_name
 
 //======================================================================
-
-to print cmake commands run:
-make VERBOSE=1
 
 //======================================================================
 
@@ -538,15 +552,6 @@ Apache benchmark:
 
 //======================================================================
 
-set configuration when running cmake:
-Debug, Release, RelWithDebInfo, MinSizeRel.
-
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-
-//======================================================================
-
 run in background:
 
 nohup ./http_server > /dev/null 2> /dev/null &
@@ -581,7 +586,10 @@ ls -l /proc/3510/fd
 
 //======================================================================
 
-valgrind test epoll http server:
+profile epoll http server:
+
+===== valgrind =====
+
 
 valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./epoll_http_server
 ab -n 100 -c 20  "http://127.0.0.1:7000/test.jpg"
@@ -591,5 +599,60 @@ valgrind --tool=cachegrind ./epoll_http_server
 
 valgrind --tool=massif ./epoll_http_server
 ms_print ./massif.out.pid
+
+
+
+===== perf ======
+
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer" ../src
+
+perf record -F 1000 -g ./epoll_http_server
+(-F number - frequency of samples,   -g - record call graph)
+
+perf report
+
+
+//======================================================================
+clang static analyzer:
+
+# run cmake
+#!/bin/sh
+
+export CC="/usr/share/clang/scan-build-3.8/libexec/ccc-analyzer"
+export CXX="/usr/share/clang/scan-build-3.8/libexec/c++-analyzer"
+export CXXAnalyzer="/usr/share/clang/scan-build-3.8/libexec/c++-analyzer"
+
+scan-build cmake ../src
+
+
+# run make
+#!/bin/sh
+
+export CCC_CC="clang"
+export CCC_CXX="clang++"
+
+scan-build make
+
+===================================================
+ 
+export CCC_CC=clang
+export CCC_CXX=clang++
+
+cmake -DCMAKE_C_COMPILER=/usr/share/clang/scan-build-3.8/libexec/ccc-analyzer -DCMAKE_CXX_COMPILER=/usr/share/clang/scan-build-3.8/libexec/c++-analyzer ../src
+
+===================================================
+
+export CCC_CC=clang
+export CCC_CXX=clang++
+
+scan-build make
+vlads@lubuntu1604:~/git/epoll_http_server/build2$ 
+
+//======================================================================
+
+man less
+
+n - search next
+Shift+n - search prev
 
 //======================================================================

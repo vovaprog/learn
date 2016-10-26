@@ -1,3 +1,9 @@
+gdb epoll server
+clang static analysis epoll server
+call graph c++
+
+gallery - lock while creating preview.
+
 cmake configuration qt creator
 
 multicast
@@ -6,7 +12,6 @@ starvation, live lock
 zeromq - посмотреть ring buffer.
 
 signals and multithreading
-call graph c++
 background processes
 
 gperftools
@@ -15,8 +20,6 @@ L2TP на new
 setsockopt, sendmsg, recvmsg
 udp
 ssl
-valgrind Memcheck
-valgrind Massif
 valgrind Helgrind
 valgrind DRD
 google sparse hash table
@@ -87,130 +90,13 @@ containers without allocations
 + tinyxml2
 + vim
 + cmake - configurations
-
-
-=================================================================
-
-Проверить скорости и записать дома (iperf и client-server)
-
-http server:
-+ server context
-+ лог
-+ wsgi
-+ Много потоков для обработки
-+ разобраться - убрать ServerContext.
-+ ssl
-+ несколько ServerExecutor
-+ удаление executor-ов по timeout
-+ лог в файл
-+ остановка ssl при stop сервера
-+ remove all perror
-+ FileExecutor - заменить stat на fstat
-+ xml конфигурация
-+ uwsgi - port
-+ сначала проверять, что это приложение или файл, а потом для файла проверять url строже.
-+ __attribute__ ((format (printf, 1, 2)))
-+ Перенести весь код в cpp файлы
-+ создать репозиторий для сервера    simple_http_server    epoll_http_server
-+ правки в галерею
-+ пример конфига
-+ ubuntu needed packages (docker)
-+ build with clang
-+ запустить галерею на порту 7000 на сервере
-+ ошибки в SSL_write
-+ уменьшить частоту записи состояния
-+ правки в календарь
-+ установить календарь
-+ скопировать всю папку сайта
-+ запись в лог из network utils
-+ тип соединения
-+ отправка ошибки, что нет файла
-+ Проверить - как POST передает параметры.
-+ Отправка Last-Modified
-+ Вывод в лог ошибок ssl
-+ Везде где делается remove executor - писать в лог.
-+ Разбор заголовков
-+ сделать, чтобы RequestExecutor работал через HttpRequest.
-+ Выдавать response Not modified.
-+ HttpResponse
-+ uwsgi -> proxy
-test HttpRequest
-
-
-Работа с ssl.
-Проверка valgrind
-Убрать лишние логи
-
-
-
-uwsgi - запуск нескольких приложений
-message log level
++ valgrind Memcheck
++ valgrind Massif
++ perf epoll server
 
 
 
 
-убрать лишние поля из структур.
-Привести код в порядок
 
-
-
-нормальная инициализация
-Проверка: остановка ssl при stop сервера
-Посмотреть, что еще делает с ssl пример кода
-открытие портов и понижение прав.
-
-сравнение с busybox http server
-
-Параметр сокета для отправки заголовка
-http://man7.org/linux/man-pages/man2/sendfile.2.html
-http://man7.org/linux/man-pages/man7/tcp.7.html
-TCP_CORK
-http://blog.debian-help.ru/2014/12/optimizaciya-nginx-parametri-sendfile-tcpnodelay-tcpnopush
-
-
-буфер - не ring.
-friend классы
-sigaction instead of signal
-
-rc = setsockopt(listen_sd, SOL_SOCKET,  SO_REUSEADDR, (char *)&on, sizeof(on)); // Allow socket descriptor to be reuseable
-
-
-http packages: libssl-dev libtinyxml2-dev
-
-
-
-========== get request ================
-GET /gallery-data/preview_300/2016%20thailand/IMG_3369.png HTTP/1.1
-Host: 78.47.191.166
-User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0
-Accept: */*
-Accept-Language: en-US,en;q=0.5
-Accept-Encoding: gzip, deflate
-Referer: http://78.47.191.166/gallery
-X-Compress: 1
-Proxy-Authorization: fb37e776d68d7274ecdfc07ab326c5d39af1012b263ead2d88499926b25556e3ce4ed49c8fbcbce6
-Connection: keep-alive
-If-Modified-Since: Sun, 07 Aug 2016 21:36:36 GMT
-If-None-Match: "12af2-53982181c0911"
-Cache-Control: max-age=0
-
-========= get response ===========
-HTTP/1.1 304 Not Modified
-Date: Wed, 12 Oct 2016 19:35:00 GMT
-Server: Apache/2.4.10
-Connection: Keep-Alive
-Keep-Alive: timeout=5, max=100
-
-
-
-+ int sock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
-+ connect fails after this: Operation now in progress
-
-http://stackoverflow.com/questions/17769964/linux-sockets-non-blocking-connect
-
-
-Закрытие сокета:
-https://www.softlab.ntua.gr/facilities/documentation/unix/unix-socket-faq/unix-socket-faq-2.html#time_wait
-https://www.softlab.ntua.gr/facilities/documentation/unix/unix-socket-faq/unix-socket-faq-2.html
 
 
