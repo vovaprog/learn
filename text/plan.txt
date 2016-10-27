@@ -1,15 +1,18 @@
-gdb epoll server
-clang static analysis epoll server
-call graph c++
-
+gallery - debian packages
 gallery - lock while creating preview.
+zeromq - посмотреть ring buffer.
+nanomsg
+
+thread local variables
+file caps
+
+call graph c++
 
 cmake configuration qt creator
 
 multicast
 tcp
 starvation, live lock
-zeromq - посмотреть ring buffer.
 
 signals and multithreading
 background processes
@@ -19,27 +22,25 @@ gtest
 L2TP на new
 setsockopt, sendmsg, recvmsg
 udp
-ssl
 valgrind Helgrind
 valgrind DRD
 google sparse hash table
 mem, rate 
 pandas
 apt-get, package tools
-profiler
 gdb
 python
 LLVM clang
 LLVM debugger
-vim (ctags)
 sed - awk
 Eclipse CDT
-zmq, nanomsg
 boost ASIO
 boost intrusive containers
 EASTL
 google sanitizers https://github.com/google/sanitizers
 containers without allocations
+clang static analysis
+python pygments.org - highlite blame
 
 
 + mfast
@@ -93,6 +94,7 @@ containers without allocations
 + valgrind Memcheck
 + valgrind Massif
 + perf epoll server
++ gdb epoll server
 
 
 

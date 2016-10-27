@@ -1,0 +1,97 @@
+> gdb ./epoll_http_server
+
+(break file_name line number)
+break RequestExecutor.cpp:18
+
+> run
+
+(print source code)
+> list
+> l
+
+(print next lines)
+> list
+
+(repeat last command)
+> enter
+
+(print lines around linenum)  
+> list linenum 
+
+(print lines before previous printed)
+> list -
+
+(print lines at start of function)
+> list function
+
+
+(set number of lines list prints)
+> set listsize 30
+
+(print from first to last)
+> list first,last
+
+(continue execution)
+> continue
+> c
+
+(step into)
+> step
+> s
+
+(step one instruction)
+> stepi
+> si
+
+(step over)
+> next
+> n
+
+(step over one instruction)
+> nexti
+> ni
+
+(Stop program execution)
+> kill
+
+(exit gdb)
+> quit
+> q
+
+(print variable)
+> print variable
+> p variable
+
+(print expr on every stop)
+> display expr
+
+(delete expressions from display)
+> delete display numbers
+
+(print display expressions)
+> info display
+
+(step out of function. continue until function returns)
+> finish
+
+(show mixed source/disasm)
+> disassemble /m
+> disas /m
+
+(show mixed source/disasm and instruction codes)
+> disassemble /mr
+
+(set assembler type)
+> set disassembly-flavor intel
+> set disassembly-flavor att
+
+(show instruction on stop)
+> set disassemble-next-line on
+> set disassemble-next-line off
+
+===========================================================================
+
+colored gdbinit:
+
+https://github.com/gdbinit/Gdbinit
+https://github.com/cyrus-and/gdb-dashboard
