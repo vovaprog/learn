@@ -18,17 +18,8 @@ def open_file_write_exclusive(file_name):
     Truncates opened file.
     """
 
-    try:
-        fd = os.open(file_name, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    fl = open(file_name, 'w')
 
-    except OSError as e:
-        if e.errno == errno.EEXIST:
-            fd = os.open(file_name, os.O_WRONLY)
-        else:
-            raise
-            
-    fl = os.fdopen(fd, 'w')
-    
     try:        
         fcntl.flock(fl, fcntl.LOCK_EX | fcntl.LOCK_NB)
 
@@ -41,11 +32,16 @@ def open_file_write_exclusive(file_name):
     fl.truncate(0)
 
     return fl
-    
+
 #=====================================================================
 
 
 fl = open_file_write_exclusive("./test.png")
+
+print "file: " + str(fl)
+fl2 = open_file_write_exclusive("./test.png")
+print "file2: " + str(fl2)
+
 
 if fl is None:
     print "none returned"

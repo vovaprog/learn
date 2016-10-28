@@ -1,10 +1,12 @@
-gallery - debian packages
-gallery - lock while creating preview.
+epoll server - timegm
+
 zeromq - посмотреть ring buffer.
 nanomsg
 
 thread local variables
 file caps
+
+fcntl
 
 call graph c++
 
@@ -95,7 +97,7 @@ python pygments.org - highlite blame
 + valgrind Massif
 + perf epoll server
 + gdb epoll server
-
++ file lock - flock
 
 
 
