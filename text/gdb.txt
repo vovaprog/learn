@@ -89,6 +89,12 @@ break RequestExecutor.cpp:18
 > set disassemble-next-line on
 > set disassemble-next-line off
 
+Ctrl+c - suspend program
+
+info thread - show threads
+thread number - switch to thread number
+
+
 ===========================================================================
 
 colored gdbinit:
