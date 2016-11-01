@@ -1,11 +1,7 @@
-epoll server - timegm
 netstat
 
 zeromq - посмотреть ring buffer.
 nanomsg
-
-thread local variables
-file caps
 
 fcntl
 
@@ -31,7 +27,6 @@ google sparse hash table
 mem, rate 
 pandas
 apt-get, package tools
-gdb
 python
 LLVM clang
 LLVM debugger
@@ -43,7 +38,6 @@ EASTL
 google sanitizers https://github.com/google/sanitizers
 containers without allocations
 clang static analysis
-python pygments.org - highlite blame
 
 
 + mfast
@@ -97,9 +91,10 @@ python pygments.org - highlite blame
 + valgrind Memcheck
 + valgrind Massif
 + perf epoll server
-+ gdb epoll server
++ gdb
 + file lock - flock
-
++ thread local variables
++ linux capabilities
 
 
 

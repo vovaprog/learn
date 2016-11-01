@@ -48,6 +48,7 @@ deadlocks
 + вызываются ли конструкторы-присваивания при работе с vector и т.п. (да, вызываются)
 copy elision
 + static_assert
++ thread_local
 
 шаблоны
 Trie
@@ -2200,6 +2201,39 @@ A high priority process A will run before a low priority process B.
 If the high priority process (process A) never blocks, the low priority process (B) will (in some systems) never be scheduled—it will experience starvation. 
 If there is an even higher priority process X, which is dependent on a result from process B, 
 then process X might never finish, even though it is the most important process in the system. This condition is called a priority inversion.
+
+
+//============================================================================
+thread_local
+//============================================================================
+
+thread_local переменные адресуются через регистр fs.
+У каждого потока в регистре свой адрес.
+Обращение к thread_local переменным с такой же скоростью как к обычным переменным.
+
+int thread_local_accum(int x)
+{
+    thread_local int accum = 0;    
+    
+    accum += x;
+    
+    return accum;
+}
+
+thread_local_accum(int):
+3	{
+
+4	    thread_local int accum = 0;    
+5	    
+6	    accum += x;
+=> 0x00000000004015c0 <+0>:	64 8b 04 25 fc ff ff ff	mov    eax,DWORD PTR fs:0xfffffffffffffffc
+   0x00000000004015c8 <+8>:	01 f8	add    eax,edi
+   0x00000000004015ca <+10>:	64 89 04 25 fc ff ff ff	mov    DWORD PTR fs:0xfffffffffffffffc,eax
+
+7	    
+8	    return accum;
+9	}
+   0x00000000004015d2 <+18>:	c3	ret    
 
 
 //============================================================================

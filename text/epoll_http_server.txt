@@ -42,11 +42,16 @@ http server:
 + test HttpRequest
 + Проверка valgrind
 + Убрать лишние логи
++ file count становится меньше 0
++ убрать лишние поля из структур.
++ Привести код в порядок
 
 
-file count становится меньше 0
+Выделение ExecutorData кусками.
 
-
+TIME_WAIT:
+http://www.serverframework.com/asynchronousevents/2011/01/time-wait-and-its-design-implications-for-protocols-and-scalable-servers.html
+http://developerweb.net/viewtopic.php?id=2941
 
 Работа с ssl.
 
@@ -54,12 +59,11 @@ file count становится меньше 0
 
 uwsgi - запуск нескольких приложений
 message log level
+запись в лог при остановке
 
 
 
 
-убрать лишние поля из структур.
-Привести код в порядок
 
 
 
