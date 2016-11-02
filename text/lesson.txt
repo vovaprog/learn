@@ -2235,6 +2235,50 @@ thread_local_accum(int):
 9	}
    0x00000000004015d2 <+18>:	c3	ret    
 
+   
+Реализация pthread_self:
+        26 [1]	in pthread_self.c
+0x7ffff78c18f0                   64 48 8b 04 25 10 00 00 00  mov    %fs:0x10,%rax
+        27 [1]	in pthread_self.c
+0x7ffff78c18f9  <+0x0009>        c3                          retq   
+
+
+std::thread::id tid = std::this_thread::get_id();
+Тоже вызывает pthread_self
+
+
+//============================================================================
+load so ld _dl_runtime_resolve
+//============================================================================
+
+Функции из so резолвятся только при первом обращении.
+Чтобы сразу зарезолвить все функции (полезно для debugger-a) нужно определить в environment
+LD_BIND_NOW=y
+(y - любая не пустая строка)
+
+man ld.so
+
+
+
+//============================================================================
+exception handling internals
+//============================================================================
+
+*    When we write a throw statement, the compiler will translate it into a pair of calls into libstdc++ functions 
+     that allocate the exception and then start the stack unwinding process by calling libstdc.
+*    For each catch statement, the compiler will write some special information after the method’s body, 
+     a table of exceptions this method can catch and a cleanup table (more on the cleanup table later).
+*    As the unwinder goes through the stack it will call a special function provided by libstdc++ (called personality routine) 
+     that checks for each function in the stack which exceptions can be caught.
+*    If no matching catch is found for the exception, std::terminate is called.
+*    If a matching catch is found, the unwinder now starts again on the top of the stack.
+*    As the unwinder goes through the stack a second time it will ask the personality routine to perform a cleanup for this method.
+*    The personality routine will check the cleanup table on the current method. If there are any cleanup actions to be run, 
+     it will “jump” into the current stack frame and run the cleanup code. This will run the destructor for each object allocated at the current scope.
+*    Once the unwinder reaches the frame in the stack that can handle the exception it will jump into the proper catch statement.
+*    Upon finishing the execution of the catch statement, a cleanup function will be called to release the memory held for the exception.
+
+
 
 //============================================================================
 Разное

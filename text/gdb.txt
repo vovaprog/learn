@@ -97,6 +97,14 @@ thread number - switch to thread number
 
 ===========================================================================
 
+gdb dashboard layout:
+
+dashboard -layout stack memory threads expressions assembly source
+dashboard source -style context 30
+dashboard assembly -style context 30
+
+===========================================================================
+
 colored gdbinit:
 
 https://github.com/gdbinit/Gdbinit

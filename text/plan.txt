@@ -1,13 +1,13 @@
 netstat
 
+реализация исключений
+
 zeromq - посмотреть ring buffer.
 nanomsg
 
 fcntl
 
 call graph c++
-
-cmake configuration qt creator
 
 multicast
 tcp
@@ -95,8 +95,7 @@ clang static analysis
 + file lock - flock
 + thread local variables
 + linux capabilities
-
-
-
-
++ pthread_self
++ ld.so readelf ldd objdump ldconfig, g++ assembler output
+ 
 
