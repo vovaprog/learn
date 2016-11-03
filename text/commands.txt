@@ -736,6 +736,18 @@ make olddefconfig
 
 make -j 6 bindeb-pkg
 
+(deb files will be in parent dir of source dir)
+sudo dpkg -i ./linux-image-4.8.6_4.8.6-1_amd64.deb
+
+
+grub - show menu at startup - hold Right Shift key while booting.
+
+set grub default kernel:
+/etc/default/grub
+set parameter GRUB_DEFAULT to number of needed kernel in grub boot menu  
+GRUB_DEFAULT=2
+then run:
+sudo update-grub
 
 
 //======================================================================

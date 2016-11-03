@@ -2264,6 +2264,14 @@ man ld.so
 exception handling internals
 //============================================================================
 
+https://monoinfinito.wordpress.com/series/exception-handling-in-c/
+http://mentorembedded.github.io/cxx-abi/
+http://libcxxabi.llvm.org/spec.html
+https://github.com/nicolasbrailo/cpp_exception_handling_abi/tree/master/abi_v01
+
+source for libstdc++:
+https://github.com/gcc-mirror/gcc
+
 *    When we write a throw statement, the compiler will translate it into a pair of calls into libstdc++ functions 
      that allocate the exception and then start the stack unwinding process by calling libstdc.
 *    For each catch statement, the compiler will write some special information after the method’s body, 
@@ -2277,6 +2285,18 @@ exception handling internals
      it will “jump” into the current stack frame and run the cleanup code. This will run the destructor for each object allocated at the current scope.
 *    Once the unwinder reaches the frame in the stack that can handle the exception it will jump into the proper catch statement.
 *    Upon finishing the execution of the catch statement, a cleanup function will be called to release the memory held for the exception.
+
+ABI - application binary interface
+
+__cxa_allocate_exception receives a size_t and allocates enough memory to hold the exception being thrown
+most implementations seem to allocate memory on a local thread storage (heap) but resort to an emergency storage (presumably static) if out of memory.
+
+__cxa_throw - function is responsible of starting the stack unwinding.
+__cxa_throw is never supposed to return. It either delegates execution to the correct catch block to handle the exception 
+or calls (by default) std::terminate, but it never ever returns.
+
+vtable for __cxxabiv1::__class_type_info - this is the entry point the ABI defines to know (in runtime) whether two types are the same or not
+
 
 
 

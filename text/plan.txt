@@ -1,6 +1,6 @@
-netstat
-
 реализация исключений
+
+netstat
 
 zeromq - посмотреть ring buffer.
 nanomsg
@@ -97,5 +97,14 @@ clang static analysis
 + linux capabilities
 + pthread_self
 + ld.so readelf ldd objdump ldconfig, g++ assembler output
++ splice
  
 
+
+send file source:
+http://lxr.linux.no/#linux+v2.6.36/fs/read_write.c#L809
+since linux-2.6.23 sendfile() is implemented using the more generic splice() framework. You will find the splice() implementation in fs/splice.c under your kernel source tree.
+
+explain splice:
+http://yarchive.net/comp/linux/splice.html
+http://blog.superpat.com/2010/06/01/zero-copy-in-linux-with-sendfile-and-splice/
