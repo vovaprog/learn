@@ -1404,6 +1404,8 @@ write_fd = pipe_fds[1];
 //Connect the read end of the pipe to standard input 
 dup2 (fds[0], STDIN_FILENO);
 
+Размер буфера pipe по-умолчанию в ubuntu14.04 64bit - 65536 байт.
+
 popen / pclose - run child process and create pipe to it
 FILE* stream = popen (“sort”, “w”); //sort - name of unix program.
 fprintf (stream, “This is a test.\n”);

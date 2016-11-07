@@ -1,3 +1,6 @@
+epoll server - проверка символов - принадлежность к классам
+splice в epoll server
+
 реализация исключений
 
 netstat
@@ -5,17 +8,17 @@ netstat
 zeromq - посмотреть ring buffer.
 nanomsg
 
-fcntl
-
 call graph c++
 
 multicast
 tcp
-starvation, live lock
 
 signals and multithreading
-background processes
 
+
+fcntl
+starvation, live lock
+background processes
 gperftools
 gtest
 L2TP на new
@@ -38,6 +41,7 @@ EASTL
 google sanitizers https://github.com/google/sanitizers
 containers without allocations
 clang static analysis
+https://github.com/wg/wrk   (wrk - a HTTP benchmarking tool)
 
 
 + mfast
