@@ -718,6 +718,13 @@ make > ./out.s
 cmake -DCMAKE_CXX_FLAGS="-Wa,-adhln -masm=intel" -DCMAKE_BUILD_TYPE=RelWithDebInfo ../src
 make > ./out.s
 
+for one file:
+without source:
+g++ -S -masm=intel ./test.cpp
+
+with source:
+g++ -g -Wa,-adhln -masm=intel ./test.cpp > ./out.s
+
 //======================================================================
 build linux kernel:
 

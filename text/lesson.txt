@@ -2300,6 +2300,30 @@ or calls (by default) std::terminate, but it never ever returns.
 vtable for __cxxabiv1::__class_type_info - this is the entry point the ABI defines to know (in runtime) whether two types are the same or not
 
 
+//Выделение памяти под исключение (из gcc, libstdc++).
+//Сначала вызывается malloc, если ошибка - то emergency_pool
+extern "C" void *
+__cxxabiv1::__cxa_allocate_exception(std::size_t thrown_size) _GLIBCXX_NOTHROW
+{
+  void *ret;
+
+  thrown_size += sizeof (__cxa_refcounted_exception);
+  ret = malloc (thrown_size);
+
+  if (!ret)
+    ret = emergency_pool.allocate (thrown_size);
+
+  if (!ret)
+    std::terminate ();
+
+  memset (ret, 0, sizeof (__cxa_refcounted_exception));
+
+  return (void *)((char *)ret + sizeof (__cxa_refcounted_exception));
+}
+
+
+CFI (call frame information) support for GNU assembler (GAS)
+http://www.logix.cz/michal/devel/gas-cfi/
 
 
 //============================================================================

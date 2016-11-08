@@ -1,12 +1,9 @@
-epoll server - проверка символов - принадлежность к классам
-splice в epoll server
-
 реализация исключений
-
-netstat
 
 zeromq - посмотреть ring buffer.
 nanomsg
+
+netstat - прочитать man
 
 call graph c++
 
@@ -14,6 +11,7 @@ multicast
 tcp
 
 signals and multithreading
+
 
 
 fcntl
