@@ -1,0 +1,6 @@
+INPUT = . ./log ./executors ./utils
+FILE_PATTERNS    = *.cpp *.h
+HAVE_DOT = YES
+CALL_GRAPH = YES
+CALLER_GRAPH = YES
+EXTRACT_ALL = YES

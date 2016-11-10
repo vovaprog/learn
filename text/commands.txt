@@ -71,6 +71,9 @@ make VERBOSE=1
 set clang compiler:
 cmake -DCMAKE_C_COMPILER=clang-3.6 -DCMAKE_CXX_COMPILER=clang++-3.6 ../src
 
+set c++ flags:
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer" ../src
+
 //======================================================================
 
 Форматирование питона:
@@ -237,6 +240,8 @@ list all shared libs dependencies and how they are resolved:
 readelf   -  info about elf file
 ldd - print shared library dependencies
 
+get info from exception handler section:
+readelf -wF app > ./eh.txt
 
 
 //======================================================================

@@ -1,11 +1,9 @@
-реализация исключений
+call graph c++
 
 zeromq - посмотреть ring buffer.
 nanomsg
 
 netstat - прочитать man
-
-call graph c++
 
 multicast
 tcp
@@ -40,6 +38,8 @@ google sanitizers https://github.com/google/sanitizers
 containers without allocations
 clang static analysis
 https://github.com/wg/wrk   (wrk - a HTTP benchmarking tool)
+Pragmatic General Multicast (PGM) 
+remote direct memory access (RDMA)
 
 
 + mfast
@@ -100,6 +100,7 @@ https://github.com/wg/wrk   (wrk - a HTTP benchmarking tool)
 + pthread_self
 + ld.so readelf ldd objdump ldconfig, g++ assembler output
 + splice
++ реализация исключений
  
 
 

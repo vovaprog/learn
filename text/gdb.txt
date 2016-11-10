@@ -94,6 +94,16 @@ Ctrl+c - suspend program
 info thread - show threads
 thread number - switch to thread number
 
+(print all local variables)
+> info locals
+
+(get current line number)
+> frame
+> info line
+
+(print hexidecimal)
+> p/x variable
+
 
 ===========================================================================
 
@@ -109,3 +119,5 @@ colored gdbinit:
 
 https://github.com/gdbinit/Gdbinit
 https://github.com/cyrus-and/gdb-dashboard
+
+

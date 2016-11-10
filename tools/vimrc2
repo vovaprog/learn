@@ -1,0 +1,34 @@
+set tabstop=4 shiftwidth=4 expandtab
+set autoindent
+set cindent
+set nu
+set backspace=indent,eol,start
+
+set nocompatible
+set showmatch
+
+set mouse=a
+
+set rtp+=~/.vim/bundle/nerdtree
+
+autocmd vimenter * NERDTree
+
+let g:nerdtree_tabs_open_on_console_startup=1
+
+" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
+"nnoremap <silent> <M-F12> :BufExplorer<CR>
+"nnoremap <silent> <F12> :bn<CR>
+"nnoremap <silent> <S-F12> :bp<CR>
+
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+
+
+let NERDTreeShowBookmarks=1
+
+map <F12> :q
+
+colorscheme torte
+
+set ignorecase
