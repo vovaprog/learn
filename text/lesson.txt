@@ -1183,6 +1183,10 @@ wait3 or wait4 have parameter not to wait, immediately return if no child events
 When a child process terminates, Linux sends the parent process the SIGCHLD signal.
 an easy way to clean up child processes is by handling SIGCHLD
 
+signals info:
+http://pubs.opengroup.org/onlinepubs/000095399/functions/xsh_chap02_04.html#tag_02_04_01
+http://doc.qt.io/qt-5/unix-signals.html
+
 
 //============================================================================
 posix threads

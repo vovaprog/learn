@@ -161,7 +161,7 @@ int proxyCopy()
 
 			buffer.endWrite(bytes);
 
-			/*sumRead += bytes;
+			sumRead += bytes;
 			++counter;
 
 			if(counter>=10000)
@@ -169,7 +169,7 @@ int proxyCopy()
 				printf("avg read: %lld\n", sumRead/counter);fflush(stdout);
 				counter = 0;
 				sumRead = 0;
-			}*/
+			}
 		}
 		else
 		{

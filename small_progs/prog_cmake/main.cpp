@@ -8,6 +8,7 @@ long long int learn_thread_id();
 std::thread::id learn_thread_id2();
 int proxySplice();
 int proxyCopy();
+void learn_signals();
 
 int main()
 {
@@ -20,7 +21,9 @@ int main()
 	//learn_thread_id2();
 
 	//proxySplice();
-	proxyCopy();
+	//proxyCopy();
+
+	learn_signals();
 
     return 0;
 }
