@@ -763,3 +763,15 @@ sudo update-grub
 
 
 //======================================================================
+
+generate ssh keys:
+
+ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key
+ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key
+
+-t    -    key type
+-f    -    file name
+
+key location: /etc/ssh
+
+//======================================================================

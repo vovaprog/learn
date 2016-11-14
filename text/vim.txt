@@ -1,3 +1,10 @@
+Delete current line in insert mode:
+End (goto end of line), Ctrl + u
+
+Goto line
+110 G
+
+
 ==========================================================
 From tutorial:
 
@@ -73,6 +80,21 @@ add ctags:
 
 build cscope database:
 cscope -R -b
+
+==========================================================
+Tags:
+generate tags:
+ctags -R
+
+add tags file:
+:set tags+=/path/to/file
+
+Ctrl+] - goto definition
+Ctrl+t - go back
+
+goto tag name:
+:ta someName
+
 
 ==========================================================
 Installation:

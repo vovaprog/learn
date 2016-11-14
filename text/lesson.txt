@@ -1188,6 +1188,16 @@ http://pubs.opengroup.org/onlinepubs/000095399/functions/xsh_chap02_04.html#tag_
 http://doc.qt.io/qt-5/unix-signals.html
 
 
+If your process has set a signal's disposition to SIG_IGN or SIG_DFL, then the signal is ignored (or default) for all threads.
+В многопоточной программе можно заблокировать сигнал один раз в любом потоке.
+signal(SIGPIPE, SIG_IGN);
+
+handler-ы для сигналов могут устанавливаться отдельно для каждого потока.
+
+gdb может снимать ignore сигналов. Т.е. при обычном запуске программа нормально выполняется, сигналы заблокированы,
+при отладке в gdb программа падает: Program received signal SIGPIPE, Broken pipe.
+
+
 //============================================================================
 posix threads
 //============================================================================

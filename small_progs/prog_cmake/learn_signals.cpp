@@ -3,14 +3,40 @@
 #include <string.h>
 #include <thread>
 #include <signal.h>
+#include <unistd.h>
 
 using namespace std;
 
+void sigIntHandler(int signalNumber)
+{
+	long long int tid = pthread_self();
+	long long int pid = getpid();
 
+	cout <<"sig int pid: " << pid << "   tid: "<<tid << endl;
+	exit(0);
+}
 
 
 void learn_signals_thread(int threadNumber)
 {
+	cout <<"tnumber: "<<threadNumber<<endl;
+
+	if(threadNumber == 1)
+	{
+		cout <<"blocking[[["<<threadNumber<<"]]]"<<endl;
+		//signal(SIGPIPE, SIG_IGN);
+
+		struct sigaction sa;
+		memset(&sa, 0, sizeof(struct sigaction));
+		sa.sa_handler = SIG_IGN;
+		sa.sa_flags = 0;
+
+		if(sigaction(SIGPIPE, &sa, NULL) != 0)
+		{
+			perror("sigaction failed\n");
+		}
+
+	}
 
 
 	int pipe_fds[2],read_fd,write_fd;
@@ -46,9 +72,19 @@ void learn_signals_thread(int threadNumber)
 	}
 	else if(result>0)
 	{
+        sleep(1);
+
+    	struct sigaction sa;
+    	memset(&sa, 0, sizeof(struct sigaction));
+    	sa.sa_handler = sigIntHandler;
+    	sa.sa_flags = 0;
 
 
-
+     	if(sigaction(SIGINT, &sa, NULL) != 0)
+    	{
+	    	perror("sigaction failed\n");
+    	}        
+        
 
 		close(read_fd);
 
@@ -56,10 +92,7 @@ void learn_signals_thread(int threadNumber)
 		strcpy(buf, "works!");
 
 		while(true)
-		{
-			sighandler_t r = signal(SIGPIPE, SIG_IGN);
-			cout <<"parent r:"<< (long long int)r << endl;
-
+		{			
 			cout <<"writing th:"<<threadNumber<<endl;
 			if(write(write_fd, buf, strlen(buf))<0)
 			{
@@ -81,6 +114,16 @@ void learn_signals_thread(int threadNumber)
 
 void learn_signals()
 {
+/*	struct sigaction sa;
+	memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_handler = sigIntHandler;
+	sa.sa_flags = 0;
+
+ 	if(sigaction(SIGINT, &sa, NULL) != 0)
+	{
+		perror("sigaction failed\n");
+	} 
+*/
 
 
 	const int numThreads = 3;
