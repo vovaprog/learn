@@ -4,6 +4,8 @@ End (goto end of line), Ctrl + u
 Goto line
 110 G
 
+indent block of code:
+select block, press > or <
 
 ==========================================================
 From tutorial:

@@ -1,12 +1,7 @@
-signals and multithreading
-sigaction
-
 call graph c++
 
 zeromq - посмотреть ring buffer.
 nanomsg
-
-ssh - установка ключей
 
 multicast
 tcp
@@ -46,7 +41,7 @@ remote direct memory access (RDMA)
 compare transfer speed on local host: socket, unix socket, pipe
 signalfd
 socket option SO_NOSIGPIPE
-sigaction
+Gcov -fprofile-use -fprofile-arcs
 
 
 + mfast
@@ -109,6 +104,9 @@ sigaction
 + splice
 + реализация исключений
 + netstat 
++ sigaction
++ ssh - установка ключей
+
 
 
 send file source:
