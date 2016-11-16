@@ -29,6 +29,8 @@ let NERDTreeShowBookmarks=1
 
 map <F12> :q
 
+set nowrap
+
 colorscheme torte
 
 set ignorecase

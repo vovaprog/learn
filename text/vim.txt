@@ -118,6 +118,9 @@ ls /usr/share/vim/vim74/colors
 good colors:
 evening darkblue torte
 
+set colors:
+:colorscheme torte
+
 CtrlP:
 http://www.vim.org/scripts/script.php?script_id=3736
 
