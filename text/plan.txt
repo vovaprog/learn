@@ -1,4 +1,4 @@
-call graph c++
+svn command line
 
 zeromq - посмотреть ring buffer.
 nanomsg
@@ -106,7 +106,7 @@ Gcov -fprofile-use -fprofile-arcs
 + netstat 
 + sigaction
 + ssh - установка ключей
-
++ call graph c++ (doxygen)
 
 
 send file source:

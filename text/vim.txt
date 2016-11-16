@@ -7,6 +7,10 @@ Goto line
 indent block of code:
 select block, press > or <
 
+number G - goto line number
+G - end of file
+gg - first line
+
 ==========================================================
 From tutorial:
 
@@ -35,10 +39,6 @@ or
 :set backspace=2
 
 Ctrl+g - get current line
-
-G - end of file
-number G - goto line number
-gg - first line
 
 /test  - find text
 n - find next
