@@ -1,0 +1,69 @@
+set tabstop=4 shiftwidth=4 expandtab
+set autoindent
+set cindent
+set nu
+set backspace=indent,eol,start
+set nowrap
+
+set incsearch " Search as typing
+set hlsearch " Highlight search results
+" Press Space to turn off highlighting and clear any message already displayed.
+nnoremap <silent> <F12> :nohlsearch<Bar>:echo<CR>
+hi Search ctermbg=LightBlue 
+
+" terminal colors
+set t_Co=256
+
+set nocompatible
+set showmatch
+
+set mouse=a
+
+set cscopetag
+
+set rtp+=~/.vim/bundle/nerdtree
+
+autocmd vimenter * NERDTree
+
+let g:nerdtree_tabs_open_on_console_startup=1
+
+" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
+"nnoremap <silent> <M-F12> :BufExplorer<CR>
+"nnoremap <silent> <F12> :bn<CR>
+"nnoremap <silent> <S-F12> :bp<CR>
+
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+
+
+let NERDTreeShowBookmarks=1
+
+
+set ignorecase
+
+" Usefull shortcuts to enter insert mode
+nnoremap <CR> i<CR>
+nnoremap <Backspace> i<Backspace>
+nnoremap <Space> i<Space>
+
+
+
+""""""""""""""""""""""""""""""""""" status line """"""""""""""""""""""""""""""""""""""""""""
+
+set statusline=
+set statusline+=%2*\ %<%F\  " Filepath
+set statusline+=%2*\ %= " To the right
+set statusline+=%1*\ \%l/%L\  " Position
+
+set ttimeoutlen=0
+set timeoutlen=1000
+au InsertEnter * set timeout
+au InsertLeave * set notimeout
+
+""""""""""""""""""""""""""""""""""" status line """"""""""""""""""""""""""""""""""""""""""""
+
+
+set background=dark
+colorscheme peaksea
+

@@ -122,6 +122,8 @@ CtrlP:
 http://www.vim.org/scripts/script.php?script_id=3736
 
 
+put peaksea.vim to ~/.vim/colors/peaksea.vim
+
 ==========================================================
 
 tabs to spaces:

@@ -1,3 +1,4 @@
+stack protector
 svn command line
 
 zeromq - посмотреть ring buffer.
@@ -42,6 +43,7 @@ compare transfer speed on local host: socket, unix socket, pipe
 signalfd
 socket option SO_NOSIGPIPE
 Gcov -fprofile-use -fprofile-arcs
+leveldb
 
 
 + mfast
