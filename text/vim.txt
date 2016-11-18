@@ -11,6 +11,13 @@ number G - goto line number
 G - end of file
 gg - first line
 
+create file:
+nerdtree - press "m"
+in menu select - create file
+
+refresh nerdtree:
+select folder, press "r"
+
 ==========================================================
 From tutorial:
 

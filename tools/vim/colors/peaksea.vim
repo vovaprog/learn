@@ -514,7 +514,7 @@ elseif &background=='dark'
     "hi LineNr		ctermfg=249	ctermbg=NONE	cterm=NONE
     hi LineNr ctermfg=102 ctermbg=237 cterm=NONE
     hi Question		ctermfg=16	ctermbg=186	cterm=NONE
-    hi ModeMsg		ctermfg=fg	ctermbg=18	cterm=NONE
+    hi ModeMsg		ctermfg=fg	ctermbg=33	cterm=NONE
     hi VisualNOS	ctermfg=fg	ctermbg=18	cterm=NONE
     hi SpecialKey	ctermfg=153	ctermbg=NONE	cterm=NONE
     hi NonText		ctermfg=69	ctermbg=233	cterm=NONE

@@ -4,6 +4,8 @@ set cindent
 set nu
 set backspace=indent,eol,start
 set nowrap
+set autochdir                                " working directory is always the same as the file you are editing
+language en_US.UTF-8                         " sets the language of the messages / ui
 
 set incsearch " Search as typing
 set hlsearch " Highlight search results
