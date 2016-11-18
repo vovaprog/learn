@@ -1,4 +1,3 @@
-stack protector
 svn command line
 
 zeromq - посмотреть ring buffer.
@@ -44,6 +43,8 @@ signalfd
 socket option SO_NOSIGPIPE
 Gcov -fprofile-use -fprofile-arcs
 leveldb
+B-tree, Log-structured merge-tree (LSM tree)
+readv, writev
 
 
 + mfast
@@ -109,6 +110,7 @@ leveldb
 + sigaction
 + ssh - установка ключей
 + call graph c++ (doxygen)
++ stack protector
 
 
 send file source:
