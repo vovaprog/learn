@@ -521,9 +521,23 @@ elseif &background=='dark'
     " Comment/Uncomment the following line to disable/enable transparency
     "hi NonText		ctermfg=69	ctermbg=NONE	cterm=NONE
     hi Directory	ctermfg=110	ctermbg=NONE	cterm=NONE
+
+"""
+    hi NerdTreeDirSlash	ctermfg=43	ctermbg=NONE	cterm=NONE
+    hi NerdTreeBookmark	ctermfg=43	ctermbg=NONE	cterm=NONE
+    hi NerdTreeBookmarkName	ctermfg=45	ctermbg=NONE	cterm=NONE
+    hi NERDTreeOpenable	ctermfg=77	ctermbg=NONE	cterm=NONE
+    hi NERDTreeClosable	ctermfg=77	ctermbg=NONE	cterm=NONE
+
+
+
+
+
     hi ErrorMsg		ctermfg=186	ctermbg=88	cterm=NONE
     hi MoreMsg		ctermfg=150	ctermbg=NONE	cterm=NONE
-    hi Title		ctermfg=219	ctermbg=NONE	cterm=NONE
+    hi Title		ctermfg=77	ctermbg=NONE	cterm=NONE
+
+
     hi WarningMsg	ctermfg=209	ctermbg=NONE	cterm=NONE
     hi WildMenu		ctermfg=16	ctermbg=186	cterm=NONE
     hi Folded		ctermfg=NONE	ctermbg=DarkGrey cterm=NONE
@@ -535,9 +549,10 @@ elseif &background=='dark'
     hi SignColumn	ctermfg=254	ctermbg=28	cterm=NONE
     hi IncSearch	ctermfg=White	ctermbg=LightBlue	cterm=NONE
     hi StatusLineNC	ctermfg=16	ctermbg=250	cterm=NONE
-    hi VertSplit	ctermfg=16	ctermbg=250	cterm=NONE
+    hi VertSplit	ctermfg=239	ctermbg=239	cterm=NONE
     hi Underlined	ctermfg=111	ctermbg=NONE	cterm=underline 
     hi Ignore		ctermfg=16	ctermbg=NONE
+
     " NOTE THIS IS IN THE COOL SECTION
     if v:version >= 700
       if has('spell')
@@ -564,7 +579,7 @@ elseif &background=='dark'
 
       hi CursorColumn	ctermfg=NONE	ctermbg=88	cterm=NONE
       hi CursorLine	ctermfg=NONE	ctermbg=NONE	cterm=underline
-      hi MatchParen	ctermfg=NONE	ctermbg=90
+      hi MatchParen	ctermfg=NONE	ctermbg=33
       hi TabLine	cterm=underline  
       hi TabLineFill	cterm=underline  
       hi Underlined	cterm=underline  
