@@ -775,3 +775,86 @@ ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key
 key location: /etc/ssh
 
 //======================================================================
+
+systemd
+
+#enable new service
+systemctl enable epoll_http_server
+
+#start / stop
+systemctl start epoll_http_server
+systemctl stop epoll_http_server
+
+#reload configs (after editing unit file)
+systemctl daemon-reload
+
+#show service status (displays start errors)
+systemctl status epoll_http_server
+
+//======================================================================
+
+svn:
+> svnadmin create ./repository1
+
+checkout repository:
+> svn co file:///home/vlads/programs_test/svn_test/repository1 ./rep1_working
+
+get status of work copy:
+> svn status
+
+add new file:
+> svn add ./main.cpp
+
+commit changes:
+> svn commit -m "added main.cpp"
+
+get status from repository:
+> svn status -u
+
+update from repo:
+> svn update
+
+svn move/svn mv
+svn delete
+svn copy/svn cp
+
+git -> svn guide:
+https://github.com/garethrees/git-to-svn-guide
+
+Create A New Branch
+svn copy CURRENT_BRANCH NEW_BRANCH -m “MESSAGE”
+
+switch to branch:
+svn switch https://code.example.com/repo/features/feature_branch
+
+repository info (including url):
+> svn info
+
+remove local changes to file (like git checkout filename):
+> svn revert /PATH/TO/FILE
+
+history:
+> svn log
+> svn log /PATH/TO/FILE
+
+show history with changes:
+> svn log --diff
+
+create trunk and branches:
+svn mkdir file:///home/vlads/programs_test/svn_test/repository1/trunk
+svn mkdir file:///home/vlads/programs_test/svn_test/repository1/branches
+svn mkdir file:///home/vlads/programs_test/svn_test/repository1/tags
+
+merge:
+svn merge file:///home/vlads/programs_test/svn_test/repository1/fix1
+
+if conflict - postpone, edit conflicted file.
+
+resolve conflict:
+svn resolve --accept working ./main1.cpp
+
+like git blame:
+> svn annotate ./main1.cpp
+
+//======================================================================
+
