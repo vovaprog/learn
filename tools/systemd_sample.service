@@ -1,0 +1,14 @@
+[Unit]
+Description=service_name
+After=network.target
+
+[Service]
+ExecStart=/folder_name/program_name
+WorkingDirectory=/folder_name
+Restart=on-failure
+User=username
+Group=groupname
+
+[Install]
+WantedBy=multi-user.target
+
