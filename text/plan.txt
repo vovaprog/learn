@@ -45,6 +45,8 @@ Gcov -fprofile-use -fprofile-arcs
 leveldb
 B-tree, Log-structured merge-tree (LSM tree)
 readv, writev
+setsockopt, SO_KEEPALIVE
+unix sockets - compare with tcp, use with uwsgi
 
 
 + mfast

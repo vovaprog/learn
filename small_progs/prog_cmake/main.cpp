@@ -9,10 +9,9 @@ std::thread::id learn_thread_id2();
 int proxySplice();
 int proxyCopy();
 void learn_signals();
-void learnStackProtector(int *buf, int size);
-void stackProtector_getGuard(int *buf, int size);
-void stackProtector_getGuard2(int *buf, int size);
-    
+void learnStackProtector();
+void learnSockets();   
+
 int main()
 {
 	//learn_time1();
@@ -28,13 +27,11 @@ int main()
 
 	//learn_signals();
 
-    int buf[100];
-    learnStackProtector(buf, 100);   
-    for(int i=0;i<5;++i)
-    {
-       stackProtector_getGuard(buf,100);
-       stackProtector_getGuard2(buf,100);
-    }
+    //learnStackProtector();
+
+    //cout << "sizeof(bool): " << sizeof(bool) << endl;
+
+    learnSockets();
 
     return 0;
 }

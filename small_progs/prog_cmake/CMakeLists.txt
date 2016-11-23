@@ -7,7 +7,7 @@ set(CMAKE_VERBOSE_MAKEFILE on)
 include_directories(".")
 
 set(SOURCE
-    main.cpp learn_time.cpp learn_thread_id.cpp ProxySplice.cpp learn_signals.cpp learn_stack_protector.cpp)
+    main.cpp learn_time.cpp learn_thread_id.cpp ProxySplice.cpp learn_signals.cpp learn_stack_protector.cpp learn_sockets.cpp)
 
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic-errors -pthread")
