@@ -45,9 +45,9 @@ let NERDTreeShowBookmarks=1
 set ignorecase
 
 " Usefull shortcuts to enter insert mode
-nnoremap <CR> i<CR>
-nnoremap <Backspace> i<Backspace>
-nnoremap <Space> i<Space>
+"nnoremap <CR> i<CR>
+"nnoremap <Backspace> i<Backspace>
+"nnoremap <Space> i<Space>
 
 
 
@@ -68,4 +68,6 @@ au InsertLeave * set notimeout
 
 set background=dark
 colorscheme peaksea
+
+nnoremap <silent> <F3> :%!astyle --indent=spaces=4 --pad-oper --style=allman --suffix=none --unpad-paren<CR>
 
