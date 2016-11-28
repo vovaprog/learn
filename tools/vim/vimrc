@@ -69,5 +69,6 @@ au InsertLeave * set notimeout
 set background=dark
 colorscheme peaksea
 
+" %!  -   % means take range - whole buffer, send lines to command and replace lines with command output
 nnoremap <silent> <F3> :%!astyle --indent=spaces=4 --pad-oper --style=allman --suffix=none --unpad-paren<CR>
 
