@@ -111,6 +111,9 @@ Pathogen:
 https://github.com/tpope/vim-pathogen
 install:
 mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+or
+apt-get install vim-pathogen
+
 
 Nerd tree
 git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
