@@ -355,6 +355,11 @@ grep -rin --include "*.c" --include "*.cc" --include "*.cpp" --include "*.h" --i
 grep -rin --include "*.c" --include "*.cc" --include "*.cpp" --include "*.h" --include "*.hh" --include "*.hpp" \
           --include "*.py" --include "*.pl" --include "Makefile" --include "CMakeLists.txt" $1
 
+grep -rin "some_text"
+-r - recursive
+-i - case insencetive
+-n - with line numbers
+
 //======================================================================
 Locate:
 
