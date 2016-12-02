@@ -360,6 +360,15 @@ grep -rin "some_text"
 -i - case insencetive
 -n - with line numbers
 
+search only in headers and cpp files:
+> grep -rin --include *.h --include *.cpp "some_text"
+
+search in cpp and CPP:
+> grep -rin --include=*.{cpp,CPP} "hello"
+
+search with ignore case and ignore case of file name:
+> find . -iname "*.cpp" | xargs grep -in --color=auto "hello"
+
 //======================================================================
 Locate:
 
