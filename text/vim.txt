@@ -73,11 +73,22 @@ set ic
 
 Open in tab:
 tabedit {file}
+tabe filename
+file name can be specifed without path if from current directory
+
 tabclose
+tabc
+
+close other tabs:
+:tabonly
+:tabo 
 
 Ctrl + ww   - jump between windows
 
 :qa - close all tabs
+
+open all files from current dir in tabs:
+vim -p ./*
 
 :o - insert empty line after current
 

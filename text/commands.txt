@@ -369,6 +369,9 @@ search in cpp and CPP:
 search with ignore case and ignore case of file name:
 > find . -iname "*.cpp" | xargs grep -in --color=auto "hello"
 
+-w - search whole words:
+> grep -w 80 /etc/services
+
 //======================================================================
 Locate:
 
@@ -811,4 +814,17 @@ ls show hidden files:
 ls -al
 
 //======================================================================
+
+print current cpu model name:
+cat /proc/cpuinfo | grep "name" | cut -d : -f2 | uniq
+
+command cut - select field from line.
+-d - delimiter ":"
+-f2 - second field
+    
+//======================================================================
+
+
+
+
 

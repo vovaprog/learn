@@ -1,0 +1,75 @@
+set tabstop=4 shiftwidth=4 expandtab
+set autoindent
+set cindent
+set nu
+set backspace=indent,eol,start
+set nowrap
+set autochdir                                " working directory is always the same as the file you are editing
+language en_US.UTF-8                         " sets the language of the messages / ui
+
+set incsearch " Search as typing
+set hlsearch " Highlight search results
+" Press Space to turn off highlighting and clear any message already displayed.
+nnoremap <silent> <F12> :nohlsearch<Bar>:echo<CR>
+
+" terminal colors
+set t_Co=256
+
+set nocompatible
+set showmatch
+
+set mouse=a
+
+set cscopetag
+
+" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
+"nnoremap <silent> <M-F12> :BufExplorer<CR>
+"nnoremap <silent> <F12> :bn<CR>
+"nnoremap <silent> <S-F12> :bp<CR>
+
+syntax on
+filetype plugin indent on
+
+
+
+
+set ignorecase
+
+" Usefull shortcuts to enter insert mode
+"nnoremap <CR> i<CR>
+"nnoremap <Backspace> i<Backspace>
+"nnoremap <Space> i<Space>
+
+
+
+""""""""""""""""""""""""""""""""""" status line """"""""""""""""""""""""""""""""""""""""""""
+
+set noruler
+set laststatus=2
+
+set statusline=
+set statusline+=%2*\ %<%F\  " Filepath
+set statusline+=%2*\ %= " To the right
+set statusline+=%1*\ \%l/%L\  " Position
+
+set ttimeoutlen=0
+set timeoutlen=1000
+au InsertEnter * set timeout
+au InsertLeave * set notimeout
+
+""""""""""""""""""""""""""""""""""" status line """"""""""""""""""""""""""""""""""""""""""""
+
+
+set background=dark
+colorscheme torte
+
+" %!  -   % means take range - whole buffer, send lines to command and replace lines with command output
+nnoremap <silent> <F3> :%!astyle --indent=spaces=4 --pad-oper --style=allman --suffix=none --unpad-paren<CR>
+
+hi Search ctermbg=LightBlue 
+hi TabLine ctermbg=DarkGrey
+hi TabLineFill ctermbg=DarkGrey ctermfg=DarkGrey
+hi TabLineSel ctermbg=DarkBlue
+
+
+
