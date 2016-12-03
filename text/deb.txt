@@ -83,4 +83,10 @@ apt-get install -t repo_name package_name
 
 ==========================================================
 
+list all files in package:
+dpkg-query -L python-termcolor
+
+==========================================================
+
+
 
