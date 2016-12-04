@@ -476,10 +476,17 @@ cat /sys/devices/virtual/dmi/id/board_{vendor,name,version}
 
 //======================================================================
 
-show running threads:
+ps
 
+show running threads:
 ps -eL -o user,pid,psr,comm,args
 htop
+
+show process uptime:
+> ps -eo pid,comm,lstart,etime,time | grep 'epoll'
+lstart - time of process start
+etime  - uptime
+time   - processor time
 
 //======================================================================
 

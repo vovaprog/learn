@@ -9,7 +9,7 @@ language en_US.UTF-8                         " sets the language of the messages
 
 set incsearch " Search as typing
 set hlsearch " Highlight search results
-" Press Space to turn off highlighting and clear any message already displayed.
+" Press F12 to clear search highlight
 nnoremap <silent> <F12> :nohlsearch<Bar>:echo<CR>
 
 " terminal colors
@@ -21,11 +21,6 @@ set showmatch
 set mouse=a
 
 set cscopetag
-
-" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
-"nnoremap <silent> <M-F12> :BufExplorer<CR>
-"nnoremap <silent> <F12> :bn<CR>
-"nnoremap <silent> <S-F12> :bp<CR>
 
 syntax on
 filetype plugin indent on
@@ -71,5 +66,8 @@ hi TabLine ctermbg=DarkGrey
 hi TabLineFill ctermbg=DarkGrey ctermfg=DarkGrey
 hi TabLineSel ctermbg=DarkBlue
 
+au InsertEnter * hi ModeMsg ctermbg=165 ctermfg=fg
+au InsertLeave * hi ModeMsg ctermfg=bg ctermfg=fg
+hi ModeMsg ctermbg=165 ctermfg=fg
 
 
