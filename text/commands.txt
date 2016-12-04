@@ -372,6 +372,9 @@ search with ignore case and ignore case of file name:
 -w - search whole words:
 > grep -w 80 /etc/services
 
+output 2 lines of context:
+> grep --rin -C 2 ./test.txt
+
 //======================================================================
 Locate:
 
