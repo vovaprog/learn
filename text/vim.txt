@@ -76,6 +76,9 @@ tabedit {file}
 tabe filename
 file name can be specifed without path if from current directory
 
+open file in same tab:
+:edit file_name
+
 tabclose
 tabc
 

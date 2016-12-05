@@ -6,11 +6,17 @@ set backspace=indent,eol,start
 set nowrap
 set autochdir                                " working directory is always the same as the file you are editing
 language en_US.UTF-8                         " sets the language of the messages / ui
+set nofoldenable "disable folding
 
 set incsearch " Search as typing
 set hlsearch " Highlight search results
 " Press F12 to clear search highlight
 nnoremap <silent> <F12> :nohlsearch<Bar>:echo<CR>
+
+" go to definition - open tag in new tab
+nnoremap <silent> <F2> <C-w><C-]><C-w>T      
+
+
 
 " terminal colors
 set t_Co=256
@@ -66,8 +72,8 @@ hi TabLine ctermbg=DarkGrey
 hi TabLineFill ctermbg=DarkGrey ctermfg=DarkGrey
 hi TabLineSel ctermbg=DarkBlue
 
-au InsertEnter * hi ModeMsg ctermbg=165 ctermfg=fg
-au InsertLeave * hi ModeMsg ctermfg=bg ctermfg=fg
-hi ModeMsg ctermbg=165 ctermfg=fg
+hi ModeMsg ctermbg=39 ctermfg=fg
+
+hi LineNr ctermfg=102 ctermbg=237 cterm=NONE
 
 
