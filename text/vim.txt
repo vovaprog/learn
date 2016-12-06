@@ -47,11 +47,33 @@ or
 
 Ctrl+g - get current line
 
-/test  - find text
+=======
+
+/test  - search find text
 n - find next
 N - find prev
 
 ?test - find backward
+
+find and replace:
+:%s/search_this/replace_with_this/
+
+find and replace, confirm each replacement:
+:%s/search_this/replace_with_this/c
+
+ggn or Gn - goto first match
+GN or ggN - goto last match
+
+search for word under cursor:
+* - search  forward
+# - search backward
+
+type / and use up, down arrows - search history.
+enter only /     - repeat last search
+%s/search_this/replace_with_this/
+
+
+======
 
 Ctrl + o - move back
 Ctrl + i - move forward
