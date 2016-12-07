@@ -1,12 +1,14 @@
 Выписать отдельно все команды:
-vim search
-vim ctags
-vim replace
-поиск по файлам
++ vim search
++ vim ctags
++ vim replace
++ поиск по файлам
+vimgrep
+
+cscope
 
 svn command line
 
-cscope
 multicast
 
 zeromq - посмотреть ring buffer.

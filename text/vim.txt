@@ -228,4 +228,12 @@ c2b Back two words
 c$ To the end of line
 c0 To the beginning of line
 
+==========================================================
+vimgrep
+
+search for pattern:
+> vimgrep /search_pattern/gj *.*
+
+show search results:
+> cw
 

@@ -370,10 +370,10 @@ search with ignore case and ignore case of file name:
 > find . -iname "*.cpp" | xargs grep -in --color=auto "hello"
 
 -w - search whole words:
-> grep -w 80 /etc/services
+> grep -w search_pattern file_name
 
 output 2 lines of context:
-> grep --rin -C 2 ./test.txt
+> grep --rin -C 2 test
 
 //======================================================================
 Locate:

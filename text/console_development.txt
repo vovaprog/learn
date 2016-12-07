@@ -1,0 +1,75 @@
+============================================
+search find vim:
+
+/test  - search find text
+n - find next
+N - find prev
+
+find and replace:
+:%s/search_this/replace_with_this/
+
+find and replace, confirm each replacement:
+:%s/search_this/replace_with_this/c
+
+============================================
+ctags:
+
+generate tags:
+ctags -R
+
+Ctrl+] - goto definition
+Ctrl+t - go back
+
+open tag in new tab:
+nnoremap <silent> <F2> <C-w><C-]><C-w>T  
+
+" look for tags file in current folder and if not found - in parent folders until home directory
+set tags+=tags;$HOME
+
+============================================
+search find console:
+
+search with ignore case and ignore case of file name:
+> find . -iname "*.cpp" | xargs grep -in --color=auto "hello"
+
+search only in headers and cpp files:
+> grep -rin --include *.h --include *.cpp "some_text"
+
+search in cpp and CPP:
+> grep -rin --include=*.{cpp,CPP} "hello"
+
+-w - search whole words:
+> grep -w search_pattern file_name
+
+output 2 lines of context:
+> grep --rin -C 2 test
+
+findc() {
+    if [ -z "$1" ]
+    then
+        echo "USAGE: findc search_pattern show_lines"
+    fi
+    if [ -z "$2" ]
+    then
+      	find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -in --color=auto $1
+    else
+    	find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -in --color=auto -C $2 $1
+    fi    
+}
+
+findcw() {
+    if [ -z "$1" ]
+    then
+        echo "USAGE: findcw search_pattern show_lines"
+    fi
+    if [ -z "$2" ]
+    then
+        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -inw --color=auto $1
+    else
+        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -inw --color=auto -C $2 $1
+    fi    
+}
+
+============================================
+
+
