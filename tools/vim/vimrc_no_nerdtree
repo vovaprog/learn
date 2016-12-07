@@ -76,4 +76,6 @@ hi ModeMsg ctermbg=39 ctermfg=fg
 
 hi LineNr ctermfg=102 ctermbg=237 cterm=NONE
 
+" look for tags file in current folder and if not found - in parent folders until home directory
+set tags+=tags;$HOME
 

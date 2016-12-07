@@ -1,15 +1,16 @@
+Выписать отдельно все команды:
+vim search
+vim ctags
+vim replace
+поиск по файлам
+
 svn command line
+
+cscope
+multicast
 
 zeromq - посмотреть ring buffer.
 nanomsg
-
-multicast
-tcp
-
-
-
-
-
 fcntl
 starvation, live lock
 background processes
@@ -114,6 +115,7 @@ unix sockets - compare with tcp, use with uwsgi
 + call graph c++ (doxygen)
 + stack protector
 + systemd unit files
++ unix sockets
 
 
 send file source:
