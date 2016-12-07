@@ -375,6 +375,9 @@ search with ignore case and ignore case of file name:
 output 2 lines of context:
 > grep --rin -C 2 test
 
+search for word, not regex pattern:
+> grep -F "word" file_name
+
 //======================================================================
 Locate:
 

@@ -237,3 +237,12 @@ search for pattern:
 show search results:
 > cw
 
+
+grep:
+
+> grep udp ../**/*.c
+
+select search result:
+> copen
+(jump between windows ctrl+ww)
+
