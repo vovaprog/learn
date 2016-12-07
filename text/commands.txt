@@ -378,6 +378,8 @@ output 2 lines of context:
 search for word, not regex pattern:
 > grep -F "word" file_name
 
+ack - grep-like text finder for programmers
+
 //======================================================================
 Locate:
 

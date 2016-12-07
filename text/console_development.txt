@@ -74,8 +74,9 @@ findcw() {
 
 grep in vim:
 
-> grep udp ../**/*.c
-> grep -riw udp *.c                  
+> grep! -riw udp ../**/*.c
+** - will get files in start search folder too (look bash, globstar).
+(! after grep is used to not auto open first match)
 
 select search result:
 > copen

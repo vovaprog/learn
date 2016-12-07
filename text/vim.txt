@@ -240,7 +240,8 @@ show search results:
 
 grep:
 
-> grep udp ../**/*.c
+> grep! udp ../**/*.c
+(! after grep is used to not auto open first match)
 
 select search result:
 > copen

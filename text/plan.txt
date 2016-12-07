@@ -3,7 +3,7 @@
 + vim ctags
 + vim replace
 + поиск по файлам
-vimgrep
++ vim grep
 
 cscope
 
