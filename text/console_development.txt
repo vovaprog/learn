@@ -70,6 +70,9 @@ findcw() {
     fi    
 }
 
+search files with ack (same as findcw):
+ack --type=cpp --type=cc -w connect
+
 ============================================
 
 grep in vim:
