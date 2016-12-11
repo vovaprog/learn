@@ -37,6 +37,9 @@ rsync --dry-run -r --progress -v --delete --owner --group --chown=username:group
 --dry-run    - just print commands
 / slash at local folder name end is important.
 
+my use of rsync:
+rsync -c -r --progress -v --delete --owner --group --chown=user:group --chmod=Dug=rx,Fug=r ./folder_name/ "user@address:/remote/folder/name"
+
 //======================================================================
 astyle:
 http://astyle.sourceforge.net/astyle.html
