@@ -77,6 +77,14 @@ cmake -DCMAKE_C_COMPILER=clang-3.6 -DCMAKE_CXX_COMPILER=clang++-3.6 ../src
 set c++ flags:
 cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer" ../src
 
+generate project for eclipse:
+cmake -G "Eclipse CDT4 - Unix Makefiles" .
+
+get list of cmake generators:
+man cmake-generators
+
+
+
 //======================================================================
 
 Форматирование питона:
@@ -842,7 +850,17 @@ command cut - select field from line.
     
 //======================================================================
 
+eclipse:
+F3 - go to definition
+F2 - open source of function in small window
+Ctrl + Shift + g - find references
+Ctrl + e  - switch to tab
+Ctrl + F6 - switch to tab
+Ctrl + PgUp, Ctrl + PgDown - switch tabs
 
+key shortcuts:
+window -> preferences -> general -> keys
 
+get back to previous file: Alt + LeftArrow
 
-
+//======================================================================

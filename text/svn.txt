@@ -64,4 +64,9 @@ like git blame:
 get help on specific svn commands:
 > svn help status
 
+ignore tags file and build folder:
+> svn propset svn:ignore $'tags\nbuild' .
+($ sign is to add newline into string)
+
+
 

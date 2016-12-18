@@ -87,4 +87,38 @@ select search result:
 
 ============================================
 
+status (no remote connection):
+> svn status
+
+get status from repository:
+> svn status -u
+
+> svn update
+
+> svn add ./main.cpp
+
+history:
+> svn log
+> svn log /PATH/TO/FILE
+
+show history with changes:
+> svn log --diff
+
+merge:
+svn merge file:///programs_test/svn_test/repository1/fix1
+
+if conflict - postpone, edit conflicted file.
+
+resolve conflict:
+svn resolve --accept working ./main1.cpp
+
+like git blame:
+> svn annotate ./main1.cpp
+
+get help on specific svn commands:
+> svn help status
+
+============================================
+
+
 
