@@ -1,16 +1,9 @@
-Выписать отдельно все команды:
-+ vim search
-+ vim ctags
-+ vim replace
-+ поиск по файлам
-+ vim grep
-
-cscope
-
-svn command line
+memory allocators
 
 multicast
-
+svn command line
+doxygen
+cscope
 zeromq - посмотреть ring buffer.
 nanomsg
 fcntl
@@ -118,6 +111,13 @@ unix sockets - compare with tcp, use with uwsgi
 + stack protector
 + systemd unit files
 + unix sockets
+
+Выписать отдельно все команды:
++ vim search
++ vim ctags
++ vim replace
++ поиск по файлам
++ vim grep
 
 
 send file source:
