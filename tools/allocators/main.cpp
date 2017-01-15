@@ -1,3 +1,4 @@
+#include <BlockAllocator.h>
 #include <TrivialAllocator.h>
 
 #include <list>
@@ -6,7 +7,7 @@
 
 using namespace std;
 
-int main()
+void trivialAllocatorTest()
 {
     {
         list<int, TrivialAllocator<int>> lst;
@@ -39,12 +40,44 @@ int main()
     printf("\n\n\n");
 
     {
-        unordered_map<int, int, hash<int>, equal_to<int>, TrivialAllocator<pair<const int, int>>> m3;
+        unordered_map<int, int, hash<int>, equal_to<int>, TrivialAllocator<pair<const int, int>>> m;
 
-        m3[10] = 100;
-        m3[20] = 200;
-        m3[30] = 300;
+        m[10] = 100;
+        m[20] = 200;
+        m[30] = 300;
     }
+}
+
+/*template<typename MapType, int itemCount>
+void mapTest()
+{
+    MapType m;
+
+    for(int i=0;i<itemCount;++i)
+    {
+        m[i] = i;
+    }
+
+    for(int i=0;i<itemCount;i+=step)
+    {
+    }
+}*/
+
+
+void blockAllocatorTest()
+{
+    map<int, int, less<int>, BlockAllocator<pair<const int, int>>> m;
+
+    m[10] = 100;
+    m[20] = 200;
+    m[30] = 300;
+}
+
+
+int main()
+{
+    trivialAllocatorTest();
+    blockAllocatorTest();
 
     return 0;
 }

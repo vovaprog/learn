@@ -40,8 +40,8 @@ public:
     template <class U>
     TrivialAllocator(const TrivialAllocator<U>& source): id(++TrivialAllocatorCounter)
     {
-        PRINT("TrivialAllocator::TrivialAllocator(const TrivialAllocator<U>&)   sizeof(T)=%zu   sizeof(U)=%zu   sourceId = %d   id=%d\n",
-              sizeof(T), sizeof(U), source.id, id);
+        PRINT("TrivialAllocator::TrivialAllocator(const TrivialAllocator<U>&)   sizeof(U)=%zu   sizeof(T)=%zu   sourceId = %d   id=%d\n",
+              sizeof(U), sizeof(T), source.id, id);
     }
 
     ~TrivialAllocator()
@@ -73,8 +73,8 @@ public:
     // allocate but don't initialize num elements of type T
     pointer allocate(size_type num, const void* hint = 0)
     {
-        PRINT("TrivialAllocator::allocate(num=%zu, hint=%llu, size=%zu) ======================\n",
-              num, (unsigned long long int)hint, sizeof(T));
+        PRINT("TrivialAllocator::allocate(num=%zu, hint=%llu, size=%zu, id=%d) ======================\n",
+              num, (unsigned long long int)hint, sizeof(T), id);
 
         return (pointer)(::operator new(num * sizeof(T)));
     }
@@ -82,7 +82,7 @@ public:
     // initialize elements of allocated storage p with value value
     void construct(pointer p, const T& value)
     {
-        PRINT("TrivialAllocator::construct\n");
+        PRINT("TrivialAllocator::construct   id=%d\n", id);
 
         new((void*)p) T(value);
     }
@@ -90,7 +90,7 @@ public:
     // destroy elements of initialized storage p
     void destroy(pointer p)
     {
-        PRINT("TrivialAllocator::destroy\n");
+        PRINT("TrivialAllocator::destroy   id=%d\n", id);
 
         p->~T();
     }
@@ -98,7 +98,7 @@ public:
     // deallocate storage p of deleted elements
     void deallocate(pointer p, size_type num)
     {
-        PRINT("TrivialAllocator::deallocate(%llu, %zu)\n", (unsigned long long int)p, num);
+        PRINT("TrivialAllocator::deallocate(p=%llu   num=%zu   id=%d)\n", (unsigned long long int)p, num, id);
 
         ::operator delete((void*)p);
     }
