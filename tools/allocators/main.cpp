@@ -48,7 +48,7 @@ void trivialAllocatorTest()
     }
 }
 
-/*template<typename MapType, int itemCount>
+template<typename MapType, int itemCount>
 void mapTest()
 {
     MapType m;
@@ -58,10 +58,14 @@ void mapTest()
         m[i] = i;
     }
 
+    const int step = 5;
+
     for(int i=0;i<itemCount;i+=step)
     {
+        m.erase(i);
     }
-}*/
+}
+
 
 
 void blockAllocatorTest()
@@ -71,7 +75,11 @@ void blockAllocatorTest()
     m[10] = 100;
     m[20] = 200;
     m[30] = 300;
+
+    mapTest<map<int, int, less<int>, BlockAllocator<pair<const int, int>>>, 10>();
 }
+
+
 
 
 int main()
