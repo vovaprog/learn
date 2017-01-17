@@ -4,7 +4,7 @@
 #include <limits>
 #include <stdio.h>
 
-#define PRINT(...) printf(__VA_ARGS__)
+#define PRINT(...) //printf(__VA_ARGS__)
 
 static int BlockAllocatorCounter = 0;
 

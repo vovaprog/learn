@@ -106,6 +106,7 @@ public:
     int id;
 };
 
+
 // return that all specializations of this allocator are interchangeable
 template <class T1, class T2>
 bool operator==(const TrivialAllocator<T1>&, const TrivialAllocator<T2>&)
@@ -120,6 +121,7 @@ bool operator!=(const TrivialAllocator<T1>&, const TrivialAllocator<T2>&)
     PRINT("TrivialAllocator::operator!=\n");
     return false;
 }
+
 
 #undef PRINT
 
