@@ -127,14 +127,15 @@ protected:
     {
         Block *newBlock = new Block();
         newBlock->items[blockSize - 1].next = nullptr;
-        for(size_t i=0;i<blockSize -1;++i)
+        for(size_t i = 0; i < blockSize - 1; ++i)
         {
-            newBlock->items[i].next = &(newBlock->items[i+1]);
+            newBlock->items[i].next = &(newBlock->items[i + 1]);
         }
         freeListHead = newBlock->items;
     }
 
-    union Item {
+    union Item
+    {
         char data[sizeof(T)];
         Item *next;
     };

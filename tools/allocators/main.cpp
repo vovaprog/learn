@@ -25,6 +25,14 @@ inline long long int getMilliseconds()
 }
 
 
+#define MY_ASSERT(condition) \
+if(!(condition)) \
+{ \
+    printf("assertion failed: %s\n", #condition); \
+    exit(-1); \
+}
+
+
 void trivialAllocatorTest()
 {
     {
@@ -66,13 +74,6 @@ void trivialAllocatorTest()
     }
 }
 
-#define MY_ASSERT(condition) \
-if(!(condition)) \
-{ \
-    printf("assertion failed: %s\n", #condition); \
-    exit(-1); \
-}
-
 
 template<typename MapType, int itemCount, int iterationCount, int step = 10>
 void mapInsertEraseTest()
@@ -81,14 +82,14 @@ void mapInsertEraseTest()
 
     for(int q = 0; q < iterationCount; ++q)
     {
-        for(int i=0;i<itemCount;++i)
+        for(int i = 0; i < itemCount; ++i)
         {
             m[i] = i;
         }
 
         for(int start = 0; start < step; ++start)
         {
-            for(int i=start;i<itemCount;i+=step)
+            for(int i = start; i < itemCount; i += step)
             {
                 m.erase(i);
             }
@@ -98,13 +99,13 @@ void mapInsertEraseTest()
 
         for(int start = 0; start < step; ++start)
         {
-            for(int i=start;i<itemCount;i+=step)
+            for(int i = start; i < itemCount; i += step)
             {
                 m[i] = i;
             }
         }
 
-        for(int i=0;i<itemCount;++i)
+        for(int i = 0; i < itemCount; ++i)
         {
             m.erase(i);
         }
@@ -116,12 +117,14 @@ void mapInsertEraseTest()
 
 void mapInsertEraseTestFull()
 {
-    const int itemCount = 10000;
-    const int iterationCount = 100;
+    cout << "======= InsertEraseTest =======" << endl;
+
+    const int itemCount = 100000;
+    const int iterationCount = 10;
     const int step = 100;
 
     long long int millis = getMilliseconds();
-    mapInsertEraseTest<std::map<int,int>, itemCount, iterationCount, step>();
+    mapInsertEraseTest<std::map<int, int>, itemCount, iterationCount, step>();
     std::cout << "default map: " << getMilliseconds() - millis << std::endl;
 
     millis = getMilliseconds();
@@ -129,17 +132,21 @@ void mapInsertEraseTestFull()
     std::cout << "block allocator map: " << getMilliseconds() - millis << std::endl;
 
     millis = getMilliseconds();
-    mapInsertEraseTest<eastl::map<int,int>, itemCount, iterationCount, step>();
+    mapInsertEraseTest<eastl::map<int, int>, itemCount, iterationCount, step>();
     std::cout << "eastl map: " << getMilliseconds() - millis << std::endl;
+
+    millis = getMilliseconds();
+    mapInsertEraseTest<std::unordered_map<int, int>, itemCount, iterationCount, step>();
+    std::cout << "unordered map: " << getMilliseconds() - millis << std::endl;
 }
 
 
 template<int stringLength>
 std::string generateRandomString()
 {
-    char buf[stringLength+1];
+    char buf[stringLength + 1];
 
-    for(int i=0;i<stringLength;++i)
+    for(int i = 0; i < stringLength; ++i)
     {
         buf[i] = (char)((rand() % 26) + 'a');
     }
@@ -163,7 +170,7 @@ void searchTest(const char *title, const vector<string> & items)
     {
         long long int millis = getMilliseconds();
 
-        for(int q = 0;q<iterCount;++q)
+        for(int q = 0; q < iterCount; ++q)
         {
             for(const string & key : items)
             {
@@ -182,6 +189,8 @@ void searchTest(const char *title, const vector<string> & items)
 
 void searchTestFull()
 {
+    cout << "======= SearchTest =======" << endl;
+
     const int itemCount = 100000;
     const int iterCount = 5;
     const int keyLength = 15;
@@ -189,7 +198,7 @@ void searchTestFull()
     vector<string> randStrings;
     randStrings.reserve(itemCount);
 
-    for(int i=0;i<itemCount;++i)
+    for(int i = 0; i < itemCount; ++i)
     {
         std::string key = generateRandomString<keyLength>();
         randStrings.push_back(key);
@@ -201,12 +210,14 @@ void searchTestFull()
     searchTest<std::unordered_map<string, string>, iterCount>("std unordered_map", randStrings);
 }
 
+
 // new operators for eastl
 void* operator new[](size_t size, const char* /*name*/, int /*flags*/,
                      unsigned /*debugFlags*/, const char* /*file*/, int /*line*/) // THROW_SPEC_1(std::bad_alloc)
 {
     return malloc(size);
 }
+
 
 // new operators for eastl
 void* operator new[](size_t size, size_t alignment, size_t alignmentOffset, const char* /*name*/,
@@ -218,9 +229,9 @@ void* operator new[](size_t size, size_t alignment, size_t alignmentOffset, cons
 
 int main()
 {
-    srand (time(NULL));
+    srand(time(NULL));
 
-    trivialAllocatorTest();
+    //trivialAllocatorTest();
     mapInsertEraseTestFull();
     searchTestFull();
 
