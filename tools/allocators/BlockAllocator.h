@@ -150,20 +150,19 @@ protected:
     int id;
 };
 
-// return that all specializations of this allocator are interchangeable
-template <class T1, class T2>
+/*template <class T1, class T2>
 bool operator==(const BlockAllocator<T1>&, const BlockAllocator<T2>&)
 {
     PRINT("BlockAllocator::operator==\n");
-    return true;
+    return false;
 }
 
 template <class T1, class T2>
-bool operator!=(const BlockAllocator<T1>&, const BlockAllocator<T2>&)
+bool operator!=(const BlockAllocator<T1> & left, const BlockAllocator<T2> & right)
 {
     PRINT("BlockAllocator::operator!=\n");
-    return false;
-}
+    return !(left == right);
+}*/
 
 #undef PRINT
 
