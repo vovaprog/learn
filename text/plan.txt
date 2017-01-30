@@ -1,6 +1,6 @@
 memory allocators
    + TrivialAllocator
-   BlockAllocator
+   + BlockAllocator
    template map test
 
 multicast

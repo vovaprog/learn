@@ -481,7 +481,7 @@ format flash ntfs
 sudo mkfs.ntfs --fast -L label /dev/sdf1
 
 create partition:
-fdisk
+fdisk /dev/sdf
 p - print partitions
 n - create partition
 d - delete partition
