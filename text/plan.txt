@@ -1,7 +1,6 @@
-memory allocators
-   + TrivialAllocator
-   + BlockAllocator
-   template map test
+read file to buffer
+append buffer to file
+
 
 multicast
 svn command line
@@ -114,6 +113,8 @@ unix sockets - compare with tcp, use with uwsgi
 + stack protector
 + systemd unit files
 + unix sockets
++ stl allocators
+
 
 Выписать отдельно все команды:
 + vim search
