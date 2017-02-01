@@ -1,5 +1,5 @@
-#include <BlockAllocator.h>
-#include <TrivialAllocator.h>
+#ifndef MAP_TESTS_INCLUDED
+#define MAP_TESTS_INCLUDED
 
 #include <list>
 #include <map>
@@ -11,11 +11,7 @@
 #include <vector>
 #include <string>
 
-#include <EASTL/map.h>
-#include <EASTL/fixed_map.h>
-
 using namespace std;
-
 
 inline long long int getMilliseconds()
 {
@@ -32,47 +28,6 @@ if(!(condition)) \
     exit(-1); \
 }
 
-
-void trivialAllocatorTest()
-{
-    {
-        list<int, TrivialAllocator<int>> lst;
-
-        for(int i = 1; i <= 10; ++i)
-        {
-            lst.push_back(i);
-        }
-    }
-
-    printf("\n\n\n");
-
-    {
-        printf("sizeof(pair<const int, int>): %zu\n", sizeof(pair<const int, int>));
-
-        map<int, int, less<int>, TrivialAllocator<pair<const int, int>>> m;
-
-        for(int i = 1; i <= 10; ++i)
-        {
-            m[i * 2] = i * 2;
-        }
-
-        printf("\n\n\n");
-
-        map<int, int, less<int>, TrivialAllocator<pair<const int, int>>> m2;
-
-        m2 = m;
-    }
-
-    printf("\n\n\n");
-
-    {
-        unordered_map<int, int, hash<int>, equal_to<int>, TrivialAllocator<pair<const int, int>>> m;
-
-        m[10] = 100;
-        m[20] = 200;
-        m[30] = 300;
-    }
-}
 
 
 template<typename MapType, int itemCount, int iterationCount, int step = 10>
@@ -112,32 +67,6 @@ void mapInsertEraseTest()
 
         MY_ASSERT(m.size() == 0);
     }
-}
-
-
-void mapInsertEraseTestFull()
-{
-    cout << "======= InsertEraseTest =======" << endl;
-
-    const int itemCount = 100000;
-    const int iterationCount = 10;
-    const int step = 100;
-
-    long long int millis = getMilliseconds();
-    mapInsertEraseTest<std::map<int, int>, itemCount, iterationCount, step>();
-    std::cout << "default map: " << getMilliseconds() - millis << std::endl;
-
-    millis = getMilliseconds();
-    mapInsertEraseTest<map<int, int, less<int>, BlockAllocator<pair<const int, int>>>, itemCount, iterationCount, step>();
-    std::cout << "block allocator map: " << getMilliseconds() - millis << std::endl;
-
-    millis = getMilliseconds();
-    mapInsertEraseTest<eastl::map<int, int>, itemCount, iterationCount, step>();
-    std::cout << "eastl map: " << getMilliseconds() - millis << std::endl;
-
-    millis = getMilliseconds();
-    mapInsertEraseTest<std::unordered_map<int, int>, itemCount, iterationCount, step>();
-    std::cout << "unordered map: " << getMilliseconds() - millis << std::endl;
 }
 
 
@@ -186,55 +115,4 @@ void searchTest(const char *title, const vector<string> & items)
     }
 }
 
-
-void searchTestFull()
-{
-    cout << "======= SearchTest =======" << endl;
-
-    const int itemCount = 100000;
-    const int iterCount = 5;
-    const int keyLength = 15;
-
-    vector<string> randStrings;
-    randStrings.reserve(itemCount);
-
-    for(int i = 0; i < itemCount; ++i)
-    {
-        std::string key = generateRandomString<keyLength>();
-        randStrings.push_back(key);
-    }
-
-    searchTest<std::map<string, string>, iterCount>("std map", randStrings);
-    searchTest<std::map<string, string, less<string>, BlockAllocator<pair<const string, string> >>, iterCount>("block allocator std map", randStrings);
-    searchTest<eastl::map<std::string, std::string>, iterCount>("eastl map", randStrings);
-    searchTest<std::unordered_map<string, string>, iterCount>("std unordered_map", randStrings);
-}
-
-
-// new operators for eastl
-void* operator new[](size_t size, const char* /*name*/, int /*flags*/,
-                     unsigned /*debugFlags*/, const char* /*file*/, int /*line*/) // THROW_SPEC_1(std::bad_alloc)
-{
-    return malloc(size);
-}
-
-
-// new operators for eastl
-void* operator new[](size_t size, size_t alignment, size_t alignmentOffset, const char* /*name*/,
-                     int flags, unsigned /*debugFlags*/, const char* /*file*/, int /*line*/) //THROW_SPEC_1(std::bad_alloc)
-{
-    return aligned_alloc(alignment, size);
-}
-
-
-int main()
-{
-    srand(time(NULL));
-
-    //trivialAllocatorTest();
-    mapInsertEraseTestFull();
-    searchTestFull();
-
-    return 0;
-}
-
+#endif

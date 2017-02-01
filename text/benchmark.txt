@@ -62,6 +62,23 @@ real	0m19.651s
 user	0m18.312s
 sys	0m1.060s
 
+
+thinkpad -j 1
+real	0m22.450s
+user	0m20.772s
+sys	0m1.212s
+
+thinkpad -j 2
+real	0m12.423s
+user	0m22.620s
+sys	0m1.604s
+
+thinkpad -j 4
+real	0m11.043s
+user	0m33.552s
+sys	0m1.932s
+
+
 ===============================================================================================================
 
 download from my site
@@ -102,4 +119,23 @@ MaTps 384.65, Tps 387.06, Resp Time  0.026, Err   0%, Count  1551
 MaTps 393.71, Tps 403.60, Resp Time  0.025, Err   0%, Count  1201
 MaTps 393.14, Tps 388.06, Resp Time  0.026, Err   0%, Count  1591
 MaTps 393.65, Tps 398.20, Resp Time  0.025, Err   0%, Count  1990
+
+===============================================================================================================
+
+build epoll_http_server
+
+thinkpad -j 1
+real	0m10.382s
+user	0m9.080s
+sys	0m0.984s
+
+thinkpad -j 4
+real	0m4.890s
+user	0m16.296s
+sys	0m1.500s
+
+thinkpad -j 2
+real	0m5.786s
+user	0m9.724s
+sys	0m1.116s
 
