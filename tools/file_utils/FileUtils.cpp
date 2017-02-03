@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+
 long long int fileSize(const char *filename)
 {
     struct stat st;
@@ -15,6 +16,7 @@ long long int fileSize(const char *filename)
 
     return -1;
 }
+
 
 long long int fileSize(int fd)
 {
@@ -28,7 +30,8 @@ long long int fileSize(int fd)
     return -1;
 }
 
-int readTextFile(const char * fileName, char * & buf)
+
+int readFile(const char * fileName, char * & buf, long long int & fileSize)
 {
     int fd = open(fileName, O_RDONLY);
 
@@ -41,19 +44,29 @@ int readTextFile(const char * fileName, char * & buf)
 
     if(fstat(fd, &st) != 0)
     {
+        int err = errno;
         close(fd);
-        return (errno != 0 ? errno : EINVAL);
+        return (err != 0 ? err : EINVAL);
     }
 
-    long long int fileSize = st.st_size;
+    fileSize = st.st_size;
 
-    if(fileSize <= 0)
+    if(fileSize < 0)
     {
         close(fd);
-        return (errno != 0 ? errno : EINVAL);
+        return EINVAL;
     }
 
+    // allocate one more byte for zero
     buf = new char[fileSize + 1];
+
+    if(fileSize == 0)
+    {
+        buf[0] = 0;
+        close(fd);
+        return 0;
+    }
+
     long long int bufPos = 0;
     long long int bytesLeft = fileSize;
 
@@ -63,15 +76,16 @@ int readTextFile(const char * fileName, char * & buf)
 
         if(bytesRead < 0)
         {
+            int err = errno;
             delete[] buf;
             close(fd);
-            return (errno != 0 ? errno : EINVAL);
+            return (err != 0 ? err : EINVAL);
         }
         else if(bytesRead == 0)
         {
             delete[] buf;
             close(fd);
-            return (errno != 0 ? errno : EINVAL);
+            return EINVAL;
         }
 
         bufPos += bytesRead;
@@ -83,3 +97,10 @@ int readTextFile(const char * fileName, char * & buf)
     return 0;
 }
 
+
+int readTextFile(const char * fileName, char * & buf)
+{
+    long long int fileSize;
+
+    return readFile(fileName, buf, fileSize);
+}
