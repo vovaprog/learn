@@ -1,5 +1,5 @@
-read file to buffer
-append buffer to file
+memory mapped file
+
 
 ssh x server
 
@@ -116,6 +116,8 @@ unix sockets - compare with tcp, use with uwsgi
 + systemd unit files
 + unix sockets
 + stl allocators
++ read file to buffer, append buffer to file
+
 
 
 Выписать отдельно все команды:

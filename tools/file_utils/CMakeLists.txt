@@ -6,7 +6,7 @@ set(CMAKE_VERBOSE_MAKEFILE on)
 
 include_directories(".")
 
-set(SOURCE main.cpp FileUtils.h FileUtils.cpp)
+set(SOURCE main.cpp FileUtils.h FileUtils.cpp MappedFile.h)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -std=c++11 -Wall -pedantic")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -pedantic")

@@ -1,5 +1,4 @@
 #include <sys/stat.h>
-#include <stdio.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -103,4 +102,35 @@ int readTextFile(const char * fileName, char * & buf)
     long long int fileSize;
 
     return readFile(fileName, buf, fileSize);
+}
+
+
+int appendFile(const char *fileName, const char *data, long long int dataSize)
+{
+    int fd = open(fileName, O_WRONLY | O_APPEND | O_CREAT,
+                  S_IWUSR | S_IRUSR); // set u+rw rights if file is created
+
+    if(fd < 0)
+    {
+        return (errno != 0 ? errno : EINVAL);
+    }
+
+    while(dataSize > 0)
+    {
+        int bytesWritten = write(fd, data, dataSize);
+
+        if(bytesWritten <= 0)
+        {
+            int err = errno;
+            close(fd);
+            return (err != 0 ? err : EINVAL);
+        }
+
+        data += bytesWritten;
+        dataSize -= bytesWritten;
+    }
+
+    close(fd);
+
+    return 0;
 }

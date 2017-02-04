@@ -7,4 +7,6 @@ long long int fileSize(int fd);
 int readTextFile(const char * fileName, char * & buf);
 int readFile(const char * fileName, char * & buf, long long int & fileSize);
 
+int appendFile(const char *fileName, const char *data, long long int dataSize);
+
 #endif
