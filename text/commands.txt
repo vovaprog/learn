@@ -260,6 +260,9 @@ readelf -wF app > ./eh.txt
 gnome remove icon from launch panel
 Alt + Win + RightClick    on icon.
 
+create desktop icon shortcut:
+gnome-desktop-item-edit --create-new ~/Рабочий\ стол/
+
 //======================================================================
 
 Run qt creator dark:

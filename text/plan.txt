@@ -1,8 +1,5 @@
-memory mapped file
-
-
+eclipse cdt
 ssh x server
-
 multicast
 
 svn command line
@@ -116,7 +113,7 @@ unix sockets - compare with tcp, use with uwsgi
 + systemd unit files
 + unix sockets
 + stl allocators
-+ read file to buffer, append buffer to file
++ read file to buffer, append buffer to file, memory mapped file
 
 
 

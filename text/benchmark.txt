@@ -63,17 +63,17 @@ user	0m18.312s
 sys	0m1.060s
 
 
-thinkpad -j 1
+i3-5010U thinkpad -j 1
 real	0m22.450s
 user	0m20.772s
 sys	0m1.212s
 
-thinkpad -j 2
+i3-5010U thinkpad -j 2
 real	0m12.423s
 user	0m22.620s
 sys	0m1.604s
 
-thinkpad -j 4
+i3-5010U thinkpad -j 4
 real	0m11.043s
 user	0m33.552s
 sys	0m1.932s
@@ -124,18 +124,30 @@ MaTps 393.65, Tps 398.20, Resp Time  0.025, Err   0%, Count  1990
 
 build epoll_http_server
 
-thinkpad -j 1
+i3-5010U 2.1 Ghz thinkpad 
+-j 1
 real	0m10.382s
 user	0m9.080s
 sys	0m0.984s
 
-thinkpad -j 4
-real	0m4.890s
-user	0m16.296s
-sys	0m1.500s
-
-thinkpad -j 2
+-j 2
 real	0m5.786s
 user	0m9.724s
 sys	0m1.116s
 
+-j 4
+real	0m4.890s
+user	0m16.296s
+sys	0m1.500s
+
+
+Core i5-3210M 2.5 Ghz (dimin notebook)
+-j1
+real 10
+user 8.88
+sys 0.82
+
+-j4
+real 4.6
+user 15.2
+sys 1.36

@@ -1,0 +1,5 @@
+Install syntax highlight theme:
+download epf file with theme
+File -> Import -> Preferences, select epf file
+
+
