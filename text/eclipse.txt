@@ -3,3 +3,29 @@ download epf file with theme
 File -> Import -> Preferences, select epf file
 
 
+background of selected current identified: 
+Windows->Preferences->General->Editors->Text Editors->Annotations,    C++ occurences
+
+
+Open cmake project in eclipse:
+
+cd <project_dir>
+cmake -G "Eclipse CDT4 - Unix Makefiles" ./
+
+
+Call hierarchy
+
+
+Alt + F11 - fullscreen
+
+
+Navigation keys:
+
+Ctrl + Tab - switch cpp-header
+F3 - open declaration
+Alt + left  - go to prev position (return to prev file)
+Ctrl + Alt + h -  open call hierarchy
+Ctrl + Shift + G -  find references
+
+
+

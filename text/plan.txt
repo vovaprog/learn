@@ -1,4 +1,10 @@
 eclipse cdt
+комбинации клавиш - навигация по коду
++ сборка из eclipse
++ отладчик
+eclipse git
+
+
 ssh x server
 multicast
 

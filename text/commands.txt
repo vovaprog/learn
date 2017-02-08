@@ -473,13 +473,6 @@ valgrind --tool=callgrind "--toggle-collect=ClassName::FunctionName*" ./program_
 
 //======================================================================
 
-Open cmake project in eclipse:
-
-cd <project_dir>
-cmake -G "Eclipse CDT4 - Unix Makefiles" ./
-
-//======================================================================
-
 format flash ntfs
 sudo mkfs.ntfs --fast -L label /dev/sdf1
 

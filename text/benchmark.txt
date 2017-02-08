@@ -124,6 +124,34 @@ MaTps 393.65, Tps 398.20, Resp Time  0.025, Err   0%, Count  1990
 
 build epoll_http_server
 
+hp old -j 1
+real 27.8
+user 23.4
+sys 1.7
+
+hp mini
+-j 1
+real 55.9
+user 50
+sys  5.3
+
+-j 2
+real 44.8
+user 1m18.6
+sys 8.024
+
+core 2 quad q9550
+-j 1
+real 16.5
+user 11.2
+sys 2.1
+
+-j 6
+real 4.75
+user 11.2
+sys 2.49
+
+
 i3-5010U 2.1 Ghz thinkpad 
 -j 1
 real	0m10.382s
