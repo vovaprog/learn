@@ -179,3 +179,22 @@ sys 0.82
 real 4.6
 user 15.2
 sys 1.36
+
+
+nastya toshiba
+AMD Athlon(tm) X2 Dual-Core QL-62
+
+-j 1
+real	0m24.258s
+user	0m20.728s
+sys	0m2.952s
+
+-j 2
+real	0m13.438s
+user	0m20.884s
+sys	0m3.100s
+
+-j 4
+real	0m13.388s
+user	0m21.628s
+sys	0m3.036s
