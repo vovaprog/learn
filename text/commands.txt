@@ -483,6 +483,9 @@ n - create partition
 d - delete partition
 w - write changes to disk
 
+format disk to ext4:
+sudo mkfs.ext4 -L label /dev/sde1
+
 //======================================================================
 
 get motherboard info (non root):
