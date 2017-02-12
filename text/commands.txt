@@ -83,7 +83,8 @@ cmake -G "Eclipse CDT4 - Unix Makefiles" .
 get list of cmake generators:
 man cmake-generators
 
-
+install to specified folder:
+make DESTDIR=/home/john install
 
 //======================================================================
 
@@ -863,3 +864,12 @@ window -> preferences -> general -> keys
 get back to previous file: Alt + LeftArrow
 
 //======================================================================
+
+wireshark - enable capture for non-root users:
+sudo dpkg-reconfigure wireshark-common
+
+add user to wireshark group:
+sudo adduser $USER wireshark
+
+//======================================================================
+

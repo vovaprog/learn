@@ -76,6 +76,8 @@ unicode
 + сложность вставки в vector - вывод формулы
 + характеристики сортировок
 
+multicast
+
 cast
 исключение в деструкторе
 Майерс исключения
@@ -2364,6 +2366,91 @@ inline assembly assembler
 
 "r" says to GCC to use any register for storing the operands
 "=r" - output value
+
+
+//============================================================================
+multicast
+//============================================================================
+
+Пример - tools/multicast
+
+sender
+открывает udp socket:
+	int fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+отправляет на адрес multicast группы:
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = inet_addr(MULTICAST_GROUP);
+    addr.sin_port = htons(MULTICAST_PORT);
+    sendto(fd, message, strlen(message), 0, (struct sockaddr *) &addr, sizeof(addr))
+
+Для подключения к группе используется протокол IGMP v2.
+receiver шлет сообщение Membership report с адресом группы 225.0.0.37
+После этого роутер начинает передавать ему пакеты.
+Когда клиент отключается, он шлет сообщение Leave Group 225.0.0.37 после этого роутер перестает передавать клиенту пакеты.
+
+Роутер шлет сообщения Membership Query General - на адрес 224.0.0.1 
+Компы должны ответить кто в какой группе состоит.
+
+Когда запускается receiver, то компьютер шлет 
+Membership Report  
+source ip - computer
+dest ip   - multicast group ip
+
+Роутер начинает передавать в сеть компьютера пакеты.
+source ip - computer, на котором запущен sender
+dest ip   - multicast group ip
+
+Когда receiver отключается, то он передает сообщение 
+Leave Group
+source ip  - computer
+dest ip  - 224.0.0.2
+в сообщении указан ip группы 225.0.0.37
+
+224.0.0.2 	The All Routers multicast group addresses all routers on the same network segment.
+
+Номер порта в multicast не учитывается. 
+Т.е. multicast работает на уровне ip, и про порты не знает. 
+
+router постоянно шлет сообщения
+Memborship Query General
+source ip - router
+dest ip - 224.0.0.1
+
+224.0.0.1 	The All Hosts multicast group addresses all hosts on the same network segment.
+
+wifi пакеты все-всем как ethernet не передает, 
+но multicast пакеты приходят на другой компьютер, даже если он не подключен к multicast группе
+При тесте с неподключенным multicast пакеты на hpmini приходили, а на thinkpad нет. Не понятно почему.
+
+
+//============================================================================
+automake autoconf
+//============================================================================
+
+Сборка программы при помощи autotools вне папки с исходным кодом:
+
+1. В папке проекта запустить autogen.sh
+2. Создать и перейти в папку для сборки
+3. Находясь в папке для сборки вызвать configure из папки проекта
+4. в Папке для сборки выполнить make
+
+autoconf:    configure.ac   ->      configure
+autoheader:  configure.ac   ->      config.h.in
+automake:    Makefile.am    ->      Makefile.in
+configure:   Makefile.in    ->      Makefile
+             config.h.in    ->      config.h
+             
+run all tools in right order:
+autoreconf --install
+
+cache results of configure to speed up reconf:
+configure -C
+
+autoconf  -  macro processor, it converts confugre.ac - shell script with m4 macros
+             to configure shell script
 
 
 //============================================================================
