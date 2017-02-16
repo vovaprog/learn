@@ -2375,10 +2375,10 @@ multicast
 Пример - tools/multicast
 
 sender
-открывает udp socket:
+========= открывает udp socket:
 	int fd = socket(AF_INET, SOCK_DGRAM, 0);
 
-отправляет на адрес multicast группы:
+========= отправляет на адрес multicast группы:
     struct sockaddr_in addr;
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
@@ -2386,6 +2386,46 @@ sender
     addr.sin_port = htons(MULTICAST_PORT);
     sendto(fd, message, strlen(message), 0, (struct sockaddr *) &addr, sizeof(addr))
 
+
+*******************************************************************************
+receiver:
+
+========= открывает udp socket:
+int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    
+========= устанавливает опцию SO_REUSEADDR (необязательно):
+setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable))
+
+========= привязывает socket к порту, с которого приходит multicast:
+struct sockaddr_in addr;
+memset(&addr, 0, sizeof(addr));
+addr.sin_family = AF_INET;
+addr.sin_addr.s_addr = htonl(INADDR_ANY);
+addr.sin_port = htons(MULTICAST_PORT);
+
+if(bind(fd, (struct sockaddr *) &addr, sizeof(addr)) < 0)
+{
+	perror("bind");
+	exit(1);
+}
+
+========= Добавляется в группу multicast:
+struct ip_mreq mreq;
+mreq.imr_multiaddr.s_addr = inet_addr(MULTICAST_GROUP);
+mreq.imr_interface.s_addr = htonl(INADDR_ANY);
+if(setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq)) < 0)
+{
+	perror("setsockopt");
+	exit(1);
+}
+
+========= Вызывает recvfrom для получения пакетов:
+recvfrom(fd, msgbuf, sizeof(msgbuf), 0, (struct sockaddr *) &addr, &addrlen);
+
+
+*******************************************************************************
+
+    
 Для подключения к группе используется протокол IGMP v2.
 receiver шлет сообщение Membership report с адресом группы 225.0.0.37
 После этого роутер начинает передавать ему пакеты.
