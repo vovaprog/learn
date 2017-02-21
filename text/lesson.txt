@@ -449,7 +449,28 @@ while
 }    
 close
 
-                         
+          
+//============================================================================
+unix domain sockets  (local domain sockets)
+//============================================================================
+
+struct sockaddr_un addr;
+
+addr.sun_family = AF_UNIX;
+snprintf(addr.sun_path, sizeof(addr.sun_path), "%s", socketPath);
+
+int sock = socket(AF_UNIX, SOCK_STREAM, 0);
+
+connect(sock, (struct sockaddr*)&addr, sizeof(sockaddr_un));
+
+
+Unix domain sockets are identified by filesystem path.
+Когда сокет закрывается, то файл сокета в файловой системе остается.
+Нужно вызывать unlink, чтобы удалить файл сокета.
+splice не работает с unix domain сокетами.
+Unix domain sockets работают ~ в 2 раза быстрее на localhost, чем AF_INET tcp сокеты.
+
+
 //============================================================================
 tcp/ip levels
 //============================================================================

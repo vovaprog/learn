@@ -22,6 +22,7 @@ crrcsim
 + Убрать тени
 + Перезапуск при падении
 + Хранение всех файлов в папке с программой
++ Текстуры неба
 
 ssh x server
 
@@ -136,7 +137,7 @@ unix sockets - compare with tcp, use with uwsgi
 + call graph c++ (doxygen)
 + stack protector
 + systemd unit files
-+ unix sockets
++ unix domain sockets
 + stl allocators
 + read file to buffer, append buffer to file, memory mapped file
 + autoconf automake

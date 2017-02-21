@@ -24,10 +24,10 @@ findcode() {
     if [ -z "$2" ]
     then
         find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp" \
-                    -o -iname "*.py" -o -iname "*.pl" -o -iname "Makefile" -o -iname "CMakeLists.txt" -o -iname "*.sh" | xargs grep -in --color=auto $1
+                    -o -iname "*.py" -o -iname "*.pl" -o -iname "Makefile" -o -iname "CMakeLists.txt" -o -iname "*.sh" | sort | xargs grep -in --color=auto $1
     else
         find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp" \
-                    -o -iname "*.py" -o -iname "*.pl" -o -iname "Makefile" -o -iname "CMakeLists.txt" -o -iname "*.sh" | xargs grep -in --color=auto -C $2 $1
+                    -o -iname "*.py" -o -iname "*.pl" -o -iname "Makefile" -o -iname "CMakeLists.txt" -o -iname "*.sh" | sort | xargs grep -in --color=auto -C $2 $1
     fi
 }
 
@@ -38,9 +38,9 @@ findc() {
     fi
     if [ -z "$2" ]
     then
-        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -in --color=auto $1
+        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | sort | xargs grep -in --color=auto $1
     else
-        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -in --color=auto -C $2 $1
+        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | sort | xargs grep -in --color=auto -C $2 $1
     fi    
 }
 
@@ -51,9 +51,9 @@ findcw() {
     fi
     if [ -z "$2" ]
     then
-        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -inw --color=auto $1
+        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | sort | xargs grep -inw --color=auto $1
     else
-        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | xargs grep -inw --color=auto -C $2 $1
+        find . -type f -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hh" -o -iname "*.hpp"  | sort | xargs grep -inw --color=auto -C $2 $1
     fi    
 }
 
