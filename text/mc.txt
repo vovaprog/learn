@@ -1,3 +1,11 @@
+mc editor dark editor skin:
+скопировать tools/mc_ini/ini в ~/.config/mc
+скопировать tools/mc_skin/dark-editor.ini в ~/.local/share/mc/skins
+
+файл ini нужно редактировать не из mc а из другого редактора, иначе настройки не сохраняются.
+
+=========================================================================
+
 Alt+I - open current dir on other panel (how Alt+O should work)
 
 Alt-y - prev dir in history
