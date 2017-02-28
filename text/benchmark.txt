@@ -198,3 +198,11 @@ sys	0m3.100s
 real	0m13.388s
 user	0m21.628s
 sys	0m3.036s
+
+================================================================
+
+build gcc 6.3 core2quad q9550 -j6 notebook_disk
+real	55m57.805s
+user	176m17.376s
+sys	4m15.716s
+
