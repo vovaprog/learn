@@ -158,6 +158,9 @@ passwd vova
 mkhomedir_helper vova
 
 
+useradd -m -g vova vova
+-m - create home dir
+-g - add to group vova
 
 //======================================================================
 
@@ -486,6 +489,9 @@ w - write changes to disk
 
 format disk to ext4:
 sudo mkfs.ext4 -L label /dev/sde1
+
+print available disks:
+fdisk -l
 
 //======================================================================
 

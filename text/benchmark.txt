@@ -206,3 +206,10 @@ real	55m57.805s
 user	176m17.376s
 sys	4m15.716s
 
+build gcc 7 i3-5010U 2.1 Ghz thinkpad
+real	90m23.256s
+user	325m38.712s
+sys	4m33.912s
+
+
+

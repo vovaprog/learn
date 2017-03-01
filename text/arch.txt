@@ -1,0 +1,26 @@
+
+arch install grub (after basic installation):
+
+mount /dev/sda1 /mnt #sda1 is `boot` partition
+arch-chroot /mnt
+pacman -S os-prober
+grub-install /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+exit
+reboot
+
+
+network
+
+ip addr show
+ip link set enp0s3 up
+systemctl start dhcpcd.service
+
+run dhcpd on startup:
+ln -s '/usr/lib/systemd/system/dhcpcd.service' '/etc/systemd/system/multi-user.target.wants/dhcpcd.service'
+
+update system (will install new version of packages):
+pacman -Syu
+
+
+pacman -Sy

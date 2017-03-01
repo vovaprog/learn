@@ -3,6 +3,12 @@ dch -v 0.35.0
 
 ==========================================================
 
+search package:
+
+apt-cache search part_of_name
+
+==========================================================
+
 build without signing:
 dpkg-buildpackage -uc -us
 
