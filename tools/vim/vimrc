@@ -23,11 +23,17 @@ set mouse=a
 
 set cscopetag
 
-set rtp+=~/.vim/bundle/nerdtree
 
-autocmd vimenter * NERDTree
+if v:progname != "vimdiff"
+    set rtp+=~/.vim/bundle/nerdtree
 
-let g:nerdtree_tabs_open_on_console_startup=1
+    autocmd vimenter * NERDTree
+
+    let g:nerdtree_tabs_open_on_console_startup=1
+
+    let NERDTreeShowBookmarks=1
+endif
+
 
 " Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
 "nnoremap <silent> <M-F12> :BufExplorer<CR>
@@ -39,7 +45,6 @@ syntax on
 filetype plugin indent on
 
 
-let NERDTreeShowBookmarks=1
 
 
 set ignorecase

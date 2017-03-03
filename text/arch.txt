@@ -22,5 +22,7 @@ ln -s '/usr/lib/systemd/system/dhcpcd.service' '/etc/systemd/system/multi-user.t
 update system (will install new version of packages):
 pacman -Syu
 
-
+update package info:
 pacman -Sy
+
+
