@@ -25,4 +25,29 @@ pacman -Syu
 update package info:
 pacman -Sy
 
+lxde login screen
+pacman -S lxdm
+
+after installation:
+systemctl enable lxdm
+(it will start at boot)
+
+====================================================
+
+gnome-terminal not works:
+/etc/locale.gen
+uncomment en_US.UTF8
+
+run as root: 
+# locale-gen
+
+====================================================
+
+dark theme:
+pacman -S gnome-tweak-tool
+
+run and select dark theme
+
+====================================================
+
 

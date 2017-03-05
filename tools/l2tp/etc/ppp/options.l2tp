@@ -1,0 +1,15 @@
+unit 0
+name user_name_just_number
+remotename l2tp
+ipparam beeline
+connect /bin/true
+nodeflate
+nobsdcomp
+persist
+holdoff 10
+maxfail 0
+nopcomp
+noauth
+noaccomp
+defaultroute
+

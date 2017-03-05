@@ -1,19 +1,17 @@
-install arch linux
-build gcc
++ install arch linux
++ build gcc
 build libc
 ptrace
-
+build and install kernel
+nmap
+l2tp
+linux as router
 
 eclipse cdt
 комбинации клавиш - навигация по коду
 + сборка из eclipse
 + отладчик
 eclipse git
-
-multicast
-+ описать вызовы
-+ попробовать с 3 компьютерами
-прочитать статью
 
 gcc - сборка, исходный код.
 libc - сборка, исходный код.
@@ -155,4 +153,4 @@ unix sockets - compare with tcp, use with uwsgi
 + stl allocators
 + autoconf automake
 + svn command line
-
++ multicast
