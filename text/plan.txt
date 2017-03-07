@@ -4,14 +4,7 @@ build libc
 ptrace
 build and install kernel
 nmap
-l2tp
 linux as router
-
-eclipse cdt
-комбинации клавиш - навигация по коду
-+ сборка из eclipse
-+ отладчик
-eclipse git
 
 gcc - сборка, исходный код.
 libc - сборка, исходный код.
@@ -154,3 +147,6 @@ unix sockets - compare with tcp, use with uwsgi
 + autoconf automake
 + svn command line
 + multicast
++ eclipse cdt
++ l2tp
+

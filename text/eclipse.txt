@@ -27,5 +27,39 @@ Alt + left  - go to prev position (return to prev file)
 Ctrl + Alt + h -  open call hierarchy
 Ctrl + Shift + G -  find references
 
+==================================================================================
 
+Ctrl + Shift + L      open window with hotkeys
+Ctrl + F4             close file
+Ctrl + Space          autocomplete
+Ctrl + K              find next
+Ctrl + L              go to line
+F3                    open declaration
+F4                    type hierarchy
+Ctrl + Alt + H        Call hierarchy
+Ctrl + Alt + I        Include browser
+Ctrl + Q              Last edit location
+Ctrl + Shift + R      open resource (file)
+Ctrl + Shift + T      Open type
+Alt + Down, Alt + Up  move lines down, up
+Ctrl + Alt + Down, Ctrl + Alt + Up      copy selected lines
+Ctrl + D              delete line
+Ctrl + Down, Ctrl + Up    scroll down, up
+Ctrl + Shift + X      to upper case
+Ctrl + Shift + Y      to lower case
+Ctrl + H              search
+Ctrl + Shift + G      references in workspace
+Ctrl + E              quick switch editor
+Ctrl + F6             go to next editor
+F12                   activate editor
+Alt + /               autocomplete
+Ctrl + J              incremental find
+Ctrl + Shift + J      incremental find back
+Ctrl + Shift + K      find previous
+Ctrl + Shift + C      comment block
+Ctrl + /              comment block
+Ctrl + Shift + Up, Ctrl + Shift + Down       go to next function
+Ctrl + Shift + P      go to matching bracket
+Ctrl + Tab            toggle source / header
+Alt + Shift + R       refactor rename
 
