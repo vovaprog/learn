@@ -886,3 +886,20 @@ nmap -sn 192.168.1.0/24
 
 //======================================================================
 
+set default gateway:
+
+ip route change default via 111.111.111.111 dev eth0
+
+
+set static ip:
+
+ip addr add 192.168.10.5/24 dev enp0s25
+
+set mtu:
+ip link set dev enp0s25 mtu 1400
+
+get routes (gateways):
+
+route -n 
+
+//======================================================================

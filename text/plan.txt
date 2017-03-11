@@ -4,7 +4,12 @@ build libc
 ptrace
 build and install kernel
 nmap
+
 linux as router
+wifi router
+raspberry l2tp
+записать все настройки
+
 
 gcc - сборка, исходный код.
 libc - сборка, исходный код.
