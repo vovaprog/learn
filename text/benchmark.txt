@@ -129,6 +129,7 @@ real 27.8
 user 23.4
 sys 1.7
 
+
 hp mini
 -j 1
 real 55.9
@@ -139,6 +140,14 @@ sys  5.3
 real 44.8
 user 1m18.6
 sys 8.024
+
+
+raspberry pi 
+-j 4
+real 0m45.241s
+user 1m59.810s
+sys 0m7.900s
+
 
 core 2 quad q9550
 -j 1

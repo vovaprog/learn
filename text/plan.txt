@@ -1,26 +1,30 @@
-+ install arch linux
-+ build gcc
-build libc
-ptrace
-build and install kernel
-nmap
-
 linux as router
-wifi router
-raspberry l2tp
++ wifi router
++ raspberry l2tp
 записать все настройки
+l2tp 1500 mtu
+nmap
+iptables
+route
+ssh x server
 
+
+x86 64
+ptrace
+
+build and install kernel
+build clang
+build libc
 
 gcc - сборка, исходный код.
-libc - сборка, исходный код.
 c++14
 python
 template meta programming
 boost
+clion
 
 asm - div получение частного и остатка.
 linux from scratch
-ssh x server
 
 crrcsim
 Красивое поле
@@ -154,4 +158,4 @@ unix sockets - compare with tcp, use with uwsgi
 + multicast
 + eclipse cdt
 + l2tp
-
++ arch linux
