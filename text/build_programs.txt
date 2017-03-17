@@ -3,3 +3,15 @@ gcc
 required:
 libgmp-dev libmpfr-dev libmpc-dev bison
 
+../gcc-6.3.0/configure --disable-multilib --prefix=/media/user_name/disk_name/tools/gcc63 --enable-languages=c,c++
+
+========================================================================
+
+llvm
+
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/media/user_name/disk_name/tools/llvm40 -DLLVM_TARGETS_TO_BUILD=host /media/user_name/disk_name/programs_explore/llvm-4.0.0.src
+
+install:
+cmake --build . --target install
+
+========================================================================

@@ -220,5 +220,16 @@ real	90m23.256s
 user	325m38.712s
 sys	4m33.912s
 
+================================================================
+
+build llvm 4.0 core2quad q9550 -j6 
+real	20m2.033s
+user	74m6.056s
+sys	4m50.380s
+
+build llvm 4.0 with clang core2quad q9550 -j6
+real	53m34.438s
+user	196m51.436s
+sys	11m37.928s
 
 
