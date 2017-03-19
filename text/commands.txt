@@ -823,6 +823,13 @@ ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key
 
 key location: /etc/ssh
 
+
+ssh X server:
+
+export DISPLAY=:0
+ssh -C -X -Y ip_address
+-Y is not necessary
+
 //======================================================================
 
 systemd
@@ -909,4 +916,18 @@ dd if=/dev/zero of=./output bs=1M count=1024
 
 //======================================================================
 
+llvm clang static analyzer:
+
+cmake -DCMAKE_CXX_COMPILER=/home/user/tools/llvm40/libexec/c++-analyzer ../src
+
+/home/user/tools/llvm40/bin/scan-build make -j 4
+
+/home/user/tools/llvm40/bin/scan-view /tmp/scan-build-2017-03-19-xxxx-yyyy-z
+
+if there are no errors in program - report will not be generated.
+
+may be also needed:
+export PATH="/home/user/tools/llvm40/bin:$PATH" 
+
+//======================================================================
 

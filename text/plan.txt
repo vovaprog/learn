@@ -13,7 +13,6 @@ x86 64
 ptrace
 
 build and install kernel
-build clang
 build libc
 
 gcc - сборка, исходный код.
@@ -70,7 +69,6 @@ boost intrusive containers
 EASTL
 google sanitizers https://github.com/google/sanitizers
 containers without allocations
-clang static analysis
 https://github.com/wg/wrk   (wrk - a HTTP benchmarking tool)
 Pragmatic General Multicast (PGM) 
 remote direct memory access (RDMA)
@@ -159,3 +157,6 @@ unix sockets - compare with tcp, use with uwsgi
 + eclipse cdt
 + l2tp
 + arch linux
++ build gcc, clang
++ clang static analyzer
+
