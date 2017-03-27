@@ -12,9 +12,9 @@ add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/syscall_names.cpp
     #WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMAND bash ${CMAKE_SOURCE_DIR}/generate_syscall_names.sh)
 
-add_executable(prog main.cpp)
+add_executable(ptrace main.cpp)
 
 add_custom_target(syscall_names DEPENDS ${CMAKE_SOURCE_DIR}/syscall_names.cpp)
 
-add_dependencies(prog syscall_names)
+add_dependencies(ptrace syscall_names)
 

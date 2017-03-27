@@ -14,11 +14,14 @@ void fillSyscallNames()
 #include "syscall_names.cpp"
 }
 
-void child()
+void child(int argc, char **argv)
 {
     ptrace(PTRACE_TRACEME, 0, 0, 0);
-    execl("/bin/echo", "/bin/echo", "hello, world!", NULL);
-    perror("execl");
+
+    // argv array is null terminated
+    execvp(argv[0], argv);
+
+    perror("execv");
 }
 
 void parent(pid_t pid)
@@ -50,12 +53,12 @@ void parent(pid_t pid)
 
             printf("%-12s   %3llu\n", syscallName, state.orig_rax);
 
-            if (state.orig_rax == 1)
+            /*if (state.orig_rax == 1)
             {
                 // write syscall. replace text.
                 char * text = (char *)state.rsi;
                 ptrace(PTRACE_POKETEXT, pid, (void*)(text), 0x6463626164636261); //abcdabcd
-            }
+            }*/
 
             ptrace(PTRACE_SYSCALL, pid, 0, 0);
             waitpid(pid, &status, 0);
@@ -63,8 +66,14 @@ void parent(pid_t pid)
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    if(argc < 2)
+    {
+        printf("USAGE: ptrace program arg0 arg1 arg2 ...\n");
+        return -1;
+    }
+
     pid_t pid = fork();
     if (pid)
     {
@@ -72,7 +81,7 @@ int main()
     }
     else
     {
-        child();
+        child(argc - 1, argv + 1);
     }
 
     return 0;

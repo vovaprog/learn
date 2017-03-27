@@ -267,6 +267,14 @@ Alt + Win + RightClick    on icon.
 create desktop icon shortcut:
 gnome-desktop-item-edit --create-new ~/Рабочий\ стол/
 
+gnome dark theme.
+в меню: системные утилиты / настройки / дополнительные параметры
+or run in console:
+gnome-tweak-tool
+Внешний вид -> применить темную тему.
+
+нужно установить пакет с темой adwaita
+
 //======================================================================
 
 Run qt creator dark:
