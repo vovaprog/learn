@@ -1,13 +1,7 @@
-linux as router
-+ wifi router
-+ raspberry l2tp
-записать все настройки
-l2tp 1500 mtu
-nmap
+nmap - try with old comp
+tunnel
 iptables
 route
-ssh x server
-
 
 x86 64
 ptrace
@@ -15,7 +9,6 @@ ptrace
 build and install kernel
 build libc
 
-gcc - сборка, исходный код.
 c++14
 python
 template meta programming

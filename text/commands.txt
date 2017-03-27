@@ -828,7 +828,7 @@ ssh X server:
 
 export DISPLAY=:0
 ssh -C -X -Y ip_address
--Y is not necessary
+-Y is not necessary (Enables trusted X11 forwarding.)
 
 //======================================================================
 
@@ -929,5 +929,21 @@ if there are no errors in program - report will not be generated.
 may be also needed:
 export PATH="/home/user/tools/llvm40/bin:$PATH" 
 
+
+Если без cmake. Makefile:
+all: main
+	$(CXX) ./main.cpp -o main
+
+/home/user/tools/llvm40/bin/scan-build make
+
+scan-build переопределяет переменную $(CXX)
+
 //======================================================================
 
+run perl command for every line in input file:
+perl -n -e "perl script" file_name
+
+perl -n -e '/define\s+__NR_([a-zA-Z_]+)\s+([0-9]+)/ && print "syscallNames[$2] = \"$1\";\n"' \
+/usr/include/x86_64-linux-gnu/asm/unistd_64.h > ./syscall_names.cpp
+
+//======================================================================
