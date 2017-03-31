@@ -633,7 +633,7 @@ sudo setcap 'cap_net_bind_service+ep' /path/to/program
 
 Apache benchmark:
 
- ab -n 10000 -c 250  "http://127.0.0.1:7000/test2.jpg"
+ab -n 10000 -c 10  "http://127.0.0.1:7000/test2.jpg"
 
 //======================================================================
 

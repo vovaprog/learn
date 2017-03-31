@@ -1,3 +1,9 @@
+Configuration file:
+
+~/.gdbinit
+
+
+
 > gdb ./epoll_http_server
 
 (break file_name line number)

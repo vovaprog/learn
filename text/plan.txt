@@ -8,6 +8,7 @@ ptrace
 
 build and install kernel
 build libc
+build valgrind
 
 c++14
 python
