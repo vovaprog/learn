@@ -127,3 +127,107 @@ __destroy(__first, __last);
 }
 
 ====================================================================================================
+static initialization
+====================================================================================================
+
+можно отключить потоко-безопасную инициализацию флагом:
+-fno-threadsafe-statics
+
+C++ standard:
+3.7.1 Static storage duration
+If a variable with static storage duration has initialization or a destructor with side effects, it shall not be
+eliminated even if it appears to be unused, except that a class object or its copy/move may be eliminated as
+specified in 12.8.
+
+
+void testStaticInit(int x)
+{
+	static int myResult = init(x);
+	
+	if (myResult == 0)
+	{
+		return;	
+	}
+	
+	printf("%d ", x);
+}
+
+(файл ./libstdc++-v3/libsupc++/guard.cc)
+int __cxa_guard_acquire (__guard *g); 
+void __cxa_guard_release (__guard *g) throw ();
+
+  12:./static_init.cpp **** void testStaticInit(int x)
+  13:./static_init.cpp **** {
+  51              		.loc 1 13 0
+  52              		.cfi_startproc
+  53 0028 55       		push	rbp
+  54              		.cfi_def_cfa_offset 16
+  55              		.cfi_offset 6, -16
+  56 0029 4889E5   		mov	rbp, rsp
+  57              		.cfi_def_cfa_register 6
+  58 002c 4883EC10 		sub	rsp, 16
+  59 0030 897DFC   		mov	DWORD PTR [rbp-4], edi
+  14:./static_init.cpp **** 	static int myResult = init(x);
+  60              		.loc 1 14 0
+//////////////////////// проверка флага, что static переменная инициализирована ///////////////  
+  61 0033 B8000000 		mov	eax, OFFSET FLAT:_ZGVZ14testStaticInitiE8myResult
+  61      00
+  62 0038 0FB600   		movzx	eax, BYTE PTR [rax]
+  63 003b 84C0     		test	al, al
+  64 003d 752D     		jne	.L4
+/////////////////////// переменная не инициализирована - вызов __cxa_guard_acquire ////////////  
+  65              		.loc 1 14 0 is_stmt 0 discriminator 1
+  66 003f BF000000 		mov	edi, OFFSET FLAT:_ZGVZ14testStaticInitiE8myResult
+  66      00
+  67 0044 E8000000 		call	__cxa_guard_acquire
+  67      00
+  68 0049 85C0     		test	eax, eax
+  69 004b 0F95C0   		setne	al
+  70 004e 84C0     		test	al, al
+  71 0050 741A     		je	.L4
+  72              		.loc 1 14 0 discriminator 2
+/////////////////////// вызов метода init /////////////////////////////////////////////////////  
+  73 0052 8B45FC   		mov	eax, DWORD PTR [rbp-4]
+  74 0055 89C7     		mov	edi, eax
+  75 0057 E8000000 		call	_Z4initi
+  75      00
+////////////////// помещение результата в переменную /////////////////////////////////////////  
+  76 005c 89050000 		mov	DWORD PTR _ZZ14testStaticInitiE8myResult[rip], eax
+  76      0000
+/////////////// вызов __cxa_guard_release - установка флага, что переменная инициализирована //////  
+  77 0062 BF000000 		mov	edi, OFFSET FLAT:_ZGVZ14testStaticInitiE8myResult
+  77      00
+  78 0067 E8000000 		call	__cxa_guard_release
+  78      00
+  79              	.L4:
+  15:./static_init.cpp **** 	
+  16:./static_init.cpp **** 	if (myResult == 0)
+  80              		.loc 1 16 0 is_stmt 1
+  81 006c 8B050000 		mov	eax, DWORD PTR _ZZ14testStaticInitiE8myResult[rip]
+  81      0000
+  82 0072 85C0     		test	eax, eax
+  83 0074 7416     		je	.L7
+  17:./static_init.cpp **** 	{
+  18:./static_init.cpp **** 		return;	
+  19:./static_init.cpp **** 	}
+
+
+код, который создает компилятор для статической инициализации:
+(файл gcc/cp/decl.c)
+
+static <type> guard;
+if (!__atomic_load (guard.first_byte)) {
+ if (__cxa_guard_acquire (&guard)) {
+   bool flag = false;
+   try {
+ // Do initialization.
+ flag = true; __cxa_guard_release (&guard);
+ // Register variable for destruction at end of program.
+   } catch {
+ if (!flag) __cxa_guard_abort (&guard);
+   }
+}
+
+Про __cxa_guard_acquire:
+https://habrahabr.ru/post/149683/
+

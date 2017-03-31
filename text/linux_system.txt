@@ -1,0 +1,12 @@
+system calls
+
+system call numbers for x86 64 in kernel sources:
+
+linux-source/arch/x86/entry/syscalls/syscall_64.tbl
+
+
+system call numbers for x86 64 in ubuntu:
+
+/usr/include/x86_64-linux-gnu/asm/unistd_64.h
+
+

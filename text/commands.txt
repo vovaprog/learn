@@ -767,6 +767,14 @@ https://forums.grsecurity.net/viewtopic.php?f=7&t=2522&sid=c6fbcf62fd5d347256254
 
 //======================================================================
 
+gcc, g++
+
+build without exceptions:
+-fno-exceptions
+
+
+//======================================================================
+
 disassemble mixed with source:
 
 objdump -DS --disassembler-options=intel  ./program  > ./disas.txt

@@ -32,6 +32,8 @@ if v:progname != "vimdiff"
     let g:nerdtree_tabs_open_on_console_startup=1
 
     let NERDTreeShowBookmarks=1
+
+    let NERDTreeShowHidden=1
 endif
 
 

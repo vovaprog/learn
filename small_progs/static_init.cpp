@@ -13,7 +13,7 @@ void testStaticInit(int x)
 {
 	static int myResult = init(x);
 	
-	if (myResult != 0)
+	if (myResult == 0)
 	{
 		return;	
 	}
@@ -24,7 +24,7 @@ void testStaticInit(int x)
 
 int main()
 {
-	for(int i=0;i<=10;++i)
+	for(int i=1;i<=10;++i)
 	{
 		testStaticInit(i);	
 	}		
