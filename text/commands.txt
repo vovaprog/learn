@@ -967,3 +967,14 @@ perl -n -e '/define\s+__NR_([a-zA-Z_]+)\s+([0-9]+)/ && print "syscallNames[$2] =
 /usr/include/x86_64-linux-gnu/asm/unistd_64.h > ./syscall_names.cpp
 
 //======================================================================
+
+fedora search package:
+
+yum search openssl
+
+fedora package manager: yumex
+yum install yumex-dnf
+
+//======================================================================
+
+
