@@ -1,14 +1,15 @@
 nmap - try with old comp
-tunnel
 iptables
 route
+
+ssh tunnel:
+записать пример соединения
 
 x86 64
 ptrace
 
 build and install kernel
 build libc
-build valgrind
 futex
 
 c++14
@@ -152,6 +153,6 @@ unix sockets - compare with tcp, use with uwsgi
 + eclipse cdt
 + l2tp
 + arch linux
-+ build gcc, clang
++ build gcc, clang, valgrind
 + clang static analyzer
-
++ c++ static initialization
