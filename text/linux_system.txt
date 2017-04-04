@@ -10,3 +10,24 @@ system call numbers for x86 64 in ubuntu:
 /usr/include/x86_64-linux-gnu/asm/unistd_64.h
 
 
+=====================================================================
+kernel compilation
+
+make clean
+make mrproper
+zcat /proc/config.gz > .config
+
+rename your kernel version "CONFIG_LOCALVERSION" in the .config
+any name. will be appended to kernel name. this should be done not to overwrite existing kernel.
+
+(not sure what exactly make oldconfig option does)
+
+make
+
+make will ask for new config options.
+to auto answer default:
+yes "" | make
+
+
+
+=====================================================================
