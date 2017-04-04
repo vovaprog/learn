@@ -1,22 +1,26 @@
-nmap - try with old comp
-iptables
-route
+c++14, c++17 new features
+
+python build, learn
 
 ssh tunnel:
 записать пример соединения
 
-x86 64
+
+template meta programming
+boost
+clion
+
+=====================================================
+
+nmap - try with old comp
+iptables
+route
+
 ptrace
 
 build and install kernel
 build libc
 futex
-
-c++14
-python
-template meta programming
-boost
-clion
 
 asm - div получение частного и остатка.
 linux from scratch

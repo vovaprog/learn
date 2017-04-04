@@ -488,6 +488,10 @@ valgrind --tool=callgrind "--toggle-collect=ClassName::FunctionName*" ./program_
 format flash ntfs
 sudo mkfs.ntfs --fast -L label /dev/sdf1
 
+format to ext4:
+sudo mkfs.ext4 -L label /dev/sdb1
+sudo chown user:group -R ./mount_folder_name/
+
 create partition:
 fdisk /dev/sdf
 p - print partitions
