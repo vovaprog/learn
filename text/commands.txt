@@ -850,6 +850,17 @@ export DISPLAY=:0
 ssh -C -X -Y ip_address
 -Y is not necessary (Enables trusted X11 forwarding.)
 
+
+ssh tunnel:
+
+ssh -L local_ip:local_port:dest_ip:dest_port host
+
+host - remote comp to login ssh to.
+local_ip, local_port - open local ip, port.
+dest_ip, dest_port - connect to dest from host computer.
+
+clients should connect to local_ip:local_port and will actually connect to dest_ip:dest_port
+
 //======================================================================
 
 systemd

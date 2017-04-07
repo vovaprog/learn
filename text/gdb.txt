@@ -110,6 +110,9 @@ thread number - switch to thread number
 (print hexidecimal)
 > p/x variable
 
+stop when exception is thrown:
+> catch throw
+
 
 ===========================================================================
 

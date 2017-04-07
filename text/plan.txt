@@ -2,9 +2,6 @@ c++14, c++17 new features
 
 python build, learn
 
-ssh tunnel:
-записать пример соединения
-
 
 template meta programming
 boost
@@ -160,3 +157,5 @@ unix sockets - compare with tcp, use with uwsgi
 + build gcc, clang, valgrind
 + clang static analyzer
 + c++ static initialization
++ ssh tunnel
+
