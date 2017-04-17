@@ -15,3 +15,9 @@ install:
 cmake --build . --target install
 
 ========================================================================
+
+python
+
+../Python-2.7.13/configure --prefix=/home/user/tools/Python2713 --enable-optimizations --with-lto
+
+========================================================================

@@ -142,6 +142,11 @@ int initPcre()
     }
 
     reFullExtra = pcre_study(reFull, 0, &error);
+    
+    if (reFullExtra == nullptr)
+    {
+    	printf("pcre_study returned null\n");
+    }
 
     reHeader = pcre_compile (regexStringHeader,
                              PCRE_MULTILINE,
@@ -155,6 +160,11 @@ int initPcre()
     }
 
     reHeaderExtra = pcre_study(reHeader, 0, &error);
+    
+    if(reHeaderExtra == nullptr)
+    {
+    	printf("pcre_study returned null\n");
+    }
 
     return 0;
 }

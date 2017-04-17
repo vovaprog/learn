@@ -74,7 +74,7 @@ int main()
     //testHttpRequestBoostRegex();
     //testHttpRequestPcre();
     testHttpRequestPerformance();
-    //testStdRegexPerformance();
+    testStdRegexPerformance();
     testBoostRegexPerformance();
     testPcreRegexPerformance();
 

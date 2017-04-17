@@ -236,3 +236,11 @@ build llvm 4.0 with clang i3-5010U 2.1 Ghz thinkpad
 real	65m45.232s
 user	250m40.444s
 sys	9m23.028s
+
+================================================================
+
+build stellarium thinkpad -j4
+real	5m17.146s
+user	19m4.528s
+sys	1m7.736s
+
