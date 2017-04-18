@@ -10,6 +10,10 @@
 #include <boost/regex.hpp>
 #include <pcre.h>
 
+#ifdef USE_PIRE
+#   include <pire/pire.h>
+#endif
+
 const char *data =
         "GET /gallery/album/flowers%202016/1?album-view=3 HTTP/1.1\r\n"
         "Host: 127.0.0.1:7000\r\n"
@@ -171,9 +175,6 @@ int initPcre()
 
 bool parseHttpRequestPcre(const char *data, HttpRequestData &rq)
 {
-    static int unused = initPcre();
-    (void)unused;
-
     const char *text = data;
 
     int dataLength = strlen(data);
@@ -244,6 +245,9 @@ void testHttpRequestBoostRegex()
 
 void testHttpRequestPcre()
 {
+    static int unused = initPcre();
+    (void)unused;	
+	
     HttpRequestData rq;
     parseHttpRequestPcre(data, rq);
 
@@ -324,6 +328,9 @@ void testBoostRegexPerformance()
 
 void testPcreRegexPerformance()
 {
+    static int unused = initPcre();
+    (void)unused;	
+	
     HttpRequestData rq;
 
     unsigned long long int millisStart = getMilliseconds();
@@ -342,3 +349,55 @@ void testPcreRegexPerformance()
     printf("pcre performance test milliseconds: %llu\n", millisDif);
 }
 
+
+#ifdef USE_PIRE
+
+Pire::NonrelocScanner CompileRegexp(const char* pattern)
+{
+	// Transform the pattern from UTF-8 into UCS4
+	std::vector<Pire::wchar32> ucs4;
+	Pire::Encodings::Utf8().FromLocal(pattern, pattern + strlen(pattern), std::back_inserter(ucs4));
+
+	return Pire::Lexer(ucs4.begin(), ucs4.end())
+		//.AddFeature(Pire::Features::CaseInsensitive())	// enable case insensitivity
+		//.SetEncoding(Pire::Encodings::Utf8())		// set input text encoding
+		.Parse() 					// create an FSM 
+		.Surround()					// PCRE_ANCHORED behavior
+		.Compile<Pire::NonrelocScanner>();		// compile the FSM
+}
+
+bool Matches(const Pire::NonrelocScanner& scanner, const char* ptr, size_t len)
+{
+	return Pire::Runner(scanner)
+		.Begin()	// '^'
+		.Run(ptr, len)	// the text 
+		.End();		// '$'
+		// implicitly cast to bool
+}
+
+int testPire(const Pire::NonrelocScanner& scanner)
+{
+	return Matches(scanner, data, strlen(data));
+}
+
+void testPirePerformance()
+{
+	static Pire::NonrelocScanner sc = CompileRegexp(regexStringFull);
+	
+    unsigned long long int millisStart = getMilliseconds();
+
+    for(int i = 0; i < iterCount; ++i)
+    {
+        if(!testPire(sc))
+        {
+            printf("parse failed!\n");
+            exit(-1);
+        }
+    }
+
+    unsigned long long int millisDif = getMilliseconds() - millisStart;
+
+    printf("pire performance test milliseconds: %llu\n", millisDif);
+}
+
+#endif // USE_PIRE

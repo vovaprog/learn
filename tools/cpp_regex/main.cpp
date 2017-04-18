@@ -11,6 +11,7 @@ void testHttpRequestPerformance();
 void testStdRegexPerformance();
 void testBoostRegexPerformance();
 void testPcreRegexPerformance();
+void testPirePerformance();
 
 void regex_test1()
 {
@@ -73,10 +74,12 @@ int main()
     //testHttpRequestStdRegex();
     //testHttpRequestBoostRegex();
     //testHttpRequestPcre();
+    
     testHttpRequestPerformance();
     testStdRegexPerformance();
     testBoostRegexPerformance();
     testPcreRegexPerformance();
+    //testPirePerformance();
 
     return 0;
 }

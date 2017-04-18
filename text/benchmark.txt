@@ -244,3 +244,12 @@ real	5m17.146s
 user	19m4.528s
 sys	1m7.736s
 
+build python2 thinkpad -j4
+real	11m30.778s
+user	11m42.384s
+sys	0m28.848s
+
+build python3 thinkpad -j4
+real	25m16.869s
+user	32m22.728s
+sys	0m43.744s
