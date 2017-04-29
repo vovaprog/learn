@@ -1,5 +1,4 @@
 c++14, c++17 new features
-python build, learn
 
 template meta programming
 boost
@@ -158,4 +157,4 @@ unix sockets - compare with tcp, use with uwsgi
 + std::regex, boost::regex, pcre, pire
 + clion
 + profile guided optimization
-
++ python classes, binary messages
