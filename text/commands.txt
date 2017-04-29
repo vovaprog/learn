@@ -635,7 +635,7 @@ sudo setcap 'cap_net_bind_service+ep' /path/to/program
 
 //======================================================================
 
-Apache benchmark:
+apache benchmark:
 
 ab -n 10000 -c 10  "http://127.0.0.1:7000/test2.jpg"
 
@@ -988,4 +988,18 @@ yum install yumex-dnf
 
 //======================================================================
 
+profile guided optimization:
 
+# use -fprofile-generate flag to build program with profile instrumentation
+g++ -std=c++11 -O3 -fprofile-generate -I. -I../src -I../src/utils ./TestHttpRequest.cpp ../src/HttpRequest.cpp ../src/utils/TimeUtils.cpp -o ./TestHttpRequest_profile
+
+# run program, profile data will be generated
+./TestHttpRequest_profile
+
+# use -fprofile-use to use generated profile data
+g++ -std=c++11 -O3 -fprofile-use -I. -I../src -I../src/utils ./TestHttpRequest.cpp ../src/HttpRequest.cpp ../src/utils/TimeUtils.cpp -o ./TestHttpRequest
+
+# build program without profile guided optimization to compare
+g++ -std=c++11 -O3 -I. -I../src -I../src/utils ./TestHttpRequest.cpp ../src/HttpRequest.cpp ../src/utils/TimeUtils.cpp -o ./TestHttpRequest_clear
+
+//======================================================================

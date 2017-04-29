@@ -1,12 +1,8 @@
 c++14, c++17 new features
-std regex
 python build, learn
-profile guided optimization
-
 
 template meta programming
 boost
-clion
 
 =====================================================
 
@@ -155,8 +151,11 @@ unix sockets - compare with tcp, use with uwsgi
 + eclipse cdt
 + l2tp
 + arch linux
-+ build gcc, clang, valgrind
++ build gcc, clang, valgrind, python
 + clang static analyzer
 + c++ static initialization
 + ssh tunnel
++ std::regex, boost::regex, pcre, pire
++ clion
++ profile guided optimization
 
