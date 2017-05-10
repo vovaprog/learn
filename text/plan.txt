@@ -1,4 +1,6 @@
 c++14, c++17 new features
+cuda
+kernel module
 
 template meta programming
 boost
