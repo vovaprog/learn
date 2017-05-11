@@ -4,41 +4,36 @@
 #include <cstdlib>
 #include <ctime>
 
-struct VenueOrderType {
-	enum {
-		Market = 10,
-		Limit = 20,
-		Pegged = 30
-	};
-};
+#include <IncPerSecond.h>
+#include <data.h>
 
-struct ClientOrderType {
-	enum {
-		Market = 300,
-		Limit = 200,
-		Pegged = 100
-	};
-};
+bool cdInit(unsigned int dataCount);
+bool cdTranslateVenueToClient(VenueData *venueInput, ClientData *clientOutput);
+bool cdTranslateVenueToClientStart(VenueData *venueInput);
+bool cdTranslateVenueToClientEnd(ClientData *clientOutput);
 
-struct VenueData {
-	uint64_t id; // to string
-	uint64_t price; // arithm
-	uint32_t quantity; // copy
-	char userName[32]; // copy
-	uint32_t orderType;
-};
+void llToString(unsigned long long int x, char *output)
+{
+	const int bufSize = 30;
+	char buf[bufSize];
+	buf[bufSize - 1] = 0;
+	int ind = bufSize - 2;
+	
+	do {
+		buf[ind] = '0' + x % 10;
+		x /= 10;
+		--ind;
+		
+	} while (x != 0);
+	
+	strcpy(output, buf + ind + 1);
+}
 
-struct ClientData {
-	char id[32];
-	uint64_t price;
-	uint32_t quantity;
-	char userName[32];
-	uint32_t orderType;
-};
 
 void translateVenueToClient(const VenueData &v, ClientData &c)
 {
-	sprintf(c.id, "%llu", (unsigned long long int)v.id);
+	llToString(v.id, c.id);
+	//sprintf(c.id, "%llu", (unsigned long long int)v.id);
 	c.price = v.price * 100;
 	c.quantity = v.quantity;
 	memcpy(c.userName, v.userName, sizeof(v.userName));
@@ -55,7 +50,8 @@ void translateVenueToClient(const VenueData &v, ClientData &c)
 
 void translateClientToVenue(const ClientData &c, VenueData &v)
 {
-	v.id = atoll(c.id); 
+	//v.id = atoll(c.id);
+	v.id = 0;
 	v.price = c.price / 100;
 	v.quantity = c.quantity;
 	memcpy(v.userName, c.userName, sizeof(v.userName));
@@ -89,7 +85,6 @@ void translateClientToVenue(ClientData *clientInput, VenueData *venueOutput, int
 VenueData* generateVenueData(int count)
 {
 	VenueData *vs = new VenueData[count];
-	//memset(vs, 0, count * sizeof(VenueData));
 	
 	srand(time(NULL));
 	
@@ -97,7 +92,8 @@ VenueData* generateVenueData(int count)
 	
 	for(int i=0;i<count;++i)
 	{
-		vs[i].id = rand();
+		//vs[i].id = rand();
+		vs[i].id = 0;
 		vs[i].price = rand();
 		vs[i].quantity = rand();
 		strcpy(vs[i].userName, "test");
@@ -107,28 +103,90 @@ VenueData* generateVenueData(int count)
 	return vs;
 }
 
-void test()
+static const int dataCount = 1024 * 256;
+static VenueData *venueData, *venueDataBack;
+static ClientData *clientData;
+static IncPerSecond incPerSecond(1024);
+
+void cpuInit()
 {
-	int dataCount = 100;
-	
-	VenueData *venueData = generateVenueData(dataCount);
-	ClientData *clientData = new ClientData[dataCount];
+	venueData = generateVenueData(dataCount);
+	clientData = new ClientData[dataCount];
+	venueDataBack = new VenueData[dataCount];
+}
+
+void cpuRun()
+{
+	while(true)
+	{
+		translateVenueToClient(venueData, clientData, dataCount);
+		incPerSecond.addAndPrint(dataCount);
+	}
+}
+
+void cdRun()
+{
+	while(true)
+	{
+		cdTranslateVenueToClient(venueData, clientData);
+		incPerSecond.addAndPrint(dataCount);
+	}
+}
+
+void bothRun()
+{
+	while(true)
+	{
+		cdTranslateVenueToClientStart(venueData);
+		translateVenueToClient(venueData, clientData, dataCount);
+		cdTranslateVenueToClientEnd(clientData);		
+		incPerSecond.addAndPrint(dataCount * 2);
+	}
+}
+
+
+void cpuCheck()
+{
 	translateVenueToClient(venueData, clientData, dataCount);
 	
-	VenueData *venueDataBack = new VenueData[dataCount];
-	//memset(venueDataBack, 0, dataCount * sizeof(VenueData));
 	translateClientToVenue(clientData, venueDataBack, dataCount);
 	
 	if(memcmp(venueData, venueDataBack, sizeof(VenueData) * dataCount) != 0)
 	{
 		printf("error!\n");
 		exit(-1);
-	}
+	}	
 }
+
+void cdCheck()
+{
+	memset(clientData, 0, sizeof(ClientData) * dataCount);
+	
+	cdTranslateVenueToClient(venueData, clientData);
+
+	if(memcmp(venueData, venueDataBack, sizeof(VenueData) * dataCount) != 0)
+	{
+		printf("cuda error!\n");
+		exit(-1);
+	}		
+}
+
 
 int main()
 {
-	test();
+	cpuInit();	
+	cpuCheck();
+	
+	cdInit(dataCount);
+	cdCheck();
+		
+	//cpuRun();
+	//cdRun();
+	bothRun();
+	
+	/*char output[100];
+	llToString(12345, output);
+	printf("result: %s\n", output);*/
 	
 	return 0;
 }
