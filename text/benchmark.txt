@@ -220,6 +220,11 @@ real	90m23.256s
 user	325m38.712s
 sys	4m33.912s
 
+build gcc 7.1 thinkpad
+real	71m11.765s
+user	253m28.940s
+sys	4m31.956s
+
 ================================================================
 
 build llvm 4.0 core2quad q9550 -j6 
