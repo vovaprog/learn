@@ -9,7 +9,7 @@ struct StringData {
 	char str[11];
 };
 
-bool cdInit(unsigned int dataCountArg);
+bool cdInit(unsigned int dataCountArg, void **hostInputMemory, void **hostOutputMemory, bool allocPinnedMemory);
 bool cdItoa(unsigned int *dataInput, StringData *stringDataOutput);
 
 void uintToString(unsigned int x, char *output)
@@ -37,8 +37,8 @@ void uintToString(unsigned int x, char *output)
 
 
 const int dataCount = 1024 * 1024;
-unsigned int *dataInput = new unsigned int[dataCount];
-StringData *stringsOutput = new StringData[dataCount];
+unsigned int *dataInput = nullptr;
+StringData *stringsOutput = nullptr;
 IncPerSecond incPerSecond(1000000);
 
 void cpuRun()
@@ -88,15 +88,15 @@ void check()
 
 int main()
 {	
-	srand(time(NULL));
-	
+	srand(time(NULL));	
+
+	cdInit(dataCount, (void**)&dataInput, (void**)&stringsOutput, true);
+
 	for (int i=0;i<dataCount;++i)
 	{
 		dataInput[i] = rand();	
 	}
-	
-	cdInit(dataCount);
-	
+
 	//cpuRun();
 	cdRun();	
 	//check();

@@ -8,7 +8,22 @@ unsigned int *devDataInput;
 StringData *devStringDataOutput;
 unsigned int dataCount;
 
-bool cdInit(unsigned int dataCountArg)
+template< typename T >
+void check(T result, char const *const func, const char *const file, int const line)
+{
+    if (result)
+    {
+        fprintf(stderr, "CUDA error at %s:%d code=%d(%s) \"%s\" \n",
+                file, line, static_cast<unsigned int>(result), cudaGetErrorString(result), func);        
+        // Make sure we call CUDA Device Reset before exiting
+        cudaDeviceReset();
+        exit(EXIT_FAILURE);
+    }
+}
+
+#define checkCudaErrors(val)           check ( (val), #val, __FILE__, __LINE__ )
+
+bool cdInit(unsigned int dataCountArg, void **hostInputMemory, void **hostOutputMemory, bool allocPinnedMemory)
 {
 	dataCount = dataCountArg;
 	
@@ -21,6 +36,18 @@ bool cdInit(unsigned int dataCountArg)
         return false;
     }
 
+    if(allocPinnedMemory)
+    {
+    	checkCudaErrors(cudaHostAlloc((void **)hostInputMemory, dataCount * sizeof(unsigned int), cudaHostAllocWriteCombined));
+    	checkCudaErrors(cudaHostAlloc((void **)hostOutputMemory, dataCount * sizeof(StringData), 0));
+    }
+    else
+    {
+    	*hostInputMemory = (void *)malloc(dataCount * sizeof(unsigned int));
+    	*hostOutputMemory = (void *)malloc(dataCount * sizeof(StringData));
+    }
+	    
+	
     cudaStatus = cudaMalloc((void**)&devDataInput, dataCount * sizeof(unsigned int));
 	if (cudaStatus != cudaSuccess) 
 	{
@@ -53,7 +80,7 @@ __device__ void uintToStringDevice(unsigned int x, char *output)
 	} while (x != 0);
 
 	++ind;
-
+	
 	int i;
 	for(i = 0; buf[ind] != 0; ++i, ++ind)
 	{
