@@ -2,32 +2,81 @@
 #include <vector>
 #include <boost/intrusive/list.hpp>
 
+#include <Tools.h>
+#include <BenchStdMap.h>
+
 using namespace std;
 
-struct Data1: public boost::intrusive::list_base_hook<> {
-    int a, b, c, d;
-};
-
-int main()
+/*bool runBenchmark(BenchmarkParameters &params)
 {
-    cout << "hello, world!" << endl;
-
-    vector<Data1> v;
-    v.reserve(100);
-
-    boost::intrusive::list<Data1> lst;
-
-    for(int i=0;i<100;++i)
+    if(!benchStdMap(params))
     {
-        Data1 d;
-        d.a = i;
-        v.push_back(d);
-        lst.push_back(v[i]);
+        return false;
     }
 
-    for(auto &d : lst)
+    return true;
+}*/
+
+template <bool (*Fun)(BenchmarkParameters &params)>
+bool runBenchmark(std::vector<BenchmarkParameters> &paramsVec)
+{
+    for(BenchmarkParameters &params : paramsVec)
     {
-        cout << d.a << endl;
+        if(!Fun(params))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main()
+{    
+    std::vector<BenchmarkParameters> paramVec;
+
+    int start = 1000;
+    int end = 100000;
+    int step = 10000;
+
+    std::vector<uint64_t> keys;
+    keys.reserve(end);
+
+    for(int i=0;i<end;++i)
+    {
+        keys.push_back(randomUInt64());
+    }
+
+    for(int i = start; i <= end; i+=step)
+    {
+        BenchmarkParameters params;
+        params.itemCount = i;
+        params.arg0 = &keys;
+
+        paramVec.push_back(params);
+    }
+
+    if(!runBenchmark<benchStdMap>(paramVec))
+    {
+        std::cout << "benchmark failed" << std::endl;
+        return -1;
+    }
+
+    for(BenchmarkParameters &params : paramVec)
+    {
+        std::cout << params.ticks << std::endl;
+    }
+
+    if(!runBenchmark<benchStdUnorderedMap>(paramVec))
+    {
+        std::cout << "benchmark failed" << std::endl;
+        return -1;
+    }
+
+    std::cout << "-----" << std::endl;
+
+    for(BenchmarkParameters &params : paramVec)
+    {
+        std::cout << params.ticks << std::endl;
     }
 
     return 0;
