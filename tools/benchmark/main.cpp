@@ -33,7 +33,7 @@ bool runBenchmark(std::vector<BenchmarkParameters> &paramsVec)
 
 bool ResultToFile(const std::vector<BenchmarkParameters> & results)
 {
-    std::string fileName("./");
+    std::string fileName("./plots/");
     fileName = fileName + results[0].testName + ".txt";
 
     std::ofstream fl;
@@ -48,25 +48,27 @@ bool ResultToFile(const std::vector<BenchmarkParameters> & results)
 }
 
 int main()
-{    
+{
     std::vector<BenchmarkParameters> paramVec;
 
     int start = 1000;
     int end = 100000;
-    int step = 10000;
+    int step = 2000;
+    const int iterCount = 100000;
 
     std::vector<uint64_t> keys;
     keys.reserve(end);
 
-    for(int i=0;i<end;++i)
+    for(int i = 0; i < end; ++i)
     {
         keys.push_back(randomUInt64());
     }
 
-    for(int i = start; i <= end; i+=step)
+    for(int i = start; i <= end; i += step)
     {
         BenchmarkParameters params;
         params.itemCount = i;
+        params.iterCount = iterCount;
         params.arg0 = &keys;
 
         paramVec.push_back(params);
@@ -98,6 +100,14 @@ int main()
     ResultToFile(paramVec);
 
     if(!runBenchmark<benchBoostUnorderedMap>(paramVec))
+    {
+        std::cout << "benchmark failed" << std::endl;
+        return -1;
+    }
+
+    ResultToFile(paramVec);
+
+    if(!runBenchmark<benchSortedVector>(paramVec))
     {
         std::cout << "benchmark failed" << std::endl;
         return -1;

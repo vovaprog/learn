@@ -7,11 +7,18 @@
 #include <boost/container/map.hpp>
 #include <boost/unordered_map.hpp>
 
-namespace {
+namespace
+{
 
-struct Data {
+struct Data
+{
     uint64_t key;
     uint64_t a, b, c, d;
+
+    bool operator<(const Data &d) const
+    {
+        return key < d.key;
+    }
 };
 
 }
@@ -23,20 +30,25 @@ bool benchMap(BenchmarkParameters &params)
 
     std::vector<uint64_t> &keys = *reinterpret_cast<std::vector<uint64_t>*>(params.arg0);
 
-    for(int i=0;i<params.itemCount;++i)
+    for(int i = 0; i < params.itemCount; ++i)
     {
         Data d;
         d.key = keys[i];
         m[d.key] = d;
     }
 
+    int64_t searchCounter = 0;
+
     uint64_t ticks = getTicks();
 
-    for(int i=0;i<params.itemCount;++i)
+    while(searchCounter < params.iterCount)
     {
-        if(m.find(keys[i]) == m.end())
+        for(int i = 0; i < params.itemCount && searchCounter < params.iterCount; ++i, ++searchCounter)
         {
-            return false;
+            if(m.find(keys[i]) == m.end())
+            {
+                return false;
+            }
         }
     }
 
@@ -72,5 +84,55 @@ bool benchBoostUnorderedMap(BenchmarkParameters &params)
     bool result = benchMap<boost::unordered_map<uint64_t, Data>>(params);
     params.testName = "boost unordered_map find";
     return result;
+}
+
+struct DataLess
+{
+    bool operator()(Data &d0, Data &d1) const
+    {
+        return d0.key < d1.key;
+    }
+};
+
+bool benchSortedVector(BenchmarkParameters &params)
+{
+    std::vector<uint64_t> &keys = *reinterpret_cast<std::vector<uint64_t>*>(params.arg0);
+
+    std::vector<Data> v;
+
+    for(int i = 0; i < params.itemCount; ++i)
+    {
+        Data d;
+        d.key = keys[i];
+        v.push_back(d);
+    }
+
+    std::sort(v.begin(), v.end(), DataLess());
+
+    int64_t searchCounter = 0;
+
+    uint64_t ticks = getTicks();
+
+    while(searchCounter < params.iterCount)
+    {
+        for(int i = 0; i < params.itemCount && searchCounter < params.iterCount; ++i, ++searchCounter)
+        {
+            auto iter = std::lower_bound(v.begin(), v.end(), keys[i],
+                                         [](const Data & d, uint64_t key)
+            {
+                return d.key < key;
+            });
+
+            if(iter == v.end() || iter->key != keys[i])
+            {
+                return false;
+            }
+        }
+    }
+
+    params.ticks = getTicks() - ticks;
+    params.testName = "std vector find";
+
+    return true;
 }
 

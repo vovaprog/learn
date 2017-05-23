@@ -21,6 +21,7 @@ inline uint64_t randomUInt64()
 
 struct BenchmarkParameters {
     int64_t itemCount = 0;
+    int64_t iterCount = 0;
     uint64_t ticks = 0;
     void *arg0 = nullptr;
     const char * testName = nullptr;
