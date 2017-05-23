@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <boost/intrusive/list.hpp>
 
@@ -27,6 +28,22 @@ bool runBenchmark(std::vector<BenchmarkParameters> &paramsVec)
             return false;
         }
     }
+    return true;
+}
+
+bool ResultToFile(const std::vector<BenchmarkParameters> & results)
+{
+    std::string fileName("./");
+    fileName = fileName + results[0].testName + ".txt";
+
+    std::ofstream fl;
+    fl.open(fileName);
+
+    for(const BenchmarkParameters &r : results)
+    {
+        fl << r.itemCount << "|" << r.ticks << std::endl;
+    }
+
     return true;
 }
 
@@ -61,10 +78,16 @@ int main()
         return -1;
     }
 
-    for(BenchmarkParameters &params : paramVec)
+    ResultToFile(paramVec);
+
+    if(!runBenchmark<benchBoostMap>(paramVec))
     {
-        std::cout << params.ticks << std::endl;
+        std::cout << "benchmark failed" << std::endl;
+        return -1;
     }
+
+    ResultToFile(paramVec);
+
 
     if(!runBenchmark<benchStdUnorderedMap>(paramVec))
     {
@@ -72,12 +95,15 @@ int main()
         return -1;
     }
 
-    std::cout << "-----" << std::endl;
+    ResultToFile(paramVec);
 
-    for(BenchmarkParameters &params : paramVec)
+    if(!runBenchmark<benchBoostUnorderedMap>(paramVec))
     {
-        std::cout << params.ticks << std::endl;
+        std::cout << "benchmark failed" << std::endl;
+        return -1;
     }
+
+    ResultToFile(paramVec);
 
     return 0;
 }

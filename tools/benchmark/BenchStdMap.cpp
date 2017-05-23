@@ -4,6 +4,8 @@
 
 #include <map>
 #include <unordered_map>
+#include <boost/container/map.hpp>
+#include <boost/unordered_map.hpp>
 
 namespace {
 
@@ -46,12 +48,29 @@ bool benchMap(BenchmarkParameters &params)
 
 bool benchStdMap(BenchmarkParameters &params)
 {
-    return benchMap<std::map<uint64_t, Data>>(params);
+    bool result = benchMap<std::map<uint64_t, Data>>(params);
+    params.testName = "std map find";
+    return result;
+}
+
+bool benchBoostMap(BenchmarkParameters &params)
+{
+    bool result = benchMap<boost::container::map<uint64_t, Data>>(params);
+    params.testName = "boost map find";
+    return result;
 }
 
 bool benchStdUnorderedMap(BenchmarkParameters &params)
 {
-    return benchMap<std::unordered_map<uint64_t, Data>>(params);
+    bool result = benchMap<std::unordered_map<uint64_t, Data>>(params);
+    params.testName = "std unordered_map find";
+    return result;
 }
 
+bool benchBoostUnorderedMap(BenchmarkParameters &params)
+{
+    bool result = benchMap<boost::unordered_map<uint64_t, Data>>(params);
+    params.testName = "boost unordered_map find";
+    return result;
+}
 
