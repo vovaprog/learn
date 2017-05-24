@@ -2,39 +2,31 @@
 #include <fstream>
 #include <vector>
 #include <boost/intrusive/list.hpp>
+#include <boost/filesystem.hpp>
 
 #include <Tools.h>
 #include <BenchStdMap.h>
 
 using namespace std;
 
-/*bool runBenchmark(BenchmarkParameters &params)
-{
-    if(!benchStdMap(params))
-    {
-        return false;
-    }
 
-    return true;
-}*/
-
-template <bool (*Fun)(BenchmarkParameters &params)>
-bool runBenchmark(std::vector<BenchmarkParameters> &paramsVec)
-{
-    for(BenchmarkParameters &params : paramsVec)
-    {
-        if(!Fun(params))
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool ResultToFile(const std::vector<BenchmarkParameters> & results)
+bool ResultToFile(const std::vector<BenchmarkParameters> & results, const char *benchSetName)
 {
     std::string fileName("./plots/");
-    fileName = fileName + results[0].testName + ".txt";
+
+    if(!boost::filesystem::is_directory(fileName))
+    {
+        boost::filesystem::create_directory(fileName);
+    }
+
+    fileName = fileName + benchSetName;
+
+    if(!boost::filesystem::is_directory(fileName))
+    {
+        boost::filesystem::create_directory(fileName);
+    }
+
+    fileName = fileName + "/" + results[0].testName + ".txt";
 
     std::ofstream fl;
     fl.open(fileName);
@@ -47,24 +39,42 @@ bool ResultToFile(const std::vector<BenchmarkParameters> & results)
     return true;
 }
 
-int main()
+
+template <bool (*Fun)(BenchmarkParameters &params)>
+bool runBenchmark(std::vector<BenchmarkParameters> &paramVec, const char *benchSetName)
 {
-    std::vector<BenchmarkParameters> paramVec;
+    for(BenchmarkParameters &params : paramVec)
+    {
+        if(!Fun(params))
+        {
+            std::cout << "benchmark failed" << std::endl;
+            return false;
+        }
+    }
 
-    int start = 1000;
-    int end = 100000;
-    int step = 2000;
-    const int iterCount = 100000;
+    ResultToFile(paramVec, benchSetName);
 
-    std::vector<uint64_t> keys;
-    keys.reserve(end);
+    return true;
+}
 
-    for(int i = 0; i < end; ++i)
+
+void createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
+                               int64_t iterCount,
+                               std::vector<BenchmarkParameters> &paramVec,
+                               std::vector<uint64_t> &keys)
+{
+    paramVec.clear();
+    keys.clear();
+
+    paramVec.reserve(itemCountEnd);
+    keys.reserve(itemCountEnd);
+
+    for(int i = 0; i < itemCountEnd; ++i)
     {
         keys.push_back(randomUInt64());
     }
 
-    for(int i = start; i <= end; i += step)
+    for(int i = itemCountStart; i <= itemCountEnd; i += itemCountStep)
     {
         BenchmarkParameters params;
         params.itemCount = i;
@@ -73,47 +83,53 @@ int main()
 
         paramVec.push_back(params);
     }
+}
 
-    if(!runBenchmark<benchStdMap>(paramVec))
+
+bool benchMaps(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep)
+{
+    std::vector<BenchmarkParameters> paramVec;
+    std::vector<uint64_t> keys;
+
+    const int64_t iterCount = 100000;
+
+    createBenchmarkParameters(itemCountStart, itemCountEnd, itemCountStep, iterCount, paramVec, keys);
+
+    std::string benchSetName = std::to_string(itemCountEnd);
+
+    if(!runBenchmark<benchStdMap>(paramVec, benchSetName.c_str()))
     {
-        std::cout << "benchmark failed" << std::endl;
+        return false;
+    }
+
+    if(!runBenchmark<benchBoostMap>(paramVec, benchSetName.c_str()))
+    {
+        return false;
+    }
+
+    if(!runBenchmark<benchStdUnorderedMap>(paramVec, benchSetName.c_str()))
+    {
+        return false;
+    }
+
+    if(!runBenchmark<benchBoostUnorderedMap>(paramVec, benchSetName.c_str()))
+    {
+        return false;
+    }
+
+    if(!runBenchmark<benchSortedVector>(paramVec, benchSetName.c_str()))
+    {
         return -1;
     }
 
-    ResultToFile(paramVec);
+    return true;
+}
 
-    if(!runBenchmark<benchBoostMap>(paramVec))
-    {
-        std::cout << "benchmark failed" << std::endl;
-        return -1;
-    }
-
-    ResultToFile(paramVec);
-
-
-    if(!runBenchmark<benchStdUnorderedMap>(paramVec))
-    {
-        std::cout << "benchmark failed" << std::endl;
-        return -1;
-    }
-
-    ResultToFile(paramVec);
-
-    if(!runBenchmark<benchBoostUnorderedMap>(paramVec))
-    {
-        std::cout << "benchmark failed" << std::endl;
-        return -1;
-    }
-
-    ResultToFile(paramVec);
-
-    if(!runBenchmark<benchSortedVector>(paramVec))
-    {
-        std::cout << "benchmark failed" << std::endl;
-        return -1;
-    }
-
-    ResultToFile(paramVec);
+int main()
+{
+    benchMaps(5, 250, 1);
+    benchMaps(50, 1000, 10);
+    //benchMaps(1000, 100000, 5000);
 
     return 0;
 }

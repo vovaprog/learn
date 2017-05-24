@@ -160,3 +160,4 @@ unix sockets - compare with tcp, use with uwsgi
 + clion
 + profile guided optimization
 + python classes, binary messages
++ boost intrusive containers
