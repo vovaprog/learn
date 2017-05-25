@@ -104,10 +104,10 @@ bool benchSortedVector(BenchmarkParameters &params)
     }
 
     std::sort(v.begin(), v.end(),
-        [](const Data &d0, const Data &d1)
-        {
-            return d0.key < d1.key;
-        });
+              [](const Data & d0, const Data & d1)
+    {
+        return d0.key < d1.key;
+    });
 
     int64_t searchCounter = 0;
 
@@ -120,10 +120,10 @@ bool benchSortedVector(BenchmarkParameters &params)
         for(int i = 0; i < params.itemCount && searchCounter < params.iterCount; ++i, ++searchCounter)
         {
             auto iter = std::lower_bound(v.begin(), v.end(), keys[i],
-                [](const Data & d, uint64_t key)
-                {
-                    return d.key < key;
-                });
+                                         [](const Data & d, uint64_t key)
+            {
+                return d.key < key;
+            });
 
             if(iter == v.end() || iter->key != keys[i])
             {

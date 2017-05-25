@@ -19,7 +19,8 @@ inline uint64_t randomUInt64()
     return dis(gen);
 }
 
-struct BenchmarkParameters {
+struct BenchmarkParameters
+{
     int64_t itemCount = 0;
     int64_t iterCount = 0;
     uint64_t ticks = 0;

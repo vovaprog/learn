@@ -6,20 +6,24 @@ import re
 import sys
 
 plotCounter = 0
-lineStyles = ["-","--","-.",":"]
+lineStyles = ["-", "--", "-.", ":"]
 lineStyleIndex = 0
+
 
 def plotFiles(files, benchSetName):
     global plotCounter
     global lineStyleIndex
-    
+
+    files = sorted(files)
+
     for fl in files:
         x, y = np.loadtxt(fl, dtype='int', delimiter='|', unpack=True)
-    
+
         m = re.search("/([^/.]+).txt$", fl)
-    
-        plt.plot(x, y, label=benchSetName + m.group(1), linewidth=2, linestyle=lineStyles[lineStyleIndex])
-        
+
+        plt.plot(x, y, label=benchSetName + m.group(1),
+                 linewidth=2, linestyle=lineStyles[lineStyleIndex])
+
         plotCounter += 1
         if plotCounter >= 7:
             plotCounter = 0
@@ -40,17 +44,18 @@ plotFiles(files, "")
 dirs = [join(folderName, f)
         for f in listdir(folderName) if not isfile(join(folderName, f))]
 
-print dirs
-
 for folName in dirs:
     files = [join(folName, f)
              for f in listdir(folName) if isfile(join(folName, f))]
     m = re.search("/([^/]+)$", folName)
     plotFiles(files, m.group(1) + " ")
 
-plt.legend()
+plt.legend(fontsize=12)
 
 plt.xlabel("items in map")
 plt.ylabel("microseconds")
+
+# remove plot border
+plt.figure(1).tight_layout(pad=0)
 
 plt.show()

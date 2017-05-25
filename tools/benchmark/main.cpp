@@ -1,23 +1,19 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <set>
 #include <boost/intrusive/list.hpp>
 #include <boost/filesystem.hpp>
 
 #include <Tools.h>
 #include <BenchStdMap.h>
 
-using namespace std;
-
 
 bool ResultToFile(const std::vector<BenchmarkParameters> & results, const char *benchSetName)
 {
     std::string fileName("./plots/");
 
-    if(!boost::filesystem::is_directory(fileName))
-    {
-        boost::filesystem::create_directory(fileName);
-    }
+    boost::filesystem::create_directory(fileName);
 
     fileName = fileName + benchSetName;
 
@@ -58,20 +54,49 @@ bool runBenchmark(std::vector<BenchmarkParameters> &paramVec, const char *benchS
 }
 
 
-void createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
+bool randomVector(std::vector<uint64_t> &keys, int64_t itemCount)
+{
+    keys.clear();
+
+    std::set<uint64_t> s;
+
+    for(int i = 0; i < itemCount; ++i)
+    {
+        int k;
+        for(k = 0; k < 1000; ++k)
+        {
+            uint64_t key = randomUInt64();
+            if(s.count(key) == 0)
+            {
+                keys.push_back(key);
+                s.insert(key);
+                break;
+            }
+        }
+        if(k == 1000)
+        {
+            return false;
+        }
+    }
+    if((int64_t)keys.size() != itemCount || (int64_t)s.size() != itemCount)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
                                int64_t iterCount,
                                std::vector<BenchmarkParameters> &paramVec,
                                std::vector<uint64_t> &keys)
 {
     paramVec.clear();
-    keys.clear();
-
     paramVec.reserve(itemCountEnd);
-    keys.reserve(itemCountEnd);
 
-    for(int i = 0; i < itemCountEnd; ++i)
+    if(!randomVector(keys, itemCountEnd))
     {
-        keys.push_back(randomUInt64());
+        std::cout << "randomVector failed\n";
+        return false;
     }
 
     for(int i = itemCountStart; i <= itemCountEnd; i += itemCountStep)
@@ -83,6 +108,8 @@ void createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int
 
         paramVec.push_back(params);
     }
+
+    return true;
 }
 
 
@@ -93,7 +120,10 @@ bool benchMaps(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountSt
 
     const int64_t iterCount = 100000;
 
-    createBenchmarkParameters(itemCountStart, itemCountEnd, itemCountStep, iterCount, paramVec, keys);
+    if(!createBenchmarkParameters(itemCountStart, itemCountEnd, itemCountStep, iterCount, paramVec, keys))
+    {
+        return false;
+    }
 
     std::string benchSetName = std::to_string(itemCountEnd);
 
@@ -127,8 +157,8 @@ bool benchMaps(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountSt
 
 int main()
 {
-    benchMaps(5, 250, 1);
-    benchMaps(50, 1000, 10);
+    //benchMaps(5, 350, 1);
+    benchMaps(50, 3000, 20);
     //benchMaps(1000, 100000, 5000);
 
     return 0;
