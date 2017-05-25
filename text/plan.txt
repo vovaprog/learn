@@ -5,6 +5,18 @@ kernel module
 template meta programming
 boost
 
+find benchmark
+выбрать интервалы тестов
+график - несколько вложенных папок
+
+insert benchmark
+придумать точно тест
+
+intrusive containers
+find тест
+insert тест
+
+
 =====================================================
 
 nmap - try with old comp
