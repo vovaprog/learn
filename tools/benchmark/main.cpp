@@ -9,7 +9,8 @@
 #include <BenchmarkMap.h>
 
 
-bool ResultToFile(const std::vector<BenchmarkParameters> & results, const char *benchSetName)
+bool ResultToFile(const std::vector<BenchmarkParameters> & results,
+                  const char *benchSetName, const char *benchSetSubName)
 {
     std::string fileName("./plots/");
 
@@ -18,6 +19,12 @@ bool ResultToFile(const std::vector<BenchmarkParameters> & results, const char *
     fileName = fileName + benchSetName;
 
     boost::filesystem::create_directory(fileName);
+
+    if(benchSetSubName != nullptr)
+    {
+        fileName = fileName + "/" + benchSetSubName;
+        boost::filesystem::create_directory(fileName);
+    }
 
     fileName = fileName + "/" + results[0].testName + ".txt";
 
@@ -34,7 +41,8 @@ bool ResultToFile(const std::vector<BenchmarkParameters> & results, const char *
 
 
 template <bool (*Fun)(BenchmarkParameters &params)>
-bool runBenchmark(std::vector<BenchmarkParameters> &paramVec, const char *benchSetName)
+bool runBenchmark(std::vector<BenchmarkParameters> &paramVec,
+                  const char *benchSetName, const char *benchSetSubName)
 {
     for(BenchmarkParameters &params : paramVec)
     {
@@ -45,7 +53,7 @@ bool runBenchmark(std::vector<BenchmarkParameters> &paramVec, const char *benchS
         }
     }
 
-    ResultToFile(paramVec, benchSetName);
+    ResultToFile(paramVec, benchSetName, benchSetSubName);
 
     return true;
 }
@@ -122,39 +130,40 @@ bool benchMapsFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCou
         return false;
     }
 
-    std::string benchSetName = "map find " + std::to_string(itemCountEnd);
+    std::string benchSetName("map find");
+    std::string benchSetSubName = std::to_string(itemCountEnd);
 
-    if(!runBenchmark<benchStdMapFind>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchStdMapFind>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostMapFind>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchBoostMapFind>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchStdUnorderedMapFind>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchStdUnorderedMapFind>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostUnorderedMapFind>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchBoostUnorderedMapFind>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchSortedVector>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchSortedVector>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchSortedDeque>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchSortedDeque>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostFlatMapFind>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchBoostFlatMapFind>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
@@ -175,29 +184,30 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
         return false;
     }
 
-    std::string benchSetName = "map insert " + std::to_string(itemCountEnd);
+    std::string benchSetName("map insert");
+    std::string benchSetSubName = std::to_string(itemCountEnd);
 
-    if(!runBenchmark<benchStdMapInsert>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchStdMapInsert>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostMapInsert>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchBoostMapInsert>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchStdUnorderedMapInsert>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchStdUnorderedMapInsert>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostUnorderedMapInsert>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchBoostUnorderedMapInsert>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostFlatMapFill>(paramVec, benchSetName.c_str()))
+    if(!runBenchmark<benchBoostFlatMapFill>(paramVec, benchSetName.c_str(), benchSetSubName.c_str()))
     {
         return false;
     }
@@ -208,7 +218,7 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
 
 int main()
 {
-    //benchMapsFind(5, 350, 1);
+    benchMapsFind(5, 350, 1);
     benchMapsFind(50, 3500, 30);
     //benchMapsFind(1000, 100000, 5000);
 

@@ -10,45 +10,50 @@ lineStyles = ["-", "--", "-.", ":"]
 lineStyleIndex = 0
 
 
-def plotFiles(files, benchSetName):
+def plotFile(fileName, prefix):
     global plotCounter
     global lineStyleIndex
 
+    x, y = np.loadtxt(fileName, dtype='int', delimiter='|', unpack=True)
+
+    m = re.search("/([^/.]+).txt$", fileName)
+
+    plt.plot(x, y, label=prefix + " " + m.group(1),
+             linewidth=2, linestyle=lineStyles[lineStyleIndex])
+
+    plotCounter += 1
+    if plotCounter >= 7:
+        plotCounter = 0
+        lineStyleIndex += 1
+        if lineStyleIndex >= len(lineStyles):
+            lineStyleIndex = 0
+
+
+def plotFolder(folderName, prefix):
+    files = []
+
+    prefixSep = ""
+    if len(prefix) > 0:
+        prefixSep = " "
+    
+    for f in listdir(folderName):
+        if isfile(join(folderName, f)):
+            files.append(f)
+        else:
+            plotFolder(join(folderName, f), prefix + prefixSep + f)
+
     files = sorted(files)
-
-    for fl in files:
-        x, y = np.loadtxt(fl, dtype='int', delimiter='|', unpack=True)
-
-        m = re.search("/([^/.]+).txt$", fl)
-
-        plt.plot(x, y, label=benchSetName + m.group(1),
-                 linewidth=2, linestyle=lineStyles[lineStyleIndex])
-
-        plotCounter += 1
-        if plotCounter >= 7:
-            plotCounter = 0
-            lineStyleIndex += 1
-            if lineStyleIndex >= len(lineStyles):
-                lineStyleIndex = 0
+    
+    for f in files:
+        plotFile(join(folderName, f), prefix)
+        
 
 folderName = "./build_release/plots"
 
 if len(sys.argv) > 1:
     folderName = sys.argv[1]
 
-files = [join(folderName, f)
-         for f in listdir(folderName) if isfile(join(folderName, f))]
-
-plotFiles(files, "")
-
-dirs = [join(folderName, f)
-        for f in listdir(folderName) if not isfile(join(folderName, f))]
-
-for folName in dirs:
-    files = [join(folName, f)
-             for f in listdir(folName) if isfile(join(folName, f))]
-    m = re.search("/([^/]+)$", folName)
-    plotFiles(files, m.group(1) + " ")
+plotFolder(folderName, "")
 
 plt.legend(fontsize=12)
 
@@ -59,3 +64,4 @@ plt.ylabel("microseconds")
 plt.figure(1).tight_layout(pad=0)
 
 plt.show()
+
