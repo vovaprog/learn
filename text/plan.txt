@@ -9,8 +9,8 @@ find benchmark
 выбрать интервалы тестов
 график - несколько вложенных папок
 
-insert benchmark
-придумать точно тест
++ insert benchmark
++ flat_map
 
 intrusive containers
 find тест
