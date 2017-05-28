@@ -9,7 +9,7 @@ include_directories(".")
 set(SOURCE
     main.cpp
     BenchmarkMap.h BenchmarkMap.cpp
-    Tools.h)
+    Tools.h Tools.cpp)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -Wall -pedantic")
 

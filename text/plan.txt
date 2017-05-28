@@ -5,12 +5,9 @@ kernel module
 template meta programming
 boost
 
-find benchmark
+map find benchmark
 выбрать интервалы тестов
-+ график - несколько вложенных папок
-
-+ insert benchmark
-+ flat_map
+запуск сразу всех benchmark-ов и сохранение картинок
 
 intrusive containers
 find тест

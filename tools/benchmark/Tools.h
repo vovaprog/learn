@@ -28,5 +28,19 @@ struct BenchmarkParameters
     const char * testName = nullptr;
 };
 
+struct BenchmarkArray
+{
+    std::vector<BenchmarkParameters> params;
+    std::string name;
+};
+
+struct BenchmarkSet
+{
+    BenchmarkArray arrays;
+    std::string name;
+};
+
+bool randomVector(std::vector<uint64_t> &keys, int64_t itemCount);
+
 #endif
 
