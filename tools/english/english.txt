@@ -28,7 +28,7 @@ It is pitch black       :    ничего не видно
 He has a good track record   :    he has a good reputation
 weed out     :     пропалывать, get rid of a problem
 noon              day
-afternoon         2 pm - 6 pm
+afternoon    :     2 pm - 6 pm
 awkward           something that makes feel uncomfortable
 bluff             блеф
 to have a nod   :     получить одобрение
@@ -50,10 +50,10 @@ employer          работодатель
 employee          сотрудник
 understatement    преуменьшение
 fortnight         2 недели, полмесяца
-one-off           единовременный, нерегулярный
+one-off     :      единовременный, нерегулярный
 appoint           назначать, нанять на работу
 appraisal         оценка
-due date          deadline
+due date          :    deadline
 draw up           составлять
 unsolicited       незатребованный
 solicit           просить, требовать
@@ -85,13 +85,39 @@ proposal          предложение
 drawer            выдвижной ящик
 FYI               for your information, for your interest
 cede              уступать
-
-
-
-
-
-
-
-
-
+rigorous          тщательный, строгий
+contentious       спорный
+NP                no problem
+proceeds          доходы
+confidence        уверенность
+ETA               estimated time of arrival (примерное время, когда задача будет выполнена)
+Reply to Thank you   :   no problem, you are welcome. Rearly used: not at all, don't mention it.
+objection         возражение
+concern           беспокойство, забота, интерес
+puddle            лужа, грязь
+reckless          бесшабашный, безрассудный
+admit             признавать, допускать
+sweep under the carpet, hide under the rock    :   скрывать проблему.
+evident           очевидно, несомненно
+part and parcel   :    неотъемлемая часть
+foster            поощрять, воспитывать
+under no circumstances ARE WE allowed to....  :   чтобы подчеркнуть запрет меняется порядок ARE WE.
+cheers            ура, аплодисменты
+matey             приятель, дружище, общительный
+by and large    :    for the most part
+Best regards    :    окончание письма другой компании
+Dear mr Black   :    начало письма другой компании
+sincerely       : с уважением, sincerely yours - очень официально, только между незнакомыми людьми
+relief            облегчение
+mortgage          ипотека
+confident         уверенный, уверенный в себе
+suppose           предполагать
+glance            взгляд, short look
+deliberately      нарочно
+lay off           увольнять, увольнение
+for the time being    :   на данный момент (может поменяться)
+thank you in advance   :   заранее спасибо
+I hope this letter will find you well   :   начало письма
+Thank you for your understanding  :  письмо
+belief            вера, убеждение
 

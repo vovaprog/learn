@@ -10,7 +10,7 @@ with open("./english.txt", "r") as fl:
 translations = []
 
 for line in lines:
-    m = re.search("^([^-:=]+)(-|:|=)(.*)$", line)
+    m = re.search("^([^-:=]+)(:|=)(.*)$", line)
     pair = {}
 
     if m:
@@ -25,6 +25,8 @@ for line in lines:
             translations.append(pair)
         elif len(line.strip()) > 0:
             print("warning: can't parse line: " + line)
+
+print("press enter to print translation\npress ctrl+c to exit\n")
 
 while True:
     random.shuffle(translations)
