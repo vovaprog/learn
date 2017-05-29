@@ -2,9 +2,16 @@
 
 import re
 import random
+import sys
 from sys import stdin, stdout
 
-with open("./english.txt", "r") as fl:
+if len(sys.argv) > 1:
+    direction = sys.argv[1]
+
+if len(sys.argv) > 2:
+    fileName = sys.argv[2]
+
+with open(fileName, "r") as fl:
     lines = fl.readlines()
 
 translations = []
@@ -28,11 +35,18 @@ for line in lines:
 
 print("press enter to print translation\npress ctrl+c to exit\n")
 
+if direction == "en":
+    source = "en"
+    dest = "ru"
+else:
+    source = "ru"
+    dest = "en"
+
 while True:
     random.shuffle(translations)
 
     for trans in translations:
-        stdout.write(trans["en"])
+        stdout.write(trans[source])
         stdout.flush()
         stdin.readline()
-        print(trans["en"] + "   -   " + trans["ru"] + "\n")
+        print(trans[source] + "   -   " + trans[dest] + "\n")
