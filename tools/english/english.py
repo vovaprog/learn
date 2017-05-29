@@ -5,6 +5,9 @@ import random
 import sys
 from sys import stdin, stdout
 
+fileName = "./english.txt"
+direction = "en"
+
 if len(sys.argv) > 1:
     direction = sys.argv[1]
 
