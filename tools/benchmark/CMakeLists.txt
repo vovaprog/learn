@@ -8,6 +8,7 @@ include_directories(".")
 
 set(SOURCE
     main.cpp
+    ArithmeticBenchmark.h ArithmeticBenchmark.cpp
     BenchmarkMap.h BenchmarkMap.cpp
     Tools.h Tools.cpp)
 

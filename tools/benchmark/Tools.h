@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <chrono>
 #include <random>
+#include <iostream>
 
 inline uint64_t getTicks()
 {
@@ -35,6 +36,12 @@ struct BenchmarkSet
 };
 
 bool randomVector(std::vector<uint64_t> &keys, int64_t itemCount);
+
+template<typename T>
+void useValue(T x)
+{
+    std::cout << "[" << x << "]" << std::endl;
+}
 
 #endif
 

@@ -62,7 +62,7 @@ annual            ежегодный, годовой
 estimate          оценка, прикидывать, оценивать, приблизительно
 witticism         острО'та, шутка
 redundant         лишний, резервный
-resilience        упругость, эластичность
+resilience        упругость, эластичность [rizIliens]
 rife              изобилующий, обычный, распространенный
 rid               избавиться (get rid of something)
 essential         существенный, необходимый
@@ -91,7 +91,7 @@ NP                no problem
 proceeds          доходы
 confidence        уверенность
 ETA               estimated time of arrival (примерное время, когда задача будет выполнена)
-Reply to Thank you   :   no problem, you are welcome. Rearly used: not at all, don't mention it.
+Reply to Thank you   :   no problem, you are welcome. Rarely used: not at all, don't mention it.
 objection         возражение
 concern           беспокойство, забота, интерес
 puddle            лужа, грязь
