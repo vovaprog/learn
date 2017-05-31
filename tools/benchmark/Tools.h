@@ -5,6 +5,7 @@
 #include <chrono>
 #include <random>
 #include <iostream>
+#include <limits>
 
 inline uint64_t getTicks()
 {
@@ -18,6 +19,12 @@ inline uint64_t randomUInt64()
     static std::mt19937_64 gen(rd());
     static std::uniform_int_distribution<uint64_t> dis;
     return dis(gen);
+}
+
+template<typename T>
+T randomValue()
+{
+    return static_cast<T>(randomUInt64() % static_cast<uint64_t>(std::numeric_limits<T>::max()));
 }
 
 struct BenchmarkParameters
@@ -35,13 +42,15 @@ struct BenchmarkSet
     std::vector<std::string> prefixes;
 };
 
+struct BenchmarkSingle
+{
+    BenchmarkParameters params;
+    std::vector<std::string> prefixes;
+};
+
 bool randomVector(std::vector<uint64_t> &keys, int64_t itemCount);
 
-template<typename T>
-void useValue(T x)
-{
-    std::cout << "[" << x << "]" << std::endl;
-}
+bool resultToFile(const BenchmarkSingle &bench);
 
 #endif
 

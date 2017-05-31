@@ -1,6 +1,8 @@
 #include <Tools.h>
 
 #include <set>
+#include <fstream>
+#include <boost/filesystem.hpp>
 
 bool randomVector(std::vector<uint64_t> &keys, int64_t itemCount)
 {
@@ -32,3 +34,27 @@ bool randomVector(std::vector<uint64_t> &keys, int64_t itemCount)
     }
     return true;
 }
+
+
+bool resultToFile(const BenchmarkSingle &bench)
+{
+    std::string fileName("./plots");
+
+    boost::filesystem::create_directory(fileName);
+
+    for(auto &prefix : bench.prefixes)
+    {
+        fileName = fileName + "/" + prefix;
+        boost::filesystem::create_directory(fileName);
+    }
+
+    fileName = fileName + "/" + bench.params.testName + ".txt";
+
+    std::ofstream fl;
+    fl.open(fileName);
+
+    fl << bench.params.ticks << std::endl;
+
+    return true;
+}
+

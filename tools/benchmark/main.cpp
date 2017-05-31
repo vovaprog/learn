@@ -7,6 +7,7 @@
 
 #include <Tools.h>
 #include <BenchmarkMap.h>
+#include <ArithmeticBenchmark.h>
 
 
 bool ResultToFile(const BenchmarkSet &benchSet)
@@ -184,11 +185,13 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
 
 int main()
 {
-    benchMapsFind(5, 350, 1);
+    //benchMapsFind(5, 350, 1);
     //benchMapsFind(50, 3500, 30);
     //benchMapsFind(1000, 100000, 5000);
 
-    benchMapsInsert(5, 10000, 10);
+    //benchMapsInsert(5, 10000, 10);
+
+    arithmeticBenchmark();
 
     return 0;
 }
