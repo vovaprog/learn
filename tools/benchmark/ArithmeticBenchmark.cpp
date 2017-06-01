@@ -1,11 +1,15 @@
 #include <Tools.h>
 
+#include <iostream>
+
+
 template<typename T, long long int iterCount>
-struct OperationAdd {
+struct OperationAdd
+{
     static T __attribute__((optimize("O0"))) calculate(T x, T inc)
     {
         T result;
-        for(int i=0;i<iterCount;++i)
+        for(int i = 0; i < iterCount; ++i)
         {
             result = x + inc;
         }
@@ -13,12 +17,14 @@ struct OperationAdd {
     }
 };
 
+
 template<typename T, long long int iterCount>
-struct OperationOr {
+struct OperationOr
+{
     static T __attribute__((optimize("O0"))) calculate(T x, T inc)
     {
         T result;
-        for(int i=0;i<iterCount;++i)
+        for(int i = 0; i < iterCount; ++i)
         {
             result = x | inc;
         }
@@ -26,12 +32,14 @@ struct OperationOr {
     }
 };
 
+
 template<typename T, long long int iterCount>
-struct OperationMul {
+struct OperationMul
+{
     static T __attribute__((optimize("O0"))) calculate(T x, T inc)
     {
         T result;
-        for(int i=0;i<iterCount;++i)
+        for(int i = 0; i < iterCount; ++i)
         {
             result = x * inc;
         }
@@ -39,18 +47,21 @@ struct OperationMul {
     }
 };
 
+
 template<typename T, long long int iterCount>
-struct OperationDiv {
+struct OperationDiv
+{
     static T __attribute__((optimize("O0"))) calculate(T x, T inc)
     {
         T result;
-        for(int i=0;i<iterCount;++i)
+        for(int i = 0; i < iterCount; ++i)
         {
             result = x / inc;
         }
         return result;
     }
 };
+
 
 template<typename Operation, typename T>
 void arithmeticBenchmark(BenchmarkParameters &params)
@@ -61,12 +72,9 @@ void arithmeticBenchmark(BenchmarkParameters &params)
     uint64_t ticks = getTicks();
 
     x = Operation::calculate(x, inc);
-    //useValue(x);
     (void)x;
 
     params.ticks = getTicks() - ticks;
-
-    std::cout << params.ticks << std::endl;
 }
 
 
@@ -76,6 +84,10 @@ bool arithmeticBenchmark()
 
     BenchmarkSingle bench;
     bench.prefixes.push_back("arithmetic");
+
+
+    std::cout << "benchmark add" << std::endl;
+
 
     bench.params.testName = "add uint08";
     arithmeticBenchmark<OperationAdd<uint8_t, iterCount>, uint8_t>(bench.params);
@@ -105,6 +117,8 @@ bool arithmeticBenchmark()
     arithmeticBenchmark<OperationAdd<long double, iterCount>, long double>(bench.params);
     resultToFile(bench);
 
+
+    std::cout << "benchmark mul" << std::endl;
 
 
     bench.params.testName = "mul uint08";
@@ -136,6 +150,8 @@ bool arithmeticBenchmark()
     resultToFile(bench);
 
 
+    std::cout << "benchmark div" << std::endl;
+
 
     bench.params.testName = "div uint08";
     arithmeticBenchmark<OperationDiv<uint8_t, iterCount>, uint8_t>(bench.params);
@@ -166,6 +182,9 @@ bool arithmeticBenchmark()
     resultToFile(bench);
 
 
+    std::cout << "benchmark or" << std::endl;
+
+
     bench.params.testName = "or uint08";
     arithmeticBenchmark<OperationOr<uint8_t, iterCount>, uint8_t>(bench.params);
     resultToFile(bench);
@@ -182,7 +201,7 @@ bool arithmeticBenchmark()
     arithmeticBenchmark<OperationOr<uint64_t, iterCount>, uint64_t>(bench.params);
     resultToFile(bench);
 
+
     return true;
 }
-
 

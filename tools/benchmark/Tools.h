@@ -7,11 +7,13 @@
 #include <iostream>
 #include <limits>
 
+
 inline uint64_t getTicks()
 {
     auto duration = std::chrono::system_clock::now().time_since_epoch();
     return std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
 }
+
 
 inline uint64_t randomUInt64()
 {
@@ -21,11 +23,13 @@ inline uint64_t randomUInt64()
     return dis(gen);
 }
 
+
 template<typename T>
 T randomValue()
 {
-    return static_cast<T>(randomUInt64() % static_cast<uint64_t>(std::numeric_limits<T>::max()));
+    return static_cast<T>(randomUInt64());
 }
+
 
 struct BenchmarkParameters
 {
@@ -36,11 +40,13 @@ struct BenchmarkParameters
     const char * testName = nullptr;
 };
 
+
 struct BenchmarkSet
 {
     std::vector<BenchmarkParameters> params;
     std::vector<std::string> prefixes;
 };
+
 
 struct BenchmarkSingle
 {
@@ -48,9 +54,12 @@ struct BenchmarkSingle
     std::vector<std::string> prefixes;
 };
 
+
 bool randomVector(std::vector<uint64_t> &keys, int64_t itemCount);
 
+
 bool resultToFile(const BenchmarkSingle &bench);
+
 
 #endif
 
