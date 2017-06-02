@@ -7,6 +7,7 @@
 
 #include <Tools.h>
 #include <BenchmarkMap.h>
+#include <IntrusiveMapBenchmark.h>
 #include <ArithmeticBenchmark.h>
 
 
@@ -134,6 +135,16 @@ bool benchMapsFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCou
         return false;
     }
 
+    if(!runBenchmark<benchIntrusiveSetFind>(benchSet))
+    {
+        return false;
+    }
+
+    if(!runBenchmark<benchIntrusiveAvlSetFind>(benchSet))
+    {
+        return false;
+    }
+
     return true;
 }
 
@@ -185,13 +196,13 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
 
 int main()
 {
-    //benchMapsFind(5, 350, 1);
-    //benchMapsFind(50, 3500, 30);
-    //benchMapsFind(1000, 100000, 5000);
+    benchMapsFind(5, 350, 1);
+    benchMapsFind(50, 3500, 30);
+    benchMapsFind(1000, 100000, 5000);
 
     //benchMapsInsert(5, 10000, 10);
 
-    arithmeticBenchmark();
+    //arithmeticBenchmark();
 
     return 0;
 }
