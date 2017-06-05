@@ -11,6 +11,7 @@ set(SOURCE
     ArithmeticBenchmark.h ArithmeticBenchmark.cpp
     BenchmarkMap.h BenchmarkMap.cpp
     IntrusiveMapBenchmark.h IntrusiveMapBenchmark.cpp
+    StringMapBenchmark.h StringMapBenchmark.cpp
     Tools.h Tools.cpp)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -Wall -pedantic")

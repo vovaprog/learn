@@ -57,8 +57,43 @@ struct BenchmarkSingle
 
 bool randomVector(std::vector<uint64_t> &keys, int64_t itemCount);
 
+bool randomVector(std::vector<std::string> &keys, int64_t itemCount, int64_t keyLength);
+
 
 bool resultToFile(const BenchmarkSingle &bench);
+
+
+struct Data
+{
+    uint64_t key;
+    uint64_t a, b, c, d;
+};
+
+
+bool ResultToFile(const BenchmarkSet &benchSet);
+
+
+// copy of benchSet is created in argument
+template <bool (*Fun)(BenchmarkParameters &params)>
+bool runBenchmarkSet(BenchmarkSet benchSet)
+{
+    for(BenchmarkParameters &params : benchSet.params)
+    {
+        if(!Fun(params))
+        {
+            return false;
+        }
+    }
+
+    ResultToFile(benchSet);
+
+    return true;
+}
+
+
+void randomString(const char *s, size_t length);
+
+std::string randomString(size_t length);
 
 
 #endif

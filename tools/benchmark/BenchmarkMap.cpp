@@ -10,17 +10,6 @@
 #include <boost/unordered_map.hpp>
 #include <iostream>
 
-namespace
-{
-
-struct Data
-{
-    uint64_t key;
-    uint64_t a, b, c, d;
-};
-
-}
-
 
 template<typename MapType>
 bool benchMapFind_fillMap(BenchmarkParameters &params, MapType &m)

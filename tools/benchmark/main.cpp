@@ -9,32 +9,7 @@
 #include <BenchmarkMap.h>
 #include <IntrusiveMapBenchmark.h>
 #include <ArithmeticBenchmark.h>
-
-
-bool ResultToFile(const BenchmarkSet &benchSet)
-{
-    std::string fileName("./plots");
-
-    boost::filesystem::create_directory(fileName);
-
-    for(auto &prefix : benchSet.prefixes)
-    {
-        fileName = fileName + "/" + prefix;
-        boost::filesystem::create_directory(fileName);
-    }
-
-    fileName = fileName + "/" + benchSet.params[0].testName + ".txt";
-
-    std::ofstream fl;
-    fl.open(fileName);
-
-    for(const BenchmarkParameters &r : benchSet.params)
-    {
-        fl << r.itemCount << "|" << r.ticks << std::endl;
-    }
-
-    return true;
-}
+#include <StringMapBenchmark.h>
 
 
 bool createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
@@ -64,25 +39,6 @@ bool createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int
 }
 
 
-// copy of benchSet is created in argument
-template <bool (*Fun)(BenchmarkParameters &params)>
-bool runBenchmark(BenchmarkSet benchSet)
-{
-    for(BenchmarkParameters &params : benchSet.params)
-    {
-        if(!Fun(params))
-        {
-            std::cout << "benchmark failed" << std::endl;
-            return false;
-        }
-    }
-
-    ResultToFile(benchSet);
-
-    return true;
-}
-
-
 bool benchMapsFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep)
 {
     const int64_t iterCount = 100000;
@@ -100,47 +56,47 @@ bool benchMapsFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCou
     benchSet.prefixes.push_back(std::to_string(itemCountEnd));
 
 
-    if(!runBenchmark<benchStdMapFind>(benchSet))
+    if(!runBenchmarkSet<benchStdMapFind>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostMapFind>(benchSet))
+    if(!runBenchmarkSet<benchBoostMapFind>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchStdUnorderedMapFind>(benchSet))
+    if(!runBenchmarkSet<benchStdUnorderedMapFind>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostUnorderedMapFind>(benchSet))
+    if(!runBenchmarkSet<benchBoostUnorderedMapFind>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchSortedVector>(benchSet))
+    if(!runBenchmarkSet<benchSortedVector>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchSortedDeque>(benchSet))
+    if(!runBenchmarkSet<benchSortedDeque>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostFlatMapFind>(benchSet))
+    if(!runBenchmarkSet<benchBoostFlatMapFind>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchIntrusiveSetFind>(benchSet))
+    if(!runBenchmarkSet<benchIntrusiveSetFind>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchIntrusiveAvlSetFind>(benchSet))
+    if(!runBenchmarkSet<benchIntrusiveAvlSetFind>(benchSet))
     {
         return false;
     }
@@ -165,27 +121,27 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
     benchSet.prefixes.push_back("map insert");
     benchSet.prefixes.push_back(std::to_string(itemCountEnd));
 
-    if(!runBenchmark<benchStdMapInsert>(benchSet))
+    if(!runBenchmarkSet<benchStdMapInsert>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostMapInsert>(benchSet))
+    if(!runBenchmarkSet<benchBoostMapInsert>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchStdUnorderedMapInsert>(benchSet))
+    if(!runBenchmarkSet<benchStdUnorderedMapInsert>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostUnorderedMapInsert>(benchSet))
+    if(!runBenchmarkSet<benchBoostUnorderedMapInsert>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmark<benchBoostFlatMapFill>(benchSet))
+    if(!runBenchmarkSet<benchBoostFlatMapFill>(benchSet))
     {
         return false;
     }
@@ -196,13 +152,15 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
 
 int main()
 {
-    benchMapsFind(5, 350, 1);
-    benchMapsFind(50, 3500, 30);
-    benchMapsFind(1000, 100000, 5000);
+    //benchMapsFind(5, 350, 1);
+    //benchMapsFind(50, 3500, 30);
+    //benchMapsFind(1000, 100000, 5000);
 
     //benchMapsInsert(5, 10000, 10);
 
     //arithmeticBenchmark();
+
+    benchStringMapFind();
 
     return 0;
 }
