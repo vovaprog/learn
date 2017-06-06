@@ -2,23 +2,50 @@
 
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <string.h>
+#include <boost/container/map.hpp>
+#include <boost/unordered_map.hpp>
+#include <boost/functional/hash.hpp>
 
-struct CharPointerCompare
+struct CharPointerLess
 {
-   bool operator()(const char *a, const char *b)
-   {
-      return strcmp(a, b) < 0;
-   }
+    bool operator()(const char *a, const char *b) const
+    {
+        return strcmp(a, b) < 0;
+    }
 };
 
-bool benchStringMapFind(BenchmarkParameters &params)
+struct CharPointerEqual
 {
-    std::vector<const char*> &keys = *static_cast<std::vector<const char *> *>(params.arg0);
+    bool operator()(const char *a, const char *b) const
+    {
+        return strcmp(a, b) == 0;
+    }
+};
 
-    std::map<const char*, Data, CharPointerCompare> m;
 
-    for(int i=0;i<params.itemCount;++i)
+struct CharPointerHash
+{
+    size_t operator()(const char *a) const
+    {
+        std::size_t seed = 0;
+
+        for(size_t i = 0; a[i] != 0; ++i)
+        {
+            boost::hash_combine(seed, a[i]);
+        }
+
+        return seed;
+    }
+};
+
+template<typename MapType, typename KeyType>
+bool benchStringMapFind(BenchmarkParameters &params, std::vector<KeyType> &keys)
+{
+    MapType m;
+
+    for(int i = 0; i < params.itemCount; ++i)
     {
         m[keys[i]] = Data();
     }
@@ -51,11 +78,71 @@ bool benchStringMapFind(BenchmarkParameters &params)
 
     params.ticks = getTicks() - ticks;
 
-    params.testName = "string map find";
-
     return true;
 }
 
+
+bool benchStdMapCharPointer(BenchmarkParameters &params)
+{
+    std::vector<const char*> &keys = *static_cast<std::vector<const char*> *>(params.arg0);
+
+    bool result = benchStringMapFind <
+                  std::map<const char*, Data, CharPointerLess>, const char* > (params, keys);
+
+    params.testName = "std map char p";
+    return result;
+}
+
+
+bool benchStdMapString(BenchmarkParameters &params)
+{
+    std::vector<std::string> &keys = *static_cast<std::vector<std::string> *>(params.arg1);
+
+    bool result = benchStringMapFind <
+                  std::map<std::string, Data>, std::string > (params, keys);
+
+    params.testName = "std map string";
+    return result;
+}
+
+
+bool benchStdUnorderedMapCharPointer(BenchmarkParameters &params)
+{
+    std::vector<const char*> &keys = *static_cast<std::vector<const char*> *>(params.arg0);
+
+    bool result = benchStringMapFind <
+                  std::unordered_map<const char*, Data, CharPointerHash, CharPointerEqual >,
+                  const char* > (params, keys);
+
+    params.testName = "std unordered_map char p";
+    return result;
+}
+
+
+bool benchStringBoostMapFind(BenchmarkParameters &params)
+{
+    std::vector<const char*> &keys = *static_cast<std::vector<const char*> *>(params.arg0);
+
+    bool result = benchStringMapFind <
+                  boost::container::map<const char*, Data, CharPointerLess >,
+                  const char * > (params, keys);
+
+    params.testName = "boost map char p";
+    return result;
+}
+
+
+bool benchStringBoostUnorderedMapFind(BenchmarkParameters &params)
+{
+    std::vector<const char*> &keys = *static_cast<std::vector<const char*> *>(params.arg0);
+
+    bool result = benchStringMapFind<boost::unordered_map<
+                  const char*, Data, CharPointerHash, CharPointerEqual>,
+                  const char*>(params, keys);
+
+    params.testName = "boost unordered_map char p";
+    return result;
+}
 
 bool createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
                                int64_t keyLength,
@@ -89,6 +176,7 @@ bool createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int
         params.itemCount = i;
         params.iterCount = iterCount;
         params.arg0 = &keyPointers;
+        params.arg1 = &keyStrings;
 
         benchSet.params.push_back(params);
     }
@@ -98,7 +186,7 @@ bool createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int
 
 
 bool benchStringMapFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
-                         int64_t keyLength)
+                        int64_t keyLength)
 {
     const int64_t iterCount = 100000;
 
@@ -113,10 +201,31 @@ bool benchStringMapFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t it
     }
 
     benchSet.prefixes.push_back("string map find");
+    benchSet.prefixes.push_back(std::to_string(keyLength));
     benchSet.prefixes.push_back(std::to_string(itemCountEnd));
 
 
-    if(!runBenchmarkSet<benchStringMapFind>(benchSet))
+    if(!runBenchmarkSet<benchStdMapCharPointer>(benchSet))
+    {
+        return false;
+    }
+
+    if(!runBenchmarkSet<benchStringBoostMapFind>(benchSet))
+    {
+        return false;
+    }
+
+    if(!runBenchmarkSet<benchStdUnorderedMapCharPointer>(benchSet))
+    {
+        return false;
+    }
+
+    if(!runBenchmarkSet<benchStringBoostUnorderedMapFind>(benchSet))
+    {
+        return false;
+    }
+
+    if(!runBenchmarkSet<benchStdMapString>(benchSet))
     {
         return false;
     }
@@ -128,6 +237,21 @@ bool benchStringMapFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t it
 bool benchStringMapFind()
 {
     if(!benchStringMapFind(10, 100, 1, 4))
+    {
+        return false;
+    }
+
+    if(!benchStringMapFind(10, 100, 1, 16))
+    {
+        return false;
+    }
+
+    if(!benchStringMapFind(10, 1000, 20, 4))
+    {
+        return false;
+    }
+
+    if(!benchStringMapFind(10, 1000, 20, 16))
     {
         return false;
     }

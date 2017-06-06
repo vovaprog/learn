@@ -152,6 +152,8 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
 
 int main()
 {
+    srand(time(nullptr));
+
     //benchMapsFind(5, 350, 1);
     //benchMapsFind(50, 3500, 30);
     //benchMapsFind(1000, 100000, 5000);

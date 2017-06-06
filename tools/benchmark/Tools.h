@@ -37,6 +37,7 @@ struct BenchmarkParameters
     int64_t iterCount = 0;
     uint64_t ticks = 0;
     void *arg0 = nullptr;
+    void *arg1 = nullptr;
     const char * testName = nullptr;
 };
 
