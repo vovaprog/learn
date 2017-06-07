@@ -99,7 +99,7 @@ bool benchStdMapString(BenchmarkParameters &params)
     std::vector<std::string> &keys = *static_cast<std::vector<std::string> *>(params.arg1);
 
     bool result = benchStringMapFind <
-                  std::map<std::string, Data>, std::string > (params, keys);
+                  std::map<std::string, Data>, std::string> (params, keys);
 
     params.testName = "std map string";
     return result;
@@ -118,8 +118,19 @@ bool benchStdUnorderedMapCharPointer(BenchmarkParameters &params)
     return result;
 }
 
+bool benchStdUnorderedMapString(BenchmarkParameters &params)
+{
+    std::vector<std::string> &keys = *static_cast<std::vector<std::string> *>(params.arg1);
 
-bool benchStringBoostMapFind(BenchmarkParameters &params)
+    bool result = benchStringMapFind <
+                  std::unordered_map<std::string, Data>, std::string> (params, keys);
+
+    params.testName = "std unordered_map string";
+    return result;
+}
+
+
+bool benchBoostMapCharPointer(BenchmarkParameters &params)
 {
     std::vector<const char*> &keys = *static_cast<std::vector<const char*> *>(params.arg0);
 
@@ -132,7 +143,19 @@ bool benchStringBoostMapFind(BenchmarkParameters &params)
 }
 
 
-bool benchStringBoostUnorderedMapFind(BenchmarkParameters &params)
+bool benchBoostMapString(BenchmarkParameters &params)
+{
+    std::vector<std::string> &keys = *static_cast<std::vector<std::string> *>(params.arg1);
+
+    bool result = benchStringMapFind <
+                  boost::container::map<std::string, Data>, std::string> (params, keys);
+
+    params.testName = "boost map string";
+    return result;
+}
+
+
+bool benchBoostUnorderedMapCharPointer(BenchmarkParameters &params)
 {
     std::vector<const char*> &keys = *static_cast<std::vector<const char*> *>(params.arg0);
 
@@ -143,6 +166,18 @@ bool benchStringBoostUnorderedMapFind(BenchmarkParameters &params)
     params.testName = "boost unordered_map char p";
     return result;
 }
+
+bool benchBoostUnorderedMapString(BenchmarkParameters &params)
+{
+    std::vector<std::string> &keys = *static_cast<std::vector<std::string> *>(params.arg1);
+
+    bool result = benchStringMapFind <
+                  boost::unordered_map<std::string, Data>, std::string> (params, keys);
+
+    params.testName = "boost unordered_map string";
+    return result;
+}
+
 
 bool createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
                                int64_t keyLength,
@@ -210,7 +245,17 @@ bool benchStringMapFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t it
         return false;
     }
 
-    if(!runBenchmarkSet<benchStringBoostMapFind>(benchSet))
+    if(!runBenchmarkSet<benchStdMapString>(benchSet))
+    {
+        return false;
+    }
+
+    if(!runBenchmarkSet<benchBoostMapCharPointer>(benchSet))
+    {
+        return false;
+    }
+
+    if(!runBenchmarkSet<benchBoostMapString>(benchSet))
     {
         return false;
     }
@@ -220,12 +265,17 @@ bool benchStringMapFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t it
         return false;
     }
 
-    if(!runBenchmarkSet<benchStringBoostUnorderedMapFind>(benchSet))
+    if(!runBenchmarkSet<benchStdUnorderedMapString>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmarkSet<benchStdMapString>(benchSet))
+    if(!runBenchmarkSet<benchBoostUnorderedMapCharPointer>(benchSet))
+    {
+        return false;
+    }
+
+    if(!runBenchmarkSet<benchBoostUnorderedMapString>(benchSet))
     {
         return false;
     }

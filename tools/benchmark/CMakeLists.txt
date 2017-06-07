@@ -9,7 +9,7 @@ include_directories(".")
 set(SOURCE
     main.cpp
     ArithmeticBenchmark.h ArithmeticBenchmark.cpp
-    BenchmarkMap.h BenchmarkMap.cpp
+    MapBenchmark.h MapBenchmark.cpp
     IntrusiveMapBenchmark.h IntrusiveMapBenchmark.cpp
     StringMapBenchmark.h StringMapBenchmark.cpp
     Tools.h Tools.cpp)
