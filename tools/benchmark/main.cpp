@@ -9,6 +9,7 @@
 #include <IntrusiveMapBenchmark.h>
 #include <ArithmeticBenchmark.h>
 #include <StringMapBenchmark.h>
+#include <SwitchBenchmark.h>
 
 
 int main()
@@ -18,7 +19,9 @@ int main()
     /*benchmarkMapFind();
     benchmarkMapInsert();
     arithmeticBenchmark();*/
-    benchStringMapFind();
+    //benchStringMapFind();
+
+    switchBenchmark();
 
     return 0;
 }
