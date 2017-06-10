@@ -5,6 +5,9 @@
 #include <map>
 #include <unordered_map>
 
+namespace
+{
+
 bool runSwitch(BenchmarkParameters &params, int testIndex)
 {
     SwitchFunction switchFun = switchFuns[testIndex];
@@ -35,7 +38,7 @@ bool runMap(BenchmarkParameters &params)
 {
     MapType m;
 
-    for(int i=0;i<params.itemCount; ++i)
+    for(int i = 0; i < params.itemCount; ++i)
     {
         m[keys[i]] = vals[i];
     }
@@ -48,7 +51,9 @@ bool runMap(BenchmarkParameters &params)
     {
         for(int i = 0; i < params.itemCount && count < params.iterCount; ++i, ++count)
         {
-            if(m[keys[i]] != vals[i])
+            auto iter = m.find(keys[i]);
+
+            if(iter == m.end() || iter->second != vals[i])
             {
                 return false;
             }
@@ -60,10 +65,39 @@ bool runMap(BenchmarkParameters &params)
     return true;
 }
 
+const int iterCount = 1000000;
+
+template<typename MapType>
+bool runMap(const char *testName)
+{
+    BenchmarkSet bs;
+
+    bs.prefixes.push_back("switch");
+
+    for(size_t i = 0; i < funCount; ++i)
+    {
+        BenchmarkParameters params;
+        params.itemCount = counts[i];
+        params.iterCount = iterCount;
+        params.testName = testName;
+
+        if(!runMap<MapType>(params))
+        {
+            return false;
+        }
+
+        bs.params.push_back(params);
+    }
+
+    ResultToFile(bs);
+
+    return true;
+}
+
+} // namespace
+
 bool switchBenchmark()
 {
-    const int iterCount = 10000000;
-
     {
         BenchmarkSet bs;
 
@@ -76,7 +110,10 @@ bool switchBenchmark()
             params.iterCount = iterCount;
             params.testName = "switch";
 
-            runSwitch(params, i);
+            if(!runSwitch(params, i))
+            {
+                return false;
+            }
 
             bs.params.push_back(params);
         }
@@ -84,49 +121,17 @@ bool switchBenchmark()
         ResultToFile(bs);
     }
 
+    if(!runMap<std::map<uint32_t, uint32_t>>("map"))
     {
-        BenchmarkSet bs;
-
-        bs.prefixes.push_back("switch");
-
-        for(size_t i = 0; i < funCount; ++i)
-        {
-            BenchmarkParameters params;
-            params.itemCount = counts[i];
-            params.iterCount = iterCount;
-            params.testName = "map";
-
-            runMap<std::map<uint32_t, uint32_t>>(params);
-
-            bs.params.push_back(params);
-        }
-
-        ResultToFile(bs);
+        return false;
     }
 
-
+    if(!runMap<std::unordered_map<uint32_t, uint32_t>>("unordered_map"))
     {
-        BenchmarkSet bs;
-
-        bs.prefixes.push_back("switch");
-
-        for(size_t i = 0; i < funCount; ++i)
-        {
-            BenchmarkParameters params;
-            params.itemCount = counts[i];
-            params.iterCount = iterCount;
-            params.testName = "unordered_map";
-
-            runMap<std::unordered_map<uint32_t, uint32_t>>(params);
-
-            bs.params.push_back(params);
-        }
-
-        ResultToFile(bs);
+        return false;
     }
 
     return true;
 }
-
 
 
