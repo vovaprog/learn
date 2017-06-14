@@ -375,57 +375,68 @@ bool benchMapsFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCou
     benchSet.prefixes.push_back(std::to_string(itemCountEnd));
 
 
+    std::cout << "std map" << std::endl;
     if(!runBenchmarkSet<benchStdMapFind>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost map" << std::endl;
     if(!runBenchmarkSet<benchBoostMapFind>(benchSet))
     {
         return false;
     }
 
+    std::cout << "std unordered_map" << std::endl;
     if(!runBenchmarkSet<benchStdUnorderedMapFind>(benchSet))
     {
         return false;
     }
 
+    std::cout << "std unordered_map no hash" << std::endl;
     if(!runBenchmarkSet<benchStdUnorderedMapFindNoHash>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost unordered_map" << std::endl;
     if(!runBenchmarkSet<benchBoostUnorderedMapFind>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost unordered_map no hash" << std::endl;
     if(!runBenchmarkSet<benchBoostUnorderedMapFindNoHash>(benchSet))
     {
         return false;
     }
 
+    std::cout << "sorted vector" << std::endl;
     if(!runBenchmarkSet<benchSortedVector>(benchSet))
     {
         return false;
     }
 
+    std::cout << "sorted deque" << std::endl;
     if(!runBenchmarkSet<benchSortedDeque>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost flat_map" << std::endl;
     if(!runBenchmarkSet<benchBoostFlatMapFind>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmarkSet<benchIntrusiveSetFind>(benchSet))
+    std::cout << "boost intrusive set" << std::endl;
+    if(!runBenchmarkSet<intrusiveSetFindBenchmark>(benchSet))
     {
         return false;
     }
 
-    if(!runBenchmarkSet<benchIntrusiveAvlSetFind>(benchSet))
+    std::cout << "boost intrusive avl_set" << std::endl;
+    if(!runBenchmarkSet<intrusiveAvlSetFindBenchmark>(benchSet))
     {
         return false;
     }
@@ -450,26 +461,31 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
     benchSet.prefixes.push_back("map insert");
     benchSet.prefixes.push_back(std::to_string(itemCountEnd));
 
+    std::cout << "std map" << std::endl;
     if(!runBenchmarkSet<benchStdMapInsert>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost map" << std::endl;
     if(!runBenchmarkSet<benchBoostMapInsert>(benchSet))
     {
         return false;
     }
 
+    std::cout << "std unordered_map" << std::endl;
     if(!runBenchmarkSet<benchStdUnorderedMapInsert>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost unordered_map" << std::endl;
     if(!runBenchmarkSet<benchBoostUnorderedMapInsert>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost flat_map" << std::endl;
     if(!runBenchmarkSet<benchBoostFlatMapFill>(benchSet))
     {
         return false;
@@ -479,8 +495,10 @@ bool benchMapsInsert(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemC
 }
 
 
-bool benchmarkMapFind()
+bool mapFindBenchmark()
 {
+    std::cout << "===== map find benchmark =====" << std::endl;
+
     if(!benchMapsFind(5, 350, 1))
     {
         return false;
@@ -500,8 +518,10 @@ bool benchmarkMapFind()
 }
 
 
-bool benchmarkMapInsert()
+bool mapInsertBenchmark()
 {
+    std::cout << "===== map insert benchmark =====" << std::endl;
+
     if(!benchMapsInsert(5, 10000, 10))
     {
         return false;

@@ -3,8 +3,8 @@
 
 #include <Tools.h>
 
-bool benchIntrusiveSetFind(BenchmarkParameters &params);
-bool benchIntrusiveAvlSetFind(BenchmarkParameters &params);
+bool intrusiveSetFindBenchmark(BenchmarkParameters &params);
+bool intrusiveAvlSetFindBenchmark(BenchmarkParameters &params);
 
 #endif
 

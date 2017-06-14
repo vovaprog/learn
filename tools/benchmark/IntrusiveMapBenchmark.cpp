@@ -105,14 +105,14 @@ bool benchIntrusive(BenchmarkParameters &params)
 }
 
 
-bool benchIntrusiveSetFind(BenchmarkParameters &params)
+bool intrusiveSetFindBenchmark(BenchmarkParameters &params)
 {
     params.testName = "boost intrusive set find";
     return benchIntrusive<boost::intrusive::set<DataIntMap>, DataIntMap, DataCompare<DataIntMap>>(params);
 }
 
 
-bool benchIntrusiveAvlSetFind(BenchmarkParameters &params)
+bool intrusiveAvlSetFindBenchmark(BenchmarkParameters &params)
 {
     params.testName = "boost intrusive avl_set find";
     return benchIntrusive<boost::intrusive::avl_set<DataAvlSet>, DataAvlSet, DataCompare<DataAvlSet>>(params);

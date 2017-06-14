@@ -80,14 +80,15 @@ void arithmeticBenchmark(BenchmarkParameters &params)
 
 bool arithmeticBenchmark()
 {
+    std::cout << "===== arithmetic benchmark =====" << std::endl;
+
     const long long int iterCount = 100000000;
 
     BenchmarkSingle bench;
     bench.prefixes.push_back("arithmetic");
 
 
-    std::cout << "benchmark add" << std::endl;
-
+    std::cout << "add" << std::endl;
 
     bench.params.testName = "add uint08";
     arithmeticBenchmark<OperationAdd<uint8_t, iterCount>, uint8_t>(bench.params);
@@ -118,8 +119,7 @@ bool arithmeticBenchmark()
     resultToFile(bench);
 
 
-    std::cout << "benchmark mul" << std::endl;
-
+    std::cout << "mul" << std::endl;
 
     bench.params.testName = "mul uint08";
     arithmeticBenchmark<OperationMul<uint8_t, iterCount>, uint8_t>(bench.params);
@@ -150,8 +150,7 @@ bool arithmeticBenchmark()
     resultToFile(bench);
 
 
-    std::cout << "benchmark div" << std::endl;
-
+    std::cout << "div" << std::endl;
 
     bench.params.testName = "div uint08";
     arithmeticBenchmark<OperationDiv<uint8_t, iterCount>, uint8_t>(bench.params);
@@ -182,8 +181,7 @@ bool arithmeticBenchmark()
     resultToFile(bench);
 
 
-    std::cout << "benchmark or" << std::endl;
-
+    std::cout << "or" << std::endl;
 
     bench.params.testName = "or uint08";
     arithmeticBenchmark<OperationOr<uint8_t, iterCount>, uint8_t>(bench.params);
@@ -200,7 +198,6 @@ bool arithmeticBenchmark()
     bench.params.testName = "or uint64";
     arithmeticBenchmark<OperationOr<uint64_t, iterCount>, uint64_t>(bench.params);
     resultToFile(bench);
-
 
     return true;
 }

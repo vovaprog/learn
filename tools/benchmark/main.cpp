@@ -1,9 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <set>
-#include <boost/intrusive/list.hpp>
-#include <boost/filesystem.hpp>
+#include <stdlib.h>
 
 #include <MapBenchmark.h>
 #include <IntrusiveMapBenchmark.h>
@@ -16,11 +11,10 @@ int main()
 {
     srand(time(nullptr));
 
-    /*benchmarkMapFind();
-    benchmarkMapInsert();
-    arithmeticBenchmark();*/
-    //benchStringMapFind();
-
+    mapFindBenchmark();
+    mapInsertBenchmark();
+    arithmeticBenchmark();
+    stringMapFindBenchmark();
     switchBenchmark();
 
     return 0;

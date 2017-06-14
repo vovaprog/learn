@@ -220,8 +220,8 @@ bool createBenchmarkParameters(int64_t itemCountStart, int64_t itemCountEnd, int
 }
 
 
-bool benchStringMapFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
-                        int64_t keyLength)
+bool stringMapFindBenchmark(int64_t itemCountStart, int64_t itemCountEnd, int64_t itemCountStep,
+                            int64_t keyLength)
 {
     const int64_t iterCount = 100000;
 
@@ -240,41 +240,49 @@ bool benchStringMapFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t it
     benchSet.prefixes.push_back(std::to_string(itemCountEnd));
 
 
+    std::cout << "std map char pointer" << std::endl;
     if(!runBenchmarkSet<benchStdMapCharPointer>(benchSet))
     {
         return false;
     }
 
+    std::cout << "std map string" << std::endl;
     if(!runBenchmarkSet<benchStdMapString>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost map char pointer" << std::endl;
     if(!runBenchmarkSet<benchBoostMapCharPointer>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost map string" << std::endl;
     if(!runBenchmarkSet<benchBoostMapString>(benchSet))
     {
         return false;
     }
 
+    std::cout << "std unordered_map char pointer" << std::endl;
     if(!runBenchmarkSet<benchStdUnorderedMapCharPointer>(benchSet))
     {
         return false;
     }
 
+    std::cout << "std unordered_map string" << std::endl;
     if(!runBenchmarkSet<benchStdUnorderedMapString>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost unordered_map char pointer" << std::endl;
     if(!runBenchmarkSet<benchBoostUnorderedMapCharPointer>(benchSet))
     {
         return false;
     }
 
+    std::cout << "boost unordered_map string" << std::endl;
     if(!runBenchmarkSet<benchBoostUnorderedMapString>(benchSet))
     {
         return false;
@@ -284,24 +292,26 @@ bool benchStringMapFind(int64_t itemCountStart, int64_t itemCountEnd, int64_t it
 }
 
 
-bool benchStringMapFind()
+bool stringMapFindBenchmark()
 {
-    if(!benchStringMapFind(10, 100, 1, 4))
+    std::cout << "===== string map find benchmark =====" << std::endl;
+
+    if(!stringMapFindBenchmark(10, 100, 1, 4))
     {
         return false;
     }
 
-    if(!benchStringMapFind(10, 100, 1, 16))
+    if(!stringMapFindBenchmark(10, 100, 1, 16))
     {
         return false;
     }
 
-    if(!benchStringMapFind(10, 1000, 20, 4))
+    if(!stringMapFindBenchmark(10, 1000, 20, 4))
     {
         return false;
     }
 
-    if(!benchStringMapFind(10, 1000, 20, 16))
+    if(!stringMapFindBenchmark(10, 1000, 20, 16))
     {
         return false;
     }

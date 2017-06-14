@@ -1,7 +1,7 @@
 #ifndef MAP_BENCHMARK_H
 #define MAP_BENCHMARK_H
 
-bool benchmarkMapFind();
-bool benchmarkMapInsert();
+bool mapFindBenchmark();
+bool mapInsertBenchmark();
 
 #endif

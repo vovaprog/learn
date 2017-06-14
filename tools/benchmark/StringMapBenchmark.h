@@ -3,6 +3,6 @@
 
 #include <Tools.h>
 
-bool benchStringMapFind();
+bool stringMapFindBenchmark();
 
 #endif

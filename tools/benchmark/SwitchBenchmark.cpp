@@ -98,7 +98,11 @@ bool runMap(const char *testName)
 
 bool switchBenchmark()
 {
+    std::cout << "===== switch benchmark =====" << std::endl;
+
     {
+        std::cout << "switch" << std::endl;
+
         BenchmarkSet bs;
 
         bs.prefixes.push_back("switch");
@@ -121,11 +125,15 @@ bool switchBenchmark()
         ResultToFile(bs);
     }
 
+
+    std::cout << "map" << std::endl;
     if(!runMap<std::map<uint32_t, uint32_t>>("map"))
     {
         return false;
     }
 
+
+    std::cout << "unordered_map" << std::endl;
     if(!runMap<std::unordered_map<uint32_t, uint32_t>>("unordered_map"))
     {
         return false;
