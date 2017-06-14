@@ -63,5 +63,9 @@ plt.ylabel("microseconds")
 # remove plot border
 plt.figure(1).tight_layout(pad=0)
 
-plt.show()
+
+if len(sys.argv) > 2:
+    plt.savefig(sys.argv[2])     
+else:
+    plt.show()
 
