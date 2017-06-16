@@ -128,7 +128,7 @@ bool benchMapFind(BenchmarkParameters &params)
 bool benchStdMapFind(BenchmarkParameters &params)
 {
     bool result = benchMapFind<std::map<uint64_t, Data>>(params);
-    params.testName = "std map find";
+    params.testName = "std map";
     return result;
 }
 
@@ -136,7 +136,7 @@ bool benchStdMapFind(BenchmarkParameters &params)
 bool benchBoostMapFind(BenchmarkParameters &params)
 {
     bool result = benchMapFind<boost::container::map<uint64_t, Data>>(params);
-    params.testName = "boost map find";
+    params.testName = "boost map";
     return result;
 }
 
@@ -144,7 +144,7 @@ bool benchBoostMapFind(BenchmarkParameters &params)
 bool benchBoostFlatMapFind(BenchmarkParameters &params)
 {
     bool result = benchMapFind<boost::container::flat_map<uint64_t, Data>>(params);
-    params.testName = "boost flat_map find";
+    params.testName = "boost flat_map";
     return result;
 }
 
@@ -152,7 +152,7 @@ bool benchBoostFlatMapFind(BenchmarkParameters &params)
 bool benchStdUnorderedMapFind(BenchmarkParameters &params)
 {
     bool result = benchMapFind<std::unordered_map<uint64_t, Data>>(params);
-    params.testName = "std unordered_map find";
+    params.testName = "std unordered_map";
     return result;
 }
 
@@ -160,7 +160,7 @@ bool benchStdUnorderedMapFind(BenchmarkParameters &params)
 bool benchStdUnorderedMapFindNoHash(BenchmarkParameters &params)
 {
     bool result = benchMapFind<std::unordered_map<uint64_t, Data, HashNone<uint64_t>>>(params);
-    params.testName = "std unordered_map find no hash";
+    params.testName = "std unordered_map no hash";
     return result;
 }
 
@@ -168,7 +168,7 @@ bool benchStdUnorderedMapFindNoHash(BenchmarkParameters &params)
 bool benchBoostUnorderedMapFind(BenchmarkParameters &params)
 {
     bool result = benchMapFind<boost::unordered_map<uint64_t, Data>>(params);
-    params.testName = "boost unordered_map find";
+    params.testName = "boost unordered_map";
     return result;
 }
 
@@ -176,7 +176,7 @@ bool benchBoostUnorderedMapFind(BenchmarkParameters &params)
 bool benchBoostUnorderedMapFindNoHash(BenchmarkParameters &params)
 {
     bool result = benchMapFind<boost::unordered_map<uint64_t, Data, HashNone<uint64_t>>>(params);
-    params.testName = "boost unordered_map find no hash";
+    params.testName = "boost unordered_map no hash";
     return result;
 }
 
@@ -235,7 +235,7 @@ bool benchSortedArray(BenchmarkParameters &params)
 bool benchSortedVector(BenchmarkParameters &params)
 {
     bool result = benchSortedArray<std::vector<Data>>(params);
-    params.testName = "std vector find";
+    params.testName = "std vector";
     return result;
 }
 
@@ -243,7 +243,7 @@ bool benchSortedVector(BenchmarkParameters &params)
 bool benchSortedDeque(BenchmarkParameters &params)
 {
     bool result = benchSortedArray<std::deque<Data>>(params);
-    params.testName = "std deque find";
+    params.testName = "std deque";
     return result;
 }
 
