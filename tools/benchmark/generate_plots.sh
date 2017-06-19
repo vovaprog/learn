@@ -1,5 +1,6 @@
 #!/bin/bash
 
+TOOLDIR="../tools"
 IMDIR="./plots"
 TEMPDIR="./plots_temp"
 
@@ -14,7 +15,7 @@ fi
 mkdir $TEMPDIR
 
 
-DATAROOT="./build_release/benchmark_data"
+DATAROOT="./benchmark_data"
 
 
 function generate_maps {
@@ -27,7 +28,7 @@ function generate_maps {
     cp "$DATAROOT/map find/$1/boost intrusive set.txt" $CURTEMP
     cp "$DATAROOT/map find/$1/boost intrusive avl_set.txt" $CURTEMP
     
-    python ./show_plot.py "$CURTEMP" "$IMDIR/map_find_${1}_tree.png"
+    python $TOOLDIR/show_plot.py "$CURTEMP" "$IMDIR/map_find_${1}_tree.png"
     
     rm -r $CURTEMP
     
@@ -41,7 +42,7 @@ function generate_maps {
     cp "$DATAROOT/map find/$1/std unordered_map.txt" $CURTEMP
     cp "$DATAROOT/map find/$1/std unordered_map no hash.txt" $CURTEMP
     
-    python ./show_plot.py "$CURTEMP" "$IMDIR/map_find_${1}_hash.png"
+    python $TOOLDIR/show_plot.py "$CURTEMP" "$IMDIR/map_find_${1}_hash.png"
     
     rm -r $CURTEMP
     
@@ -54,7 +55,7 @@ function generate_maps {
     cp "$DATAROOT/map find/$1/std deque.txt" $CURTEMP
     cp "$DATAROOT/map find/$1/std vector.txt" $CURTEMP
     
-    python ./show_plot.py "$CURTEMP" "$IMDIR/map_find_${1}_bin_search.png"
+    python $TOOLDIR/show_plot.py "$CURTEMP" "$IMDIR/map_find_${1}_bin_search.png"
     
     rm -r $CURTEMP
     
@@ -71,12 +72,24 @@ function generate_maps {
         cp "$DATAROOT/map find/$1/$5.txt" $CURTEMP
     fi    
     
-    python ./show_plot.py "$CURTEMP" "$IMDIR/map_find_${1}_compare.png"
+    python $TOOLDIR/show_plot.py "$CURTEMP" "$IMDIR/map_find_${1}_compare.png"
     
     rm -r $CURTEMP
     
 }
 
+
+BOOST_VERSION=`./benchmark GetBoostVersion`
+CPU=`perl -n -e '/^(model name\s+:\s+(.+))$/ && print($2) && exit;\n' "/proc/cpuinfo"`
+echo $CPU
+
+perl -p -e "s/BOOST_VERSION/$BOOST_VERSION/" "$TOOLDIR/README_template.md" |
+perl -p -e "s/CPU_INFO/$CPU/" |
+perl -p -e "s/CPP_FLAGS/$2/" > ./readme.html
+
+echo $1
+
+exit 0
 
 generate_maps 350 "std map" "std unordered_map" "std vector"
 
@@ -85,6 +98,7 @@ generate_maps 3500 "boost map" "std map" "std unordered_map" "std vector"
 generate_maps 100000 "boost map" "std unordered_map" "std vector"
 
 rm -r $TEMPDIR
+
 
 exit 0
 

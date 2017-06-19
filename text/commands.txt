@@ -977,6 +977,12 @@ perl -n -e "perl script" file_name
 perl -n -e '/define\s+__NR_([a-zA-Z_]+)\s+([0-9]+)/ && print "syscallNames[$2] = \"$1\";\n"' \
 /usr/include/x86_64-linux-gnu/asm/unistd_64.h > ./syscall_names.cpp
 
+replace regular expression in file and print to stdout:
+perl -p -e "s/serch regex/replacement/" "filename.txt"
+
+replace regular expression in file and save to the same file:
+perl -pi -e "s/serch regex/replacement/" "filename.txt"
+
 //======================================================================
 
 fedora search package:

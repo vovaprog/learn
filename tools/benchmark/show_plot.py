@@ -65,7 +65,7 @@ plt.figure(1).tight_layout(pad=0)
 
 
 if len(sys.argv) > 2:
-    width = 600.0
+    width = 700.0
     height = width * 0.6
     dpi = plt.figure(1).get_dpi()
     plt.figure(1).set_size_inches(width/float(dpi), height/float(dpi))
