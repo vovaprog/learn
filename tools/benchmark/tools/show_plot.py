@@ -4,6 +4,7 @@ from os import listdir
 from os.path import isfile, join
 import re
 import sys
+import os
 
 plotCounter = 0
 lineStyles = ["-", "--", "-.", ":"]
@@ -61,7 +62,7 @@ plt.xlabel("items")
 plt.ylabel("microseconds")
 
 # remove plot border
-plt.figure(1).tight_layout(pad=0)
+#plt.figure(1).tight_layout(pad=0)
 
 
 if len(sys.argv) > 2:
@@ -69,6 +70,8 @@ if len(sys.argv) > 2:
     height = width * 0.6
     dpi = plt.figure(1).get_dpi()
     plt.figure(1).set_size_inches(width/float(dpi), height/float(dpi))
+
+    #os.makedirs(os.path.dirname(sys.argv[2]))
     plt.savefig(sys.argv[2])     
 else:
     plt.show()

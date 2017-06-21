@@ -21,4 +21,12 @@ add_executable(benchmark ${SOURCE})
 
 target_link_libraries(benchmark boost_filesystem boost_system)
 
-add_custom_target(readme COMMAND "bash" "../generate_plots.sh" "${CMAKE_CXX_COMPILER}" "${CMAKE_CXX_FLAGS}" OUTPUT_FILE "./out.txt" DEPENDS benchmark)
+add_custom_target(readme COMMAND "bash" 
+    "${CMAKE_SOURCE_DIR}/tools/fill_readme_template.sh" "${CMAKE_SOURCE_DIR}/tools" "${CMAKE_BINARY_DIR}/article"
+    "${CMAKE_CXX_COMPILER}" "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE}" DEPENDS benchmark)
+
+add_custom_target(plots COMMAND "bash" 
+    "${CMAKE_SOURCE_DIR}/tools/generate_plots.sh" "${CMAKE_BINARY_DIR}/plots_data" "${CMAKE_BINARY_DIR}/article/plots" "${CMAKE_SOURCE_DIR}/tools" DEPENDS benchmark)
+
+add_custom_target(article DEPENDS readme plots)
+    
