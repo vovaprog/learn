@@ -98,14 +98,27 @@ function generate_string_maps {
     
     python $TOOLDIR/show_plot.py "$CURTEMP" "$OUTDIR/string_unordered_map_find_${1}_${2}.png"
     
+    rm -r $CURTEMP
+    
+    
+    mkdir $CURTEMP
+    
+    cp "$INDIR/string map find/$1/$2/$3.txt" "$CURTEMP"
+    cp "$INDIR/string map find/$1/$2/$4.txt" "$CURTEMP"    
+    cp "$INDIR/string map find/$1/$2/$5.txt" "$CURTEMP"
+    cp "$INDIR/string map find/$1/$2/$6.txt" "$CURTEMP"    
+    
+    python $TOOLDIR/show_plot.py "$CURTEMP" "$OUTDIR/string_map_compare_${1}_${2}.png"
+    
     rm -r $CURTEMP    
 }
 
-generate_string_maps 16 100
-generate_string_maps 16 1000
+generate_string_maps 16 100 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
+generate_string_maps 16 1000 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
 
-generate_string_maps 4 100
-generate_string_maps 4 1000
+generate_string_maps 4 100 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
+generate_string_maps 4 1000 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
+
 
 python "$TOOLDIR/show_plot.py" "$INDIR/map insert/10000" "$OUTDIR/map_insert_10000.png"
 
