@@ -71,7 +71,7 @@ struct Data
 };
 
 
-bool ResultToFile(const BenchmarkSet &benchSet);
+bool resultToFile(const BenchmarkSet &benchSet);
 
 
 // copy of benchSet is created in argument
@@ -86,7 +86,7 @@ bool runBenchmarkSet(BenchmarkSet benchSet)
         }
     }
 
-    ResultToFile(benchSet);
+    resultToFile(benchSet);
 
     return true;
 }

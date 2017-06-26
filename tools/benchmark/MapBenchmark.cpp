@@ -509,7 +509,7 @@ bool mapFindBenchmark()
         return false;
     }
 
-    if(!benchMapsFind(1000, 100000, 5000))
+    if(!benchMapsFind(1000, 100000, 2000))
     {
         return false;
     }

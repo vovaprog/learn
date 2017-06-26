@@ -89,7 +89,7 @@ bool runMap(const char *testName)
         bs.params.push_back(params);
     }
 
-    ResultToFile(bs);
+    resultToFile(bs);
 
     return true;
 }
@@ -122,7 +122,7 @@ bool switchBenchmark()
             bs.params.push_back(params);
         }
 
-        ResultToFile(bs);
+        resultToFile(bs);
     }
 
 

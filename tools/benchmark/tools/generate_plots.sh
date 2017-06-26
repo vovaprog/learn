@@ -6,12 +6,12 @@ TOOLDIR=$3
 TEMPDIR="$OUTDIR/temp"
 
 if [ -d "$OUTDIR" ]; then
-  rm -r $OUTDIR
+    rm -r $OUTDIR
 fi
 mkdir -p $OUTDIR
 
 if [ -d "$TEMPDIR" ]; then
-  rm -r $TEMPDIR
+    rm -r $TEMPDIR
 fi
 mkdir -p $TEMPDIR
 
@@ -113,20 +113,45 @@ function generate_string_maps {
     rm -r $CURTEMP    
 }
 
-generate_string_maps 16 100 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
-generate_string_maps 16 1000 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
+#===============================================================================
 
-generate_string_maps 4 100 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
-generate_string_maps 4 1000 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
-
-
-python "$TOOLDIR/show_plot.py" "$INDIR/map insert/10000" "$OUTDIR/map_insert_10000.png"
+echo "plots generation - maps..."
 
 generate_maps 350 "std map" "std unordered_map" "std vector"
 
 generate_maps 3500 "boost map" "std map" "std unordered_map" "std vector"
 
 generate_maps 100000 "boost map" "std unordered_map" "std vector"
+
+#===============================================================================
+
+echo "plots generation - string maps..."
+
+generate_string_maps 16 100 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
+generate_string_maps 16 1000 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
+
+generate_string_maps 4 100 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
+generate_string_maps 4 1000 "std map string" "std map char p" "std unordered_map string" "std unordered_map char p"
+
+#===============================================================================
+
+echo "plots generation - switch..."
+
+python "$TOOLDIR/show_plot.py" "$INDIR/switch" "$OUTDIR/switch.png"
+
+#===============================================================================
+
+echo "plots generation - arithmetic..."
+
+python "$TOOLDIR/show_plot_bar.py" "$INDIR/arithmetic" "$OUTDIR/arithmetic.png"
+
+#===============================================================================
+
+echo "plots generation - map insert..."
+
+python "$TOOLDIR/show_plot.py" "$INDIR/map insert/10000" "$OUTDIR/map_insert_10000.png"
+
+#===============================================================================
 
 rm -r $TEMPDIR
 

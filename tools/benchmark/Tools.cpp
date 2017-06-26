@@ -69,7 +69,7 @@ bool randomVector(std::vector<std::string> &keys, int64_t itemCount, int64_t key
 
 bool resultToFile(const BenchmarkSingle &bench)
 {
-    std::string fileName("./plots");
+    std::string fileName("./plots_data");
 
     boost::filesystem::create_directory(fileName);
 
@@ -90,9 +90,9 @@ bool resultToFile(const BenchmarkSingle &bench)
 }
 
 
-bool ResultToFile(const BenchmarkSet &benchSet)
+bool resultToFile(const BenchmarkSet &benchSet)
 {
-    std::string fileName("./plots");
+    std::string fileName("./plots_data");
 
     boost::filesystem::create_directory(fileName);
 

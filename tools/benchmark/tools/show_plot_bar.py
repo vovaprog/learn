@@ -63,9 +63,6 @@ plt.yticks(indexes, names)
 
 #plt.legend(fontsize=12)
 
-#plt.xlabel("items in map")
-#plt.ylabel("microseconds")
-
 # remove plot border
 plt.figure(1).tight_layout(pad=0)
 
