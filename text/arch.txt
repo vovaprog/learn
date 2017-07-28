@@ -1,6 +1,11 @@
 install package:
-
 pacman -S package_name
+
+update package info:
+pacman -Sy
+
+update system (will install new version of packages):
+pacman -Syu
 
 ====================================================
 
@@ -23,12 +28,6 @@ systemctl start dhcpcd.service
 
 run dhcpd on startup:
 ln -s '/usr/lib/systemd/system/dhcpcd.service' '/etc/systemd/system/multi-user.target.wants/dhcpcd.service'
-
-update system (will install new version of packages):
-pacman -Syu
-
-update package info:
-pacman -Sy
 
 lxde login screen
 pacman -S lxdm

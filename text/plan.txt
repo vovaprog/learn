@@ -5,14 +5,14 @@ kernel module
 template meta programming
 boost
 
-map find benchmark
-выбрать интервалы тестов
-запуск сразу всех benchmark-ов и сохранение картинок
 
-intrusive containers
-find тест
-insert тест
-
+benchmark:
+article из нескольких страниц
+пакеты debian
+Проверки, что benchmark прошел успешно.
+----------
+string map find benchmark
+queue benchmark
 
 =====================================================
 
