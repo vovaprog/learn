@@ -1,3 +1,11 @@
+Create branch:
+git checkout -b some_name
+
+Create remote branch:
+git push -u origin fix1
+
+===================================================================================
+
 Показать url, откуда получен repository:
 git remote show origin
 

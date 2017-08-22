@@ -10,3 +10,7 @@
 	name = user name
 [http]
 	postBuffer = 524288000
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false

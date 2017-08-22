@@ -24,7 +24,7 @@ set mouse=a
 set cscopetag
 
 
-if v:progname != "vimdiff"
+if ! &diff
     set rtp+=~/.vim/bundle/nerdtree
 
     autocmd vimenter * NERDTree
