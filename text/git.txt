@@ -10,6 +10,12 @@ git push -u origin fix1
 git remote show origin
 
 ===================================================================================
+
+Merge changes from branch into master:
+git checkout master
+git merge fix1
+
+===================================================================================
 Выпуск пакета:
 dch -v 0.28.37
 git tag -a v0.28.37 -m "version 0.28.37"
@@ -100,10 +106,6 @@ git rebase master
 
 Load all changes from remote:
 git fetch
-
-Merge:
-git checkout master
-git merge fix1
     
 
 git config --global merge.tool meld    (kdiff3)
