@@ -2,7 +2,7 @@ export DEB_BUILD_OPTIONS="parallel=6"
 export JAVA_HOME=~/tools/java8/bin
 alias astyle_allman_spaces='~/tools/astyle --attach-namespaces --indent=spaces=4 --pad-header --pad-oper --style=allman --suffix=none'
 alias astyle_gate='~/tools/astyle --attach-namespaces --indent=tab=4 --pad-header --pad-oper --style=kr --suffix=none'
-alias astyle_my='astyle --indent=spaces=4 --pad-oper --style=allman --suffix=none --unpad-paren'
+alias astyle_my='astyle --indent=spaces=4 --pad-oper --style=allman --suffix=none --unpad-paren --pad-header'
 alias autopep='autopep8 -i -v'
 alias clangf='clang-format-3.6 -i --style="{BasedOnStyle: mozilla, IndentWidth: 4, BreakBeforeBraces: Allman, ColumnLimit: 100, AccessModifierOffset: -4}"'
 alias cpplint='python ~/tools/cpplint.py --filter=-whitespace,-legal'

@@ -1,67 +1,10 @@
-c++14, c++17 new features
-cuda
-kernel module
+build kernel debian
+clang sanitizer
+benchmark threads
 
-template meta programming
-boost
-
-
-benchmark:
-article из нескольких страниц
-пакеты debian
-Проверки, что benchmark прошел успешно.
-----------
-string map find benchmark
-queue benchmark
-
-
-NoRehashMap:
-+ iterator
-+ destructor
-+ use allocator
-+ malloc allocator
-+ block allocator
-+ rename HashTable
-insert item benchmark
-check with valgrind
-
-
-
-compiler:
-Static single assignment form
-Basic block
 
 =====================================================
 
-nmap - try with old comp
-iptables
-route
-
-ptrace
-
-build and install kernel
-build libc
-futex
-
-asm - div получение частного и остатка.
-linux from scratch
-
-crrcsim
-Красивое поле
-Настройки по умолчанию
-Текстуры самолета
-Сделать, чтобы тени не глючили
-Пакеты необходимые для компиляции
-+ Убрать линию от хвоста самолета
-+ Более плавное управление
-+ Убрать тени
-+ Перезапуск при падении
-+ Хранение всех файлов в папке с программой
-+ Текстуры неба
-
-
-doxygen
-cppunit
 
 cscope
 zeromq - посмотреть ring buffer.
@@ -187,3 +130,4 @@ unix sockets - compare with tcp, use with uwsgi
 + profile guided optimization
 + python classes, binary messages
 + boost intrusive containers
++ bayes classifier
