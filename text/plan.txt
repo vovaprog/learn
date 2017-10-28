@@ -1,7 +1,14 @@
+opengl 3
+make entry sdl
+matrix - type template
+
+epoll_http_server - build without ssl
+
 build kernel debian
 clang sanitizer
 benchmark threads
-
+java script
+ncurses
 
 =====================================================
 
@@ -131,3 +138,6 @@ unix sockets - compare with tcp, use with uwsgi
 + python classes, binary messages
 + boost intrusive containers
 + bayes classifier
++ emscripten
++ linear algebra matrix operations (hilbert 3d)
++ new opengl with shaders (hilbert 3d) 
