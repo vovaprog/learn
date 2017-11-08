@@ -830,6 +830,17 @@ GRUB_DEFAULT=2
 then run:
 sudo update-grub
 
+-----------------------------
+
+build linux kernel in debian:
+
+copy /boot/config-some-version to source/.config
+
+make olddefconfig
+
+time fakeroot make deb-pkg
+
+(fakeroot is needed to build debian package)
 
 //======================================================================
 
@@ -860,6 +871,10 @@ local_ip, local_port - open local ip, port.
 dest_ip, dest_port - connect to dest from host computer.
 
 clients should connect to local_ip:local_port and will actually connect to dest_ip:dest_port
+
+
+get fingerprint hash of ssh public key:
+ssh-keygen -lf ./key.pub
 
 //======================================================================
 
@@ -1007,5 +1022,19 @@ g++ -std=c++11 -O3 -fprofile-use -I. -I../src -I../src/utils ./TestHttpRequest.c
 
 # build program without profile guided optimization to compare
 g++ -std=c++11 -O3 -I. -I../src -I../src/utils ./TestHttpRequest.cpp ../src/HttpRequest.cpp ../src/utils/TimeUtils.cpp -o ./TestHttpRequest_clear
+
+//======================================================================
+
+Terminal console resolution debian virtual box VirtualBox 
+/etc/default/grub
+GRUB_GFXMODE=800x600x32
+GRUB_GFXPAYLOAD=800x600x32
+
+/etc/grub.d/00_header
+if [ "x${GRUB_GFXMODE}" = "x" ] ; then GRUB_GFXMODE=800x600x32 ; fi
+if [ "x${GRUB_GFXPAYLOAD}" = "x" ] ; then GRUB_GFXPAYLOAD=800x600x32 ; fi
+......
+set gfxmode=${GRUB_GFXMODE}
+set gfxpayload=${GRUB_GFXPAYLOAD}
 
 //======================================================================
