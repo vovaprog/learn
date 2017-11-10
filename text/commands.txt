@@ -834,13 +834,19 @@ sudo update-grub
 
 build linux kernel in debian:
 
+install packages:
+fakeroot
+dpkg-dev
+
+
 copy /boot/config-some-version to source/.config
 
 make olddefconfig
 
 time fakeroot make deb-pkg
-
 (fakeroot is needed to build debian package)
+
+dpkg -i ./linux-image-version_amd64.deb
 
 //======================================================================
 
@@ -1036,5 +1042,31 @@ if [ "x${GRUB_GFXPAYLOAD}" = "x" ] ; then GRUB_GFXPAYLOAD=800x600x32 ; fi
 ......
 set gfxmode=${GRUB_GFXMODE}
 set gfxpayload=${GRUB_GFXPAYLOAD}
+
+//======================================================================
+
+shrink virtualbox virtual box disk vdi image
+
+zerofree manual
+
+// install zerofree package
+apt-get install zerofree
+
+// switch to single user mode
+telinit 1
+
+// remount filesystem as readonly
+mount -o remount,ro /dev/sdx1
+
+// run zerofree
+zerofree -v /dev/sdx1
+
+// shutdown virtual box
+
+vboxmanage modifymedium --compact ./my_image.vdi
+// command will fail but print disk UUID
+
+// then run command with disk UUID and it will shrink disk
+vboxmanage modifymedium --compact {00000000-0000-0000-0000-000000000000}
 
 //======================================================================

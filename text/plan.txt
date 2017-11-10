@@ -1,7 +1,6 @@
 opengl 3 - make entry sdl
 github atom code editor
 
-build kernel debian
 clang sanitizer
 benchmark threads
 java script
@@ -139,3 +138,5 @@ unix sockets - compare with tcp, use with uwsgi
 + linear algebra matrix operations (hilbert 3d)
 + new opengl with shaders (hilbert 3d) 
 + opengl load 3d model, light
++ build kernel debian
+
