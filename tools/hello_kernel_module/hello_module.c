@@ -2,7 +2,9 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 
+// to build on debian install package: apt-get install linux-headers-$(uname -r)
 // build module: make
+//
 // load module: insmod hello_module.ko
 //
 // load module with parameter: insmod hello_module.ko my_arg1=some_test_string

@@ -249,3 +249,10 @@ git reset HEAD^ --hard
 git push --force origin branch_name 
 
 ==============================================================================================
+
+use vimdiff as difftool:
+git config --global diff.tool vimdiff
+git config --global difftool.prompt false
+git difftool ./my_file.txt
+
+==============================================================================================
