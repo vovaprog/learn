@@ -1070,3 +1070,96 @@ vboxmanage modifymedium --compact ./my_image.vdi
 vboxmanage modifymedium --compact {00000000-0000-0000-0000-000000000000}
 
 //======================================================================
+
+// show list of all alternatives for c++:
+update-alternatives --list c++
+
+// install g++-7 to be alternative for g++:
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 10
+
+// install g++ to be alternative for c++:
+sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 10
+
+// select alternative for c++ (user will select needed alternative):
+sudo update-alternatives --config c++
+
+//======================================================================
+
+show elf symbols:
+objdump -T ./program
+readelf --syms ./program
+readelf --dyn-syms ./program
+
+show needed shared libs:
+> ldd ./program
+> objdump -p ./program | grep NEEDED
+> /lib64/ld-linux-x86-64.so.2 --list ./program   (calling loader)
+
+show loader debug output:
+> export LD_DEBUG="bindings symbols";./prog
+> export LD_BIND_NOT=1;export LD_DEBUG="bindings symbols";./prog
+
+disassemble mixed with source:
+> objdump -DS --disassembler-options=intel  ./program  > ./disas.txt
+
+demangle gcc g++ symbol:
+> c++filt someSymbolName
+
+//======================================================================
+
+core dump:
+
+show core dump size:
+> ulimit -c
+
+set core dump size:
+> ulimit -c unlimited
+
+show all limits:
+> ulimit -a
+
+Set core dump size.
+Run program that crashes.
+ubuntu writes core file to the same folder/core
+
+> gdb programFile coreFile
+
+In gdb get stack of crash:
+> bt
+
+To look needed stack frame:
+> frame frameNumber
+frameNumber is number from output of bt command.
+
+output local variables:
+> info locals
+
+//======================================================================
+
+use gold linker:
+-fuse-ld=gold
+add this option to g++ compiler
+
+to use LLVM linker:
+-fuse-ld=lld
+
+//======================================================================
+
+Rust
+
+compile program:
+> rustc ./main.rs
+
+create new project with cargo:
+> cargo new rust_hello_cargo --bin
+
+build cargo project:
+> cargo build
+
+build and run:
+> cargo run
+
+build release:
+> cargo build --release
+
+//======================================================================
