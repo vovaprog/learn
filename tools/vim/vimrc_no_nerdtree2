@@ -1,0 +1,24 @@
+set tabstop=4 shiftwidth=4 expandtab
+set autoindent
+set cindent
+set number                                   " display line numbers
+set backspace=indent,eol,start               " make backspace work as in other editors
+set nowrap
+set autochdir                                " working directory is always the same as the file you are editing
+language en_US.UTF-8                         " sets the language of the messages / ui
+
+set t_Co=256                 " terminal colors
+set nocompatible             " enable new features of vim
+set showmatch                " match braces
+set mouse=a
+syntax on
+
+set incsearch                " search as typing
+set hlsearch                 " highlight search results
+set ignorecase               " case insensitive search
+hi Search ctermbg=LightBlue 
+nnoremap <silent> <F12> :nohlsearch<Bar>:echo<CR>    " press F12 to remove search result highlighting
+
+set background=dark
+colorscheme peaksea
+
