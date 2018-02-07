@@ -1,4 +1,4 @@
-alias astyle_my='astyle --indent=spaces=4 --pad-oper --style=allman --suffix=none --unpad-paren --pad-header'
+alias astyle_my='astyle --indent=spaces=4 --pad-oper --style=allman --suffix=none --unpad-paren --pad-header --lineend=linux'
 alias autopep='autopep8 -i -v'
 alias cdl="cd ~/git/learn"
 alias cdg="cd ~/git"
